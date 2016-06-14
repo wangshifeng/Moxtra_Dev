@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
+    <title></title>
+    <script src="../../Scripts/jquery-2.2.3.min.js" type="text/javascript"></script>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
+
+    <script src="../../Scripts/jquery.datetimepicker.full.min.js"></script>
+    <link href="../../Content/jquery.datetimepicker.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery.validate.min.js"></script>
+    <link href="../../Content/validation.css" rel="stylesheet" />
+    <link href="../../Content/Office.css" rel="stylesheet" type="text/css" />
+    
+
+    <!-- To enable offline debugging using a local reference to Office.js, use: -->
+    <!--<script src="../../Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>-->
+    <!--<script src="../../Scripts/Office/1/office.js" type="text/javascript"></script>-->
+    <link href="../../Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="../App.css" rel="stylesheet" type="text/css" />
+    <script src="../../Scripts/bootstrap.min.js"></script>
+    <link href="Home.css" rel="stylesheet" type="text/css"/>
+    <link href="../../Content/moxtra.css" rel="stylesheet" type="text/css" />
+
+    <script src="../App.js" type="text/javascript"></script>
+    <script src="Home.js" type="text/javascript"></script>
+</head>
+<body style="max-height: 340px; overflow-y: hidden; visibility: visible;">
+    <div id="content-main" style="min-height: 220px; overflow-y: hidden">
+        <div class="panel panel-primary" style="border: none;">
+            <div class="panel-heading" style="max-height: 35px;">
+                <h3 class="panel-title">
+                    <img src="../../Images/moxtraLogo_Whitesolid.png" style="height: 18px;margin-top: -8px;" />
+                    <a id="logoutbtn" href="#" class="logoutbtn" style="float: right;font-weight: 400;font-size: 14px;display: none;">Logout</a>
+                </h3>
+                
+            </div>
+            <div class="panel-body" style="padding: 5px 15px; min-height: 385px;">
+                <div class="panel-content">
+                    <!--Login Page-->
+                <div id="loginPage" class="row" style="overflow:auto; margin: auto;position: absolute;top: 50px; left: 0; bottom: 0; right: 0;width: 100%; min-width: 200px;max-width: 920px;padding: 40px;">
+                    <div class="col-md-3 row mx-first-screen-left">
+                        <div class="col-md-12 row">
+                            <div class="col-md-10 col-md-offset-1 col-sm-12">
+                                <img src="../../Images/moxtra_lockups_stacked_2color.png"></div>
+                            </div>
+                        <div class="col-md-12 row">
+                            <div class="col-md-12 col-sm-12">
+                                <button type="button" class="btn btn-primary loginbtn"
+                                        onclick="app.loginAndInitMoxtra(function () { onStart(); });">LOGIN TO MOXTRA
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-9 mx-first-screen-right">
+                        <div class="media">
+                            <div class="media-left">
+                                <img src="../../Images/chat_30x30_blue.png">
+                            </div>
+                            <div class="media-body">
+                                <div class="h5">Create a conversation</div>
+                                <p>The Outlook add-in helps you move emails out of your inbox and into your team
+                                    conversations, so you can easily collaborate on them.</p>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <div class="media-left">
+                                <img src="../../Images/meet_30x30_blue.png">
+                            </div>
+                            <div class="media-body">
+                                <div class="h5">Quickly add to-dos</div>
+                                <p>Quickly assign to-dos and deadlines to groups or individual members and attach
+                                    relevant files from your email, all within the context of a team conversation.</p>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <div class="media-left">
+                                <img src="../../Images/to-do_30x30_Blue.png">
+                            </div>
+                            <div class="media-body">
+                                <div class="h5">Schedule and start Moxtra Meets from
+                                    Outlook
+                                </div>
+                                <p>Easily schedule Moxtra Meets and add it to your Outlook Calendar. Also start instant
+                                    Moxtra Meets with other email recipients.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <!--Page when authenticated-->
+                    <div id="firstPage">
+                        <div class="actions" id="chatActions" style="width: 100%;">
+                            <div class="container" style="height: 40px; margin-top: -20px; color: #2D9CF5;">
+                                <div class="row">
+                                    <button class="btn col-md-4 special" onclick="new_conversation()"><img src="../../Images/new-conversation.png" class="space" /> New Conversation</button>
+                                    <button class="btn col-md-4 special" onclick="schedule_meet()"><img src="../../Images/schedule.png" class="space" /> Schedule Meet</button>
+                                    <button class="btn col-md-4 special" onclick="start_meet()"><img src="../../Images/start-meet.png" class="space" /> Meet Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="waitspin" style="width: 100%; text-align: center; margin-top: 40px;">
+                            <img src="../../Images/loading.gif" />
+                        </div>
+                        <div id="newConvMsg" style="width: 100%; text-align: center; visibility: collapse; margin-top: 40px;" class="greytext">
+                            <h2>Start a New Conversation</h2>
+                            <p>Click on the “New Conversation” button to start collaborating and communicating with others.</p>
+                        </div>
+
+
+
+<!--
+                        <div class="conversation-list row" id="binderList">
+                            <ul class="conversation-group col-md-6 pull-left" style="max-height: 260px; width: 100%; margin-top: -80px;" id="binderListul"></ul>
+                        </div>
+
+-->
+
+                <div class="col-sm-12"  id="binderList">
+                    <ul class="list-group" style="max-height: 260px; width: 100%; margin-top: -80px; overflow:auto; margin-left:0px;" id="binderListul"></ul>
+                </div>
+
+
+
+
+                    </div>
+                    <!-- Nav tabs -->
+                    <div id="tabs">
+                        <div class="top-nav">
+                            <ul class="nav nav-pills" role="tablist">
+                                <li role="presentation" class="link-back">
+                                    <a href="#profile" aria-controls="other" role="link" data-toggle="link" onclick="goToBinderList()">
+                                        <i class="glyphicon glyphicon-menu-left" style="color: #2D9CF5;"></i>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="link-icon">
+                                    <a href="#profile" aria-controls="other" role="link" data-toggle="link" onclick="addEmailTextToBinder()">
+                                        <img src="../../Images/copytobinder.png" class="space" title="Add Email Content" id="spinner" />
+                                    </a>
+                                </li>
+
+                                <li role="presentation" class="pull-right"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Meet</a></li>
+                                <li role="presentation" class="pull-right"><a href="#todos" aria-controls="todos" role="tab" data-toggle="tab">To Do</a></li>
+                                <li role="presentation" class="pull-right"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Pages</a></li>
+                                <li role="presentation" class="active pull-right"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Chat</a></li>
+                            </ul>
+                        </div>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                <div id="chatview">
+
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="profile">
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="messages">
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="todos">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-dialog" style="z-index: 5000; width: 400px; max-height: 450px; margin-top: -5px;" id="scheduleMeet" role="dialog">
+        <div class="modal-content">
+            <div class="modal-sub-content modal-sub-content-">
+                <div class="modal-header" style="background-color: #EEEEEE;">
+                    <button type="button" class="close" data-action="close" aria-hidden="true" onclick="hide_schedule_meet()">×</button>
+                    <h4 class="modal-title ellipsis">Schedule Meet</h4>
+                </div>
+                <div class="modal-body" style="max-height: 225px; overflow-y: scroll; overflow-x:hidden;">
+                    <div class="mx-meet-schedule">
+                        <form id="scheduleMeetForm" style="max-height: 400px;">
+                            <div class="form-group">
+                                <div>
+                                    <input id="scheduleTopic" name="scheduleTopic" type="text" class="form-control" placeholder="Meet title" value="" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon date-addon">Starts</span>
+                                    <input id="scheduleStartDate" name="scheduleStartDate" type="text" class="form-control dtpicker" placeholder="Start Date" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon date-addon">Ends</span>
+                                    <input id="scheduleEndDate" name="scheduleEndDate" type="text" class="form-control dtpicker" placeholder="End Date" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="scheduleAgenda" name="scheduleAgenda" placeholder="Agenda" class="meet-agenda" cols="54" rows="2" required="required"></textarea>
+                                <a class="mouse-hand" data-action="zoomAgendaText"><i class="micon-full-screen icon-zoom-meet-agenda"></i></a>
+                            </div>
+                            <div class="form-group">
+                                <p>Add Participants</p>
+                                <div>
+                                    <input id="participantEmails" name="participantEmails" type="text" class="form-control" placeholder="Participant Emails (comma seprated)" required="required">
+                                </div>
+                                <span class="pull-left" style="margin: 2px;">Use comma to separate email addresses.</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnSchedule" class="btn btn-default btn-primary pull-right" data-loading-text="Schedule" data-action="onClickSchedule" data-param="" onclick="ScheduleMeet()">Schedule</button>
+                    <button type="button" id="onClickCancel" class="btn btn-default pull-right" style="margin-right: 10px;" data-action="onClickCancel" data-param="" onclick="hide_schedule_meet()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    var formValidator = null;
+    
+    $(document).ready(function () {
+        $("#scheduleMeet").hide();
+        try {
+            // Do we have an access token from before
+            var token = localStorage.getItem("tokenci");
+            //console.log(token);
+            if (token == undefined || token == null) {
+                $("#firstPage").hide();
+                $("#binderList").hide();
+                $("#tabs").hide();
+                $("#loginPage").show();
+            } else {
+                $("#loginPage").hide();
+                $("#firstPage").show();
+                $("#tabs").hide();
+                $(".logoutbtn").show();
+            }
+
+            $("#tabs").hide();
+
+            $("#binderList").on("mouseover", "li", function () {
+                $(this).find("img").last().addClass('hover');
+                $(this).find("button").last().addClass('hover');
+            });
+
+            $("#binderList").on("mouseout", "li", function () {
+                $(this).find("img").last().removeClass('hover');
+                $(this).find("button").last().removeClass('hover');
+            });
+
+            $("#scheduleStartDate").datetimepicker({
+                minDate: 0,
+                step: 15,
+                onChangeDateTime: function (dp, $input) {
+                    var d = $("#scheduleStartDate").val();
+                    var start = parseDate(d);
+                    var startDateTime = start.getTime();
+                    $('#scheduleEndDate').datetimepicker('setOptions', { minDate: start, step: 15 });
+                    $('#scheduleEndDate').removeAttr("disabled");
+
+                }
+            });
+            $('#scheduleEndDate').datetimepicker({
+            });
+            $('#scheduleEndDate').attr("disabled", "disabled");
+            
+            $('.logoutbtn').click(function(){
+            	localStorage.clear();
+            	window.location.reload(false);
+            })
+
+            $.validator.addMethod("greaterThan",
+                function (value, element, params) {
+
+                    if (!/Invalid|NaN/.test(new Date(value))) {
+                        return new Date(value) > new Date($(params).val());
+                    }
+
+                    return isNaN(value) && isNaN($(params).val())
+                        || (Number(value) > Number($(params).val()));
+                }, 'Must be greater than {0}.');
+
+            $.validator.addMethod(
+                "multiemails",
+                function (value, element) {
+                    if (this.optional(element)) // return true on optional element
+                        return true;
+                    var emails = value.split(/[;,]+/); // split element by , and ;
+                    var valid = true;
+                    for (var i in emails) {
+                        if (emails.hasOwnProperty(i)) {
+                            value = emails[i];
+                            valid = valid &&
+                                jQuery.validator.methods.email.call(this, $.trim(value), element);
+                        }
+                    }
+                    return valid;
+                },
+
+                'Emails must be valid and separated by comma.'
+            );
+
+            //form validation rules
+            formValidator = $("#scheduleMeetForm").validate({
+                rules: {
+                    scheduleTopic: "required",
+                    scheduleStartDate:
+                    {
+                        required: "required",
+                        date: true,
+                    },
+                    scheduleEndDate:
+                    {
+                        required: "required",
+                        date: true,
+                        greaterThan: "#scheduleStartDate"
+                    },
+                    scheduleAgenda: "required",
+                    participantEmails: {
+                        required: "required",
+                        multiemails: true
+                    }
+                },
+                messages: {
+                    scheduleTopic: "Please enter a meeting title",
+                    scheduleStartDate: {
+                        required: "Please select start date time",
+                        date: "Start date is not vaild"
+                    },
+                    scheduleEndDate: {
+                        required: "Please select end date time",
+                        date: "End date is not vaild",
+                        greaterThan: "End date time must be after start date time."
+                    },
+                    scheduleAgenda: "Agenda is a required field",
+                    participantEmails: {
+                        reuired: "Participant emails are required",
+                        multiemails: "You must enter valid emails"
+                    }
+                },
+                highlight: function (element) {
+                    //$(element).closest('.form-group').addClass('has-error');
+                    //$("#scheduleMeetForm").valid();
+                    ////$(element).addClass('select-class');
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        }
+
+
+    });
+
+    function onStart() {
+        try {
+            $("#loginPage").hide();
+            $("#firstPage").show();
+            $("#tabs").hide();
+            app.loadBinders();
+        } catch (e) {
+
+        }
+
+    }
+
+    function openBinder(binderId, addText) {
+        //console.log("Starting chat with : " + binderId);
+        app.currenBinderId = binderId;
+
+        $("#firstPage").hide();
+        $("#binderList").hide();
+        $("#tabs").show();
+        app.ShowChatView(binderId);
+        app.ShowPageView(binderId);
+        app.ShowMeetView(binderId);
+        app.ShowTodoView(binderId);
+
+        if (addText) {
+            addEmailTextToBinder();
+        }
+    };
+
+    function goToBinderList() {
+        $("#firstPage").show();
+        $("#binderList").show();
+        $("#tabs").hide();
+        app.loadBinders();
+    }
+
+    var showSpinner = function () {
+        $("#spinner").attr("src", "../../Images/sending.gif");
+        setTimeout(hide, 5000); // 5 seconds
+    };
+
+    var hide = function () {
+        $("#spinner").attr("src", "../../Images/copytobinder.png");
+
+    }
+
+    function addEmailTextToBinder() {
+        if (app.currenBinderId == undefined)
+            return;
+        showSpinner();
+        app.addEmailTextToBinder();
+    }
+</script>
+
+<!-- Start Meet Function  -->
+<script type="text/javascript">
+    function start_meet() {
+        app.getRecipients(function (emails) {
+            var meet_options = {
+                //iframe: true, //To open the meet in the same window within an iFrame.
+                tab: true, //To open the meet in a new browser tab, N/A if iframe option is set to true.
+                //tagid4iframe: "meet-container", //ID of the HTML tag within which the Meet window will show up. Refer https://developer.grouphour.com/moxo/docs-js-sdk/#meet
+                //iframewidth: "1000px",
+                //iframeheight: "750px",
+                extension: {
+                    "show_dialogs": { "meet_invite": true }
+                },
+                start_meet: function (event) {
+                    console.log("Meet Started - session_id: " + event.session_id + "session_key: " + event.session_key);
+                    //Your application server can upload files to meet using the session_id and session_key
+                },
+                email: emails,
+                error: function (event) {
+                    console.log("error code: " + event.error_code + " message: " + event.error_message);
+                },
+                end_meet: function (event) {
+                    console.log("Meet Ended");
+                },
+                video: true
+            };
+            Moxtra.meet(meet_options);
+        });
+    }
+
+    function new_conversation() {
+        //console.log("new conversation");
+        app.newConversation(function (binderid) {
+            openBinder(binderid, false);
+        });
+    }
+
+    function schedule_meet() {
+
+        $("#scheduleMeet").css('visibility', 'visible');
+        $("#scheduleTopic").val(app.getSubject);
+        app.getRecipientsWithoutMoxtraEmail(function (emails) {
+            $("#participantEmails").val(emails.join());
+        });
+        $("#scheduleMeet").modal('show');
+    }
+
+    function hide_schedule_meet() {
+        $("#scheduleMeet").css('visibility', 'hidden');
+
+        $("#scheduleMeet").modal('hide');
+        formValidator.resetForm();
+    }
+
+    function ScheduleMeet() {
+
+        $("#scheduleMeetForm").validate();
+        if ($("#scheduleMeetForm").valid() === false)
+            return;
+        var d = $("#scheduleStartDate").val();
+        var start = parseDate(d);
+        var startDateTime = start.getTime();
+        d = $("#scheduleEndDate").val();
+        var end = parseDate(d);
+        var endDateTime = end.getTime();
+
+        var meetTitle = $("#scheduleTopic").val();
+        var agenda = $("#scheduleAgenda").val();
+        var emails = $("#participantEmails").val();
+
+        app.scheduleMeet(meetTitle, startDateTime, endDateTime, agenda, emails, function (response) {
+            app.showNotification('Meet was scheduled successfully. Meet details have been added to your Outlook calendar.');
+            hide_schedule_meet();
+            $("#scheduleStartDate").val();
+            $("#scheduleEndDate").val();
+            $("#scheduleTopic").val();
+            $("#scheduleAgenda").val();
+            $("#participantEmails").val();
+            console.log(response);
+            //app.addMeetToCalendar(response, emails, startDateTime, endDateTime);
+            var appendText = '1. Click on the link below to start the Moxtra Meet at the scheduled time:<br/><br/>' +
+                '<a href=\"' + response.data.startmeet_url + '\" target="_blank">' + response.data.startmeet_url + '</a><br/><br/>' +
+                //response.data.startmeet_url +
+                '2. You can join the audio directly from your device or from your phone. For instructions, go to - https://moxtra.com/secure/global-dial-numbers/?meetid=' + response.data.session_key + '<br/><br/>' +
+                'Moxtra Meet ID: ' + response.data.session_key + '<br/>' +
+                'Enter your Moxtra Meet ID when prompted.';
+            //      app.createMeetingInExchange(response, emails, agenda + '\n\n\n' + appendText.encodeHTML(), start, end, function (data) {
+            app.createMeetingInExchange(response, emails, (agenda + '<br/><br/><br/>' + appendText).encodeHTML(), start, end, function (cmeData) {
+                //console.log(cmeData);
+                // make user json object
+                var data = {
+                    users: []
+                };
+                var splitEmails = emails.split(",");
+                splitEmails.forEach(function (email) {
+                    data.users.push({ user: { email: email } });
+                });
+
+                // invite people
+                $.postJSON(app.baseUrl + "meets/inviteuser?access_token=" + app.accessToken, { session_key: response.data.session_key, users: data.users }, function (inviteResponse) {
+                });
+                //console.log(data);
+            });
+        });
+
+    }
+
+    function parseDate(dateAsString) {
+        return new Date(dateAsString.replace(/-/g, '/'));
+    }
+</script>

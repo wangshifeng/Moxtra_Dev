@@ -1,0 +1,99 @@
+html,body {
+    height: 100%;
+    overflow: hidden;
+}
+
+.mx-first-screen-left {
+    padding: 15px;
+    text-align: center;
+}
+
+.mx-first-screen-right .h5 {
+    font-weight: bold;
+    color: #1152a5;
+    margin-bottom: 5px;
+}
+
+.mx-first-screen-right .media-left {
+    padding: 5px 25px 0 10px;
+}
+
+.mx-start-screen.side .mx-start-screen-header{
+    text-align: left;
+}
+
+.btn-primary {
+    background-color: #1152a5;
+    border-color: #1152a5;
+}
+
+.btn-primary:hover {
+    background-color: #063066;
+    border-color:  #063066;
+}
+
+.media {
+    width: 100%;
+}
+
+.media-body,
+.media-left,
+.media-right {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.media-body {
+    width: 10000px;
+}
+
+@media (min-width: 992px){
+    .mx-first-screen-right {
+        border-left: 1px solid #ccc;
+        max-width: 600px;
+    }
+}
+
+@media (max-width: 992px){
+    .mx-first-screen-right {
+        border-left: 0;
+    }
+}
+
+/*start screen*/
+.mx-start-screen-header {
+    text-align: center;
+}
+
+@media (max-width: 480px){
+    .mx-start-screen-header {
+        text-align: left;
+    }
+}
+
+.binder-thumbnail {
+    width: 30px;
+    height: 30px;
+    margin: 3px;
+}
+
+.share-binder-item .media-body {
+    padding-top: 8px;
+    padding-left: 30px;
+}
+
+.share-binder-item .media-right {
+    padding-top: 10px;
+}
+
+.share-binder-item:hover {
+    cursor: pointer;
+    background-color: #f6f6f6;
+}
+
+.binder-name {
+    max-width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

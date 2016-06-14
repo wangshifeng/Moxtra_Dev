@@ -1,0 +1,8 @@
+.y3 {
+    width: 460px !important;
+    padding-right: 10px !important;
+}
+
+.inboxsdk__sidebar .inboxsdk__contentPanelContainer {
+    max-width: none !important;
+}

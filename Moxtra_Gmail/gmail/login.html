@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+    <title></title>
+    <script src="js/jquery-2.2.3.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/moxtra-latest.js" id="moxtrajs"></script>
+    <script src="js/jquery.datetimepicker.full.min.js"></script>
+    <link href="css/jquery.datetimepicker.css" rel="stylesheet" />
+    <script src="js/jquery.validate.min.js"></script>
+    <link href="css/validation.css" rel="stylesheet" />
+    <!-- To enable offline debugging using a local reference to Office.js, use: -->
+    <!--<script src="../../Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>-->
+    <!--<script src="../../Scripts/Office/1/office.js" type="text/javascript"></script>-->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/App.css" rel="stylesheet" type="text/css" />
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/Home.css" rel="stylesheet" type="text/css" />
+    <link href="css/moxtra.css" rel="stylesheet" type="text/css" />
+    <script src="js/App.js" type="text/javascript"></script>
+
+</head>
+
+<body style="max-height: 340px; overflow-y: hidden; visibility: visible;">
+    <div id="content-main" style="min-height: 220px; overflow-y: hidden">
+        <div class="panel panel-primary" style="border: none;box-shadow:none">
+            <div class="panel-body" style="padding: 5px 15px; min-height: 385px;">
+                <div class="panel-content">
+                    <!--Login Page-->
+                    <div id="loginPage" class="row" style="overflow:auto; margin: auto;position: absolute;top: 50px; left: 0; bottom: 0; right: 0;width: 100%; min-width: 200px;max-width: 920px;padding: 40px;display: none;">
+                        <div class="col-md-3 row mx-first-screen-left">
+                            <div class="col-md-12 row">
+                                <div class="col-md-10 col-md-offset-1 col-sm-12">
+                                    <img src="images/moxtra_lockups_stacked_2color.png"></div>
+                            </div>
+                            <div class="col-md-12 row" style="margin-top: 20px;padding: 0;">
+                                <div class="col-md-12 col-sm-12">
+                                    <button type="button" class="btn btn-primary loginbtn" id="loginbtn">LOGIN TO MOXTRA
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Page when authenticated-->
+                    <div id="firstPage" style="display: none;">
+                        <div class="actions" id="chatActions" style="width: 100%;">
+                            <div class="container" style="height: 30px; margin-top: -20px; color: #2D9CF5;">
+                                <div class="row">
+                                    <button class="btn col-md-4 special" id="new_conversation"><img src="images/new-conversation.png" class="space" /> New Conversation</button>
+                                    <button class="btn col-md-4 special" id="start_meet"><img src="images/start-meet.png" class="space" /> Meet Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="waitspin" style="width: 100%; text-align: center; margin-top: 40px;">
+                            <img src="images/loading.gif" />
+                        </div>
+                        <div id="newConvMsg" style="width: 100%; text-align: center; visibility: collapse; margin-top: 20px;" class="greytext">
+                            <h2>Start a New Conversation</h2>
+                            <p>Click on the “New Conversation” button to start collaborating and communicating with others.</p>
+                        </div>
+                        <!--
+                        <div class="conversation-list row" id="binderList">
+                            <ul class="conversation-group col-md-6 pull-left" style="max-height: 260px; width: 100%; margin-top: -80px;" id="binderListul"></ul>
+                        </div>
+
+-->
+                        <div class="col-sm-12" id="binderList">
+                            <ul class="list-group" style="width: 100%; margin-top: -100px; overflow:auto; margin-left:0px;" id="binderListul"></ul>
+                        </div>
+                    </div>
+                    <!-- Nav tabs -->
+                    <div id="tabs" style="display: none;">
+                        <div class="top-nav">
+                            <ul class="nav nav-pills" role="tablist">
+                                <li role="presentation" class="link-back">
+                                    <a href="#profile" aria-controls="other" role="link" data-toggle="link" id="goToBinderList">
+                                        <i class="glyphicon glyphicon-menu-left" style="color: #2D9CF5;"></i>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="link-icon">
+                                    <a href="#profile" aria-controls="other" role="link" data-toggle="link" id="addEmailTextToBinder" data-email="">
+                                        <img src="images/copytobinder.png" class="space" title="Add Email Content" id="spinner" />
+                                    </a>
+                                </li>
+                                <li role="presentation" class="pull-right"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Meet</a></li>
+                                <li role="presentation" class="pull-right"><a href="#todos" aria-controls="todos" role="tab" data-toggle="tab">To Do</a></li>
+                                <li role="presentation" class="pull-right"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Pages</a></li>
+                                <li role="presentation" class="active pull-right"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Chat</a></li>
+                            </ul>
+                        </div>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                <div id="chatview">
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="profile">
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="messages">
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="todos">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-dialog" style="z-index: 5000; width: 400px; max-height: 450px; margin-top: -5px;visibility: hidden;" id="scheduleMeet" role="dialog">
+        <div class="modal-content">
+            <div class="modal-sub-content modal-sub-content-">
+                <div class="modal-header" style="background-color: #EEEEEE;">
+                    <button type="button" class="close" data-action="close" aria-hidden="true" onclick="hide_schedule_meet()">×</button>
+                    <h4 class="modal-title ellipsis">Schedule Meet</h4>
+                </div>
+                <div class="modal-body" style="max-height: 225px; overflow-y: scroll; overflow-x:hidden;">
+                    <div class="mx-meet-schedule">
+                        <form id="scheduleMeetForm" style="max-height: 400px;">
+                            <div class="form-group">
+                                <div>
+                                    <input id="scheduleTopic" name="scheduleTopic" type="text" class="form-control" placeholder="Meet title" value="" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon date-addon">Starts</span>
+                                    <input id="scheduleStartDate" name="scheduleStartDate" type="text" class="form-control dtpicker" placeholder="Start Date" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon date-addon">Ends</span>
+                                    <input id="scheduleEndDate" name="scheduleEndDate" type="text" class="form-control dtpicker" placeholder="End Date" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="scheduleAgenda" name="scheduleAgenda" placeholder="Agenda" class="meet-agenda" cols="54" rows="2" required="required"></textarea>
+                                <a class="mouse-hand" data-action="zoomAgendaText"><i class="micon-full-screen icon-zoom-meet-agenda"></i></a>
+                            </div>
+                            <div class="form-group">
+                                <p>Add Participants</p>
+                                <div>
+                                    <input id="participantEmails" name="participantEmails" type="text" class="form-control" placeholder="Participant Emails (comma seprated)" required="required">
+                                </div>
+                                <span class="pull-left" style="margin: 2px;">Use comma to separate email addresses.</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnSchedule" class="btn btn-default btn-primary pull-right" data-loading-text="Schedule" data-action="onClickSchedule" data-param="" onclick="ScheduleMeet()">Schedule</button>
+                    <button type="button" id="onClickCancel" class="btn btn-default pull-right" style="margin-right: 10px;" data-action="onClickCancel" data-param="" onclick="hide_schedule_meet()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/Home.js" type="text/javascript"></script>
+</body>
