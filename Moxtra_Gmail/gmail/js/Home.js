@@ -163,7 +163,7 @@ $(document).ready(function () {
         } else {
             // we have a access token so we just get started
             app.initMoxtra();
-            app.listenmessage();
+            app.loadBinders();
         }
         if (token != undefined && token != null) {
             //console.log(Office.context.mailbox.userProfile.emailAddress);
@@ -316,6 +316,7 @@ function parseDate(dateAsString) {
 app.loadBinders = loadBinders;
 
 function loadBinders() {
+    console.log('load binders')
     try {
         $('#waitspin').css('display', 'block');
         $('#binderList').hide();

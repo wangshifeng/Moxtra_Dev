@@ -23,28 +23,28 @@ var app = (function () {
     //app.oAuthBaseUrl = "https://apisandbox.moxtra.com/oauth/authorize?client_id=";
     //var redirectUrl = "https://localhost:44300/AppCompose/Home/logincallback.html";
 
-    app.listenmessage = function () {
-        window.addEventListener('message', function (event) {
-            var message_category = event.data.substr(0, 2);
-            console.log('message received:' + message_category);
-            switch (message_category) {
-            case 'el':
-                localStorage.setItem('emailslist', event.data.substr(2));
-                app.loadBinders();
-                break;
-            case 'mb':
-                localStorage.setItem('mailbody', event.data.substr(2));
-                break;
-            case 'sj':
-                localStorage.setItem('subject', event.data.substr(2));
-                break;
-            case 'sd':
-                localStorage.setItem('sender', event.data.substr(2))
-            case 'logout':
-
-            };
-        }, false)
-    }
+//    app.listenmessage = function () {
+//        window.addEventListener('message', function (event) {
+//            var message_category = event.data.substr(0, 2);
+//            console.log('message received:' + message_category);
+//            switch (message_category) {
+//            case 'el':
+//                localStorage.setItem('emailslist', event.data.substr(2));
+//                app.loadBinders();
+//                break;
+//            case 'mb':
+//                localStorage.setItem('mailbody', event.data.substr(2));
+//                break;
+//            case 'sj':
+//                localStorage.setItem('subject', event.data.substr(2));
+//                break;
+//            case 'sd':
+//                localStorage.setItem('sender', event.data.substr(2))
+//            case 'logout':
+//
+//            };
+//        }, false)
+//    }
 
     app.VerifyToken = function () {
         var accessToken = localStorage.getItem("tokenci");
@@ -650,30 +650,29 @@ var app = (function () {
         //callback();
 
 
-
-        var win = app.PopupCenter(oauthUrl, "Moxtra-oAuth", 500, 500);
-        var pollTimer = window.setInterval(function () {
-            if (win != undefined || win != null) {
-                if (win.closed !== false) { // !== is required for compatibility with Opera
-                    window.clearInterval(pollTimer);
-                    if (localStorage.getItem("tokenci") != undefined || localStorage.getItem("tokenci") != null) {
-                        console.log('113');
-                        app.initMoxtra();
-                        if (callback)
-                            callback();
+                var win = app.PopupCenter(oauthUrl, "Moxtra-oAuth", 500, 500);
+                var pollTimer = window.setInterval(function () {
+                    if (win != undefined || win != null) {
+                        if (win.closed !== false) { // !== is required for compatibility with Opera
+                            window.clearInterval(pollTimer);
+                            if (localStorage.getItem("tokenci") != undefined || localStorage.getItem("tokenci") != null) {
+                                console.log('113');
+                                app.initMoxtra();
+                                if (callback)
+                                    callback();
+                            }
+                        }
+                    } else {
+                        if (localStorage.getItem("tokenci") != undefined || localStorage.getItem("tokenci") != null) {
+                            window.clearInterval(pollTimer);
+                            app.initMoxtra();
+                            if (callback)
+                                callback();
+                        }
                     }
-                }
-            } else {
-                if (localStorage.getItem("tokenci") != undefined || localStorage.getItem("tokenci") != null) {
-                    window.clearInterval(pollTimer);
-                    app.initMoxtra();
-                    if (callback)
-                        callback();
-                }
-            }
-
-
-        }, 2000);
+        
+        
+                }, 2000);
 
 
         //var winoauth = window.open(oauthUrl, "window2", 'width=500,height=500,centerscreen=1,menubar=0,toolbar=0,location=0,personalbar=0,status=0,titlebar=0,dialog=1');

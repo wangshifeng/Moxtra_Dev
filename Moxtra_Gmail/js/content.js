@@ -4,7 +4,9 @@ InboxSDK.load('1', 'sdk_moxtraforgmail_754811953b').then(function (sdk) {
         //        console.log(MessageView.getSender());
         //        console.log(MessageView.getRecipients());
         var el = document.createElement("div");
-        el.innerHTML = '<iframe id="moxtraframe" src="chrome-extension://hngbggjcofcgnaoapfmagkafnkgdldpa/gmail/login.html" style="width:460px;border:1px solid #d7d7d7;border-top-color:transparent;height:550px"></iframe>';
+        var moxtraurl = chrome.extension.getURL('gmail/login.html')
+        console.log(moxtraurl)
+        el.innerHTML = '<iframe id="moxtraframe" src="' + moxtraurl + '" style="width:460px;border:1px solid #d7d7d7;border-top-color:transparent;height:550px"></iframe>';
 
 
         //                var iframe = document.createElement('iframe');
@@ -29,28 +31,33 @@ InboxSDK.load('1', 'sdk_moxtraforgmail_754811953b').then(function (sdk) {
         var mailbody = 'mb' + messageView.getBodyElement().innerHTML;
         var subject = 'sj' + localStorage.getItem('moxtragmailsubject');
         var emaillist = 'el' + composeRecipients(sender.substr(2), recipients);
+        var moxtraurl = chrome.extension.getURL('gmail/login.html')
                 console.log('sender:'+ sender + ' | recipients:' +recipients);
-
+        
+        localStorage.setItem('emailslist',emaillist);
+        localStorage.setItem('mailbody',mailbody);
+        localStorage.setItem('subject',subject);
+        localStorage.setItem('sender',sender);
         //        console.log(mailbody);
-        document.getElementById('moxtraframe').addEventListener("load", function () {
-            console.log('frameloaded');
-            var moxtraframe = document.getElementById("moxtraframe").contentWindow
-            moxtraframe.postMessage(
-                emaillist, "chrome-extension://hngbggjcofcgnaoapfmagkafnkgdldpa/*"
-            );
-
-            setTimeout(function () {
-                moxtraframe.postMessage(
-                    mailbody, "chrome-extension://hngbggjcofcgnaoapfmagkafnkgdldpa/*"
-                );
-                moxtraframe.postMessage(
-                    sender, "chrome-extension://hngbggjcofcgnaoapfmagkafnkgdldpa/*"
-                );
-                moxtraframe.postMessage(
-                    subject, "chrome-extension://hngbggjcofcgnaoapfmagkafnkgdldpa/*"
-                );
-            }, 1000);
-        })
+//        document.getElementById('moxtraframe').addEventListener("load", function () {
+//            console.log('frameloaded');
+//            var moxtraframe = document.getElementById("moxtraframe").contentWindow
+//            moxtraframe.postMessage(
+//                emaillist, moxtraurl
+//            );
+//
+//            setTimeout(function () {
+//                moxtraframe.postMessage(
+//                    mailbody, moxtraurl
+//                );
+//                moxtraframe.postMessage(
+//                    sender, moxtraurl
+//                );
+//                moxtraframe.postMessage(
+//                    subject, moxtraurl
+//                );
+//            }, 1000);
+//        })
 
         console.log('message view complete')
 
