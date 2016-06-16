@@ -48,7 +48,7 @@ var app = (function () {
 
     app.VerifyToken = function () {
         var accessToken = localStorage.getItem("tokenci");
-        console.log("https://api.moxtra.com/me?access_token=" + accessToken);
+//        console.log("https://api.moxtra.com/me?access_token=" + accessToken);
         var request = $.ajax({
             'type': 'GET',
             'url': "https://api.moxtra.com/me?access_token=" + accessToken,
@@ -56,9 +56,9 @@ var app = (function () {
             'dataType': 'json',
             'success': function (data) {
                 try {
-                    console.log('verifydata' + data);
+//                    console.log('verifydata' + data);
                     if (data.contains("incorrect token")) {
-                        console.log('incorrect token');
+//                        console.log('incorrect token');
                         $("#firstPage").hide();
                         $("#binderList").hide();
                         $("#tabs").hide();
@@ -151,7 +151,7 @@ var app = (function () {
                     app.accessToken = localStorage.getItem("tokenci");
 
                 var url = app.baseUrl + "me?access_token=" + app.accessToken;
-                console.log(url);
+//                console.log(url);
                 $.getSync(url, function (data) {
                     //console.log(data);
                     app.moxtraEmail = data.data.email;
@@ -243,7 +243,7 @@ var app = (function () {
         }
 
         if (app.accessToken == null) {
-            console.log('access token nulla')
+            console.log('access token null')
             window.location.reload(false);
         }
         //		if (emails == null){
@@ -253,7 +253,7 @@ var app = (function () {
         //		}
         if (emails.length > 0) {
             var url = app.baseUrl + "me/binders?access_token=" + app.accessToken + "&filter=all&emails=" + emails;
-            console.log(url);
+//            console.log(url);
             var request = $.get(url, function (data) {
                 //console.log(data);
                 request.success(function () {
@@ -323,7 +323,7 @@ var app = (function () {
                     //    callback(binderid);
                     //});
                     getBinderDetails(binderid, function (binderDetails) {
-                        console.log(binderDetails);
+//                        console.log(binderDetails);
                         // forward email
                         //forwardEmail(binderDetails.data.binder_email, function (dataEws) {
                         //    console.log(dataEws);
@@ -340,7 +340,7 @@ var app = (function () {
 
     function getBinderDetails(binderId, callback) {
         var url = app.baseUrl + "/" + binderId + "?access_token=" + app.accessToken;
-        console.log(url);
+//        console.log(url);
         $.get(url, function (data) {
             //console.log(data);
             callback(data);
@@ -350,8 +350,8 @@ var app = (function () {
     app.addEmailTextToBinder = function (binder_email) {
 
 
-        var dataString = 'from_email=' + app.moxtraEmail + '&message_subject=' + localStorage.getItem('subject') + '&message_body=' + escape(localStorage.getItem('mailbody')) + '&binder_email=' + binder_email
-        console.log(dataString);
+        var dataString = 'from_email=' + app.moxtraEmail + '&message_subject=' + localStorage.getItem('subject') + '&message_body=' + encodeURIComponent(localStorage.getItem('mailbody')) + '&binder_email=' + binder_email
+//        console.log(dataString);
         $.ajax({
             type: "POST",
             url: "https://moxtra1.com/tony/gmail/sendemail.php",

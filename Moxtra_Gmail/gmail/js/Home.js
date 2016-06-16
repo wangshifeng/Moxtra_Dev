@@ -154,7 +154,7 @@ $(document).ready(function () {
 
         // Do we have an access token from before
         var token = localStorage.getItem("tokenci");
-        console.log(token);
+//        console.log(token);
         if (token == undefined || token == null) {
             // we do not have an access token! Lets get one
             //app.loginAndInitMoxtra(function() {
@@ -346,7 +346,7 @@ function loadBinders() {
 
                         var bindername = binder.binder.name;
                         bindername = bindername.slice(0,30);
-                        console.log(bindername)
+//                        console.log(bindername)
                         $('#binderListul').append('<li class="list-group-item share-binder-item" data-id="' + binder.binder.id + '" data-email="'+ binder.binder.binder_email + 
                             '"<div class="media">' +
                             '<div class="media-left">' +
@@ -362,7 +362,7 @@ function loadBinders() {
                             '</li>');
 
                         $('.share-binder-item').click(function () {
-                            console.log($(this).data('id'));
+//                            console.log($(this).data('id'));
                             app.currentBinderID = $(this).data("id");
 
                             $("#firstPage").hide();

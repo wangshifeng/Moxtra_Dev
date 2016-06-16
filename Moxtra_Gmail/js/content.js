@@ -3,67 +3,51 @@ InboxSDK.load('1', 'sdk_moxtraforgmail_754811953b').then(function (sdk) {
     sdk.Conversations.registerThreadViewHandler(function (ThreadView) {
         //        console.log(MessageView.getSender());
         //        console.log(MessageView.getRecipients());
+        console.log('ThreadView Initiated');
         var el = document.createElement("div");
         var moxtraurl = chrome.extension.getURL('gmail/login.html')
-        console.log(moxtraurl)
+            //        console.log(moxtraurl)
         el.innerHTML = '<iframe id="moxtraframe" src="' + moxtraurl + '" style="width:460px;border:1px solid #d7d7d7;border-top-color:transparent;height:550px"></iframe>';
 
-
-        //                var iframe = document.createElement('iframe');
-        //                iframe.src = chrome.runtime.getURL('gmail/login.html');
-        //                iframe.id = 'moxtratopframe';
-        //                iframe.style.cssText = 'width:460px;border:1px solid #d7d7d7;border-top-color:transparent;height:600px'
         ThreadView.addSidebarContentPanel({
             title: 'Moxtra for Gmail',
             el: el,
             iconUrl: 'https://moxtra1.com/tony/gmail/images/icon16.png'
         })
         var subject = ThreadView.getSubject();
+        console.log('subject:' + subject)
         localStorage.setItem('moxtragmailsubject', subject);
-        //        var messageViews = ThreadView.getMessageViews();
-        //        
-        //        console.log(messageViews.getSender);
+        chrome.extension.sendRequest({
+            storage: 'subject',
+            value: subject
+        });
     });
 
     sdk.Conversations.registerMessageViewHandler(function (messageView) {
-        var sender = 'sd' + messageView.getSender().emailAddress;
+        console.log('MessageView Initiated');
+        var sender =  messageView.getSender().emailAddress;
         var recipients = messageView.getRecipients();
-        var mailbody = 'mb' + messageView.getBodyElement().innerHTML;
-        var subject = 'sj' + localStorage.getItem('moxtragmailsubject');
-        var emaillist = 'el' + composeRecipients(sender.substr(2), recipients);
+        var mailbody =  messageView.getBodyElement().innerHTML;
+        var subject = chrome.extension.sendRequest({storage: 'subject'});
+
+        var emaillist = composeRecipients(sender, recipients);
         var moxtraurl = chrome.extension.getURL('gmail/login.html')
-                console.log('sender:'+ sender + ' | recipients:' +recipients);
-        
-        localStorage.setItem('emailslist',emaillist);
-        localStorage.setItem('mailbody',mailbody);
-        localStorage.setItem('subject',subject);
-        localStorage.setItem('sender',sender);
-        //        console.log(mailbody);
-//        document.getElementById('moxtraframe').addEventListener("load", function () {
-//            console.log('frameloaded');
-//            var moxtraframe = document.getElementById("moxtraframe").contentWindow
-//            moxtraframe.postMessage(
-//                emaillist, moxtraurl
-//            );
-//
-//            setTimeout(function () {
-//                moxtraframe.postMessage(
-//                    mailbody, moxtraurl
-//                );
-//                moxtraframe.postMessage(
-//                    sender, moxtraurl
-//                );
-//                moxtraframe.postMessage(
-//                    subject, moxtraurl
-//                );
-//            }, 1000);
-//        })
+            //                console.log('sender:'+ sender + ' | recipients:' +recipients);
+
+//        localStorage.setItem('emailslist', emaillist);
+//        localStorage.setItem('mailbody', mailbody);
+//        localStorage.setItem('subject', subject);
+//        localStorage.setItem('sender', sender);
+        chrome.extension.sendRequest({storage: 'emailslist', value: emaillist});
+        chrome.extension.sendRequest({storage: 'mailbody', value: mailbody});
+        chrome.extension.sendRequest({storage: 'subject', value: subject});
+        chrome.extension.sendRequest({storage: 'sender', value: sender});
 
         console.log('message view complete')
 
     })
 
-    console.log('current user:' + sdk.User.getEmailAddress());
+    //    console.log('current user:' + sdk.User.getEmailAddress());
     currentuser = sdk.User.getEmailAddress()
 
     if (sessionStorage.getItem('user') && (currentuser != sessionStorage.getItem('user'))) {
