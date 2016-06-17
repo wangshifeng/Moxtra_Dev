@@ -18,6 +18,11 @@ $(document).ready(function () {
         start_meet();
     })
 
+    document.getElementById('logout').addEventListener('click',function(){
+      logout();
+    }
+    )
+
     document.getElementById('goToBinderList').addEventListener('click', function () {
         goToBinderList();
     })
@@ -153,6 +158,11 @@ $(document).ready(function () {
         //                app.initialize();
 
         // Do we have an access token from before
+        if(localStorage.getItem('userchanged')== '1'){
+          localStorage.removeItem('tokenci');
+          localStorage.setItem('userchanged','0')
+          window.location.reload('false')
+        }
         var token = localStorage.getItem("tokenci");
 //        console.log(token);
         if (token == undefined || token == null) {
@@ -239,8 +249,8 @@ function addEmailTextToBinder() {
 }
 
 function logout() {
-    localStorage.clear();
-    //	window.location.reload(false);
+    localStorage.removeItem('tokenci');
+    	window.location.reload(false);
 }
 
 function start_meet() {
@@ -311,7 +321,7 @@ function parseDate(dateAsString) {
 
 //    var cleanedUp = app.moxtraEmailFix(emails);
 //    callback(cleanedUp);
-//}       
+//}
 
 app.loadBinders = loadBinders;
 
@@ -345,9 +355,12 @@ function loadBinders() {
                     data.data.binders.forEach(function (binder) {
 
                         var bindername = binder.binder.name;
-                        bindername = bindername.slice(0,30);
+                        if(bindername.length > 40){
+                          bindername = bindername.slice(0,38) + '...'
+                        }
+                        // bindername = bindername.slice(0,30);
 //                        console.log(bindername)
-                        $('#binderListul').append('<li class="list-group-item share-binder-item" data-id="' + binder.binder.id + '" data-email="'+ binder.binder.binder_email + 
+                        $('#binderListul').append('<li class="list-group-item share-binder-item" data-id="' + binder.binder.id + '" data-email="'+ binder.binder.binder_email +
                             '"<div class="media">' +
                             '<div class="media-left">' +
                             '<img class="binder-thumbnail" src="' + binder.binder.thumbnail_uri + '" alt="' + bindername + '"/>' +
@@ -391,7 +404,7 @@ function loadBinders() {
                             app.addEmailTextToBinder($(this).data("email"));
                             $('#addEmailTextToBinder').data('email', $(this).data('email'));
                         })
-                        
+
                         $('#addEmailTextToBinder').click(function(){
                             app.addEmailTextToBinder($(this).data('email'));
                         })

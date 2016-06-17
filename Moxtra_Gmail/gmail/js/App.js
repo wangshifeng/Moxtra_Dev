@@ -495,7 +495,7 @@ var app = (function () {
 
     // This function is the callback for the makeEwsRequestAsync method
     // In brief, it first checks for an error repsonse, but if all is OK
-    // it then parses the XML repsonse to extract the ChangeKey attribute of the 
+    // it then parses the XML repsonse to extract the ChangeKey attribute of the
     // t:ItemId element.
     function soapToGetItemDataCallback(asyncResult) {
         var parser;
@@ -670,8 +670,8 @@ var app = (function () {
                                 callback();
                         }
                     }
-        
-        
+
+
                 }, 2000);
 
 

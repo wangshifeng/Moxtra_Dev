@@ -30,6 +30,7 @@ InboxSDK.load('1', 'sdk_moxtraforgmail_754811953b').then(function (sdk) {
         var mailbody =  messageView.getBodyElement().innerHTML;
         var subject = chrome.extension.sendRequest({storage: 'subject'});
 
+
         var emaillist = composeRecipients(sender, recipients);
         var moxtraurl = chrome.extension.getURL('gmail/login.html')
             //                console.log('sender:'+ sender + ' | recipients:' +recipients);
@@ -38,10 +39,12 @@ InboxSDK.load('1', 'sdk_moxtraforgmail_754811953b').then(function (sdk) {
 //        localStorage.setItem('mailbody', mailbody);
 //        localStorage.setItem('subject', subject);
 //        localStorage.setItem('sender', sender);
-        chrome.extension.sendRequest({storage: 'emailslist', value: emaillist});
-        chrome.extension.sendRequest({storage: 'mailbody', value: mailbody});
-        chrome.extension.sendRequest({storage: 'subject', value: subject});
-        chrome.extension.sendRequest({storage: 'sender', value: sender});
+
+        chrome.extension.sendRequest({localstorage: 'emailslist', value: emaillist});
+        chrome.extension.sendRequest({localstorage: 'mailbody', value: mailbody});
+        chrome.extension.sendRequest({localstorage: 'subject', value: subject});
+        chrome.extension.sendRequest({localstorage: 'sender', value: sender});
+
 
         console.log('message view complete')
 
@@ -52,9 +55,11 @@ InboxSDK.load('1', 'sdk_moxtraforgmail_754811953b').then(function (sdk) {
 
     if (sessionStorage.getItem('user') && (currentuser != sessionStorage.getItem('user'))) {
         sessionStorage.setItem('user', currentuser);
-        console.log('user changed')
+        console.log('user changed');
+        chrome.extension.sendRequest({localstorage: 'userchanged', value: '1'});
     } else {
         sessionStorage.setItem('user', currentuser);
+        chrome.extension.sendRequest({localstorage: 'userchanged', value: '0'});
     }
 
     function composeRecipients(sender, recipients) {
