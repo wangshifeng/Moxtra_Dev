@@ -18,18 +18,19 @@ $(document).ready(function () {
         start_meet();
     })
 
-    document.getElementById('logout').addEventListener('click',function(){
-      logout();
-    }
-    )
+    document.getElementById('logout').addEventListener('click', function () {
+        logout();
+    })
+
+    $('#addEmailTextToBinder').click(function () {
+
+        addEmailTextToBinder($(this).data('email'));
+    })
 
     document.getElementById('goToBinderList').addEventListener('click', function () {
         goToBinderList();
     })
 
-    document.getElementById('addEmailTextToBinder').addEventListener('click', function () {
-        addEmailTextToBinder();
-    })
 
     $("#scheduleMeet").hide();
     try {
@@ -58,7 +59,20 @@ $(document).ready(function () {
             $(this).find("img").last().removeClass('hover');
             $(this).find("button").last().removeClass('hover');
         });
+        $("#bindersearch").keyup(function () {
+            if ($(this).val()) {
+                $("#shared-binder-panel").hide();
+                $("#collapse2").addClass('in');
+            } else {
+                if ($('#binderListul>li').length) {
+                    $("#shared-binder-panel").show();
+                    $("#collapse2").removeClass('in');
+                } else {
 
+                }
+
+            }
+        })
         $("#scheduleStartDate").datetimepicker({
             minDate: 0,
             step: 15,
@@ -158,13 +172,13 @@ $(document).ready(function () {
         //                app.initialize();
 
         // Do we have an access token from before
-        if(localStorage.getItem('userchanged')== '1'){
-          localStorage.removeItem('tokenci');
-          localStorage.setItem('userchanged','0')
-          window.location.reload('false')
+        if (localStorage.getItem('userchanged') == '1') {
+            localStorage.removeItem('tokenci');
+            localStorage.setItem('userchanged', '0')
+            window.location.reload('false')
         }
         var token = localStorage.getItem("tokenci");
-//        console.log(token);
+        //        console.log(token);
         if (token == undefined || token == null) {
             // we do not have an access token! Lets get one
             //app.loginAndInitMoxtra(function() {
@@ -218,7 +232,7 @@ function openBinder(binderId, email) {
     app.ShowTodoView(binderId);
 
     if (email) {
-        app.addEmailTextToBinder(email);
+        addEmailTextToBinder(email);
     }
 };
 
@@ -233,24 +247,26 @@ function goToBinderList() {
 
 var showSpinner = function () {
     $("#spinner").attr("src", "images/sending.gif");
+    $('#addEmailTextToBinder').addClass('notActive');
     setTimeout(hide, 5000); // 5 seconds
 };
 
 var hide = function () {
-    $("#spinner").attr("src", "images/copytobinder.png");
+    $("#spinner").attr("src", "images/copytobinder.svg");
+    $('#addEmailTextToBinder').removeClass('notActive');
 
 }
 
-function addEmailTextToBinder() {
-    if (app.currenBinderId == undefined)
+function addEmailTextToBinder(email) {
+    if (email == undefined)
         return;
     showSpinner();
-    app.addEmailTextToBinder();
+    app.addEmailTextToBinder(email);
 }
 
 function logout() {
     localStorage.removeItem('tokenci');
-    	window.location.reload(false);
+    window.location.reload(false);
 }
 
 function start_meet() {
@@ -330,88 +346,147 @@ function loadBinders() {
     try {
         $('#waitspin').css('display', 'block');
         $('#binderList').hide();
-        $('#newConvMsg').css('visibility', 'collapse');
+        $('#newConvMsg').css('display', 'none');
 
         // get the recepients and fetch common binders
         app.getRecipients(function (emails) {
+            // Get Common Binders
             app.GetCommonBinders(emails, function (data) {
                 $('#binderListul').empty();
                 $('#binderList').hide();
 
-//                                console.log('binders:' + JSON.stringify(data.data));
+                //                                console.log('binders:' + JSON.stringify(data.data));
 
                 if (data.data.binders == undefined || data.data.binders == null || data.data.binders.length == 0) {
                     $('#waitspin').css('display', 'none');
-
-                    $('#newConvMsg').css('visibility', 'visible');
-                    $('#binderList').hide();
+                    $('#shared-binder-panel').hide();
+                    $('#newConvMsg').css('display', '');
+                    $('#binderListul').hide();
+                    $("#collapse2").addClass('in');
                 } else {
                     $('#waitspin').css('display', 'none');
+                    $('#shared-binder-panel').show();
+                    $('#newConvMsg').css('display', 'none');
 
-                    $('#newConvMsg').css('visibility', 'collapse');
-
-                    $('#binderListul').append('<li class="list-group-item" style="padding:5px 15px">Shared Binders</li>');
+                    // $('#binderListul').append('<li class="list-group-item" style="padding:5px 15px">Shared Binders</li>');
                     $('#binderList').show();
                     data.data.binders.forEach(function (binder) {
 
                         var bindername = binder.binder.name;
-                        if(bindername.length > 40){
-                          bindername = bindername.slice(0,38) + '...'
+                        if (bindername.length > 38) {
+                            bindername = bindername.slice(0, 35) + '...'
                         }
                         // bindername = bindername.slice(0,30);
-//                        console.log(bindername)
-                        $('#binderListul').append('<li class="list-group-item share-binder-item" data-id="' + binder.binder.id + '" data-email="'+ binder.binder.binder_email +
+                        //                        console.log(bindername)
+                        $('#binderListul').append('<li class="list-group-item share-binder-item" data-id="' + binder.binder.id + '" data-email="' + binder.binder.binder_email +
                             '"<div class="media">' +
                             '<div class="media-left">' +
                             '<img class="binder-thumbnail" src="' + binder.binder.thumbnail_uri + '" alt="' + bindername + '"/>' +
                             '</div>' +
                             '<div class="media-body"><div class="binder-name">' + bindername + '</div></div>' +
                             '<div class="media-right" >' +
-                            '<button class="share-binder-item-email" data-email="' + binder.binder.binder_email + '" data-id="' + binder.binder.id + '" style="padding: 0;border: none;background: none;">' +
-                            '<img src="images/copytobinder.png"  title="Add Email Content"/>' +
-                            '</button>' +
+                            // '<button class="share-binder-item-email" data-email="' + binder.binder.binder_email + '" data-id="' + binder.binder.id + '" style="padding: 0;border: none;background: none;">' +
+                            // '<img src="images/copytobinder.svg" class="blbtn" title="Add Email Content"/>' +
+                            // '</button>' +
                             '</div>' +
                             '</div>' +
                             '</li>');
 
-                        $('.share-binder-item').click(function () {
-//                            console.log($(this).data('id'));
-                            app.currentBinderID = $(this).data("id");
+                    });
+                }
 
-                            $("#firstPage").hide();
-                            $("#binderList").hide();
-                            $("#tabs").show();
+                $('#binderListul>li').click(function () {
+                    console.log('click on one');
+                    app.currentBinderID = $(this).data("id");
 
-                            app.ShowChatView(app.currentBinderID);
-                            app.ShowPageView(app.currentBinderID);
-                            app.ShowMeetView(app.currentBinderID);
-                            app.ShowTodoView(app.currentBinderID);
-                            $('#addEmailTextToBinder').data('email', $(this).data('email'));
-                        })
+                    $("#firstPage").hide();
+                    $("#binderList").hide();
+                    $("#tabs").show();
 
-                        $('.share-binder-item-email').click(function () {
-                            app.currentBinderID = $(this).data("id");
+                    app.ShowChatView(app.currentBinderID);
+                    app.ShowPageView(app.currentBinderID);
+                    app.ShowMeetView(app.currentBinderID);
+                    app.ShowTodoView(app.currentBinderID);
+                    $('#addEmailTextToBinder').data('email', $(this).data('email'));
+                })
 
-                            $("#firstPage").hide();
-                            $("#binderList").hide();
-                            $("#tabs").show();
 
-                            app.ShowChatView(app.currentBinderID);
-                            app.ShowPageView(app.currentBinderID);
-                            app.ShowMeetView(app.currentBinderID);
-                            app.ShowTodoView(app.currentBinderID);
+                // $('#addEmailTextToBinder').click(function(){
+                //     app.addEmailTextToBinder($(this).data('email'));
+                // })
 
-                            app.addEmailTextToBinder($(this).data("email"));
-                            $('#addEmailTextToBinder').data('email', $(this).data('email'));
-                        })
 
-                        $('#addEmailTextToBinder').click(function(){
-                            app.addEmailTextToBinder($(this).data('email'));
-                        })
+            });
+
+
+
+            // Get All Binders
+            app.GetAllBinders(emails, function (data) {
+                $('#allbinderListul').empty();
+                $('#allbinderList').hide();
+
+                //                                console.log('binders:' + JSON.stringify(data.data));
+
+                if (data.data.binders == undefined || data.data.binders == null || data.data.binders.length == 0) {
+
+                    $('#allbinderList').hide();
+                } else {
+
+
+                    $('#allbinderList').show();
+                    data.data.binders.forEach(function (binder) {
+
+                        var bindername = binder.binder.name;
+                        if (bindername.length > 40) {
+                            bindername = bindername.slice(0, 38) + '...'
+                        }
+                        // bindername = bindername.slice(0,30);
+                        //                        console.log(bindername)
+                        $('#allbinderListul').append('<li class="list-group-item share-binder-item" data-id="' + binder.binder.id + '" data-email="' + binder.binder.binder_email +
+                            '"<div class="media">' +
+                            '<div class="media-left">' +
+                            '<img class="binder-thumbnail" src="' + binder.binder.thumbnail_uri + '" alt="' + bindername + '"/>' +
+                            '</div>' +
+                            '<div class="media-body"><div class="binder-name">' + bindername + '</div></div>' +
+                            '<div class="media-right" >' +
+                            // '<button class="share-binder-item-email" data-email="' + binder.binder.binder_email + '" data-id="' + binder.binder.id + '" style="padding: 0;border: none;background: none;">' +
+                            // '<img src="images/copytobinder.svg" class="blbtn" title="Add Email Content"/>' +
+                            // '</button>' +
+                            '</div>' +
+                            '</div>' +
+                            '</li>');
 
                     });
                 }
+
+                $('#allbinderListul>li').click(function () {
+                    console.log('click on all');
+                    app.currentBinderID = $(this).data("id");
+
+                    $("#firstPage").hide();
+                    $("#binderList").hide();
+                    $("#tabs").show();
+
+                    app.ShowChatView(app.currentBinderID);
+                    app.ShowPageView(app.currentBinderID);
+                    app.ShowMeetView(app.currentBinderID);
+                    app.ShowTodoView(app.currentBinderID);
+                    $('#addEmailTextToBinder').data('email', $(this).data('email'));
+                })
+
+                var listoptions = {
+                    valueNames: ['binder-name']
+                };
+                accordion = new List('accordion', listoptions)
+
+
+
+
+
             });
+
+
+
         });
     } catch (e) {
         console.log("moxtra error loadBinders");

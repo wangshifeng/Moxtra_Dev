@@ -11,12 +11,14 @@
     <script src="js/jquery.datetimepicker.full.min.js"></script>
     <link href="css/jquery.datetimepicker.css" rel="stylesheet" />
     <script src="js/jquery.validate.min.js"></script>
+    <script src="js/list.js"></script>
     <link href="css/validation.css" rel="stylesheet" />
     <!-- To enable offline debugging using a local reference to Office.js, use: -->
     <!--<script src="../../Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>-->
     <!--<script src="../../Scripts/Office/1/office.js" type="text/javascript"></script>-->
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/App.css" rel="stylesheet" type="text/css" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <script src="js/bootstrap.min.js"></script>
     <link href="css/Home.css" rel="stylesheet" type="text/css" />
     <link href="css/moxtra.css" rel="stylesheet" type="text/css" />
@@ -25,7 +27,7 @@
 </head>
 
 <body style="max-height: 340px; overflow-y: hidden; visibility: visible;">
-    <div id="content-main" style="min-height: 220px; overflow-y: hidden">
+    <div id="content-main" style="min-height: 220px;">
         <div class="panel panel-primary" style="border: none;box-shadow:none">
             <div class="panel-body" style="padding: 5px 15px; min-height: 385px;">
                 <div class="panel-content">
@@ -45,21 +47,21 @@
                         </div>
                     </div>
                     <!--Page when authenticated-->
-                    <div id="firstPage" style="display: none;">
+                    <div id="firstPage" style="display: none;padding-top:20px">
                         <div class="actions" id="chatActions" style="width: 100%;">
-                            <div class="container" style="height: 30px; margin-top: -20px; color: #2D9CF5;">
+                            <div class="container" style="height: 35px; margin-top: -45px; color: #2D9CF5;z-index:100;background-color:#fff;position:fixed;width:430px">
                                 <div class="row">
-                                    <button class="btn col-md-4 special" id="new_conversation"><img src="images/new-conversation.png" class="space" /> New Conversation</button>
-                                    <button class="btn col-md-4 special" id="start_meet"><img src="images/start-meet.png" class="space" /> Meet Now</button>
-                                    <button class="btn col-md-4 special" id="logout" style="float:right"><img src="images/logout.png" class="space" /> Logout</button>
+                                    <button class="btn col-md-4 special" id="new_conversation"><img class="blbtn" src="images/plus.svg" class="space" /> New Conversation</button>
+                                    <button class="btn col-md-4 special" id="start_meet"><img class="blbtn" src="images/meet.svg" class="space" /> Meet Now</button>
+                                    <button class="btn col-md-4 special" id="logout" style="float:right"><img class="blbtn" src="images/logout.svg" class="space" /> Logout</button>
                                 </div>
                             </div>
                         </div>
                         <div id="waitspin" style="width: 100%; text-align: center; margin-top: 40px;">
                             <img src="images/loading.gif" />
                         </div>
-                        <div id="newConvMsg" style="width: 100%; text-align: center; visibility: collapse; margin-top: 20px;" class="greytext">
-                            <h2>Start a New Conversation</h2>
+                        <div id="newConvMsg" style="width: 100%; text-align: center; display:none; margin-top: 0;" class="greytext">
+                            <h2 style="margin-top:0">Start a New Conversation</h2>
                             <p>Click on the “New Conversation” button to start collaborating and communicating with others.</p>
                         </div>
                         <!--
@@ -67,10 +69,39 @@
                             <ul class="conversation-group col-md-6 pull-left" style="max-height: 260px; width: 100%; margin-top: -80px;" id="binderListul"></ul>
                         </div>
 
--->
-                        <div class="col-sm-12" id="binderList">
-                            <ul class="list-group" style="width: 100%; margin-top: -100px; overflow:auto; margin-left:0px;" id="binderListul"></ul>
+                    -->
+
+                        <div class="panel-group" id="accordion" style="margin-top:10px;">
+                            <input id="bindersearch" class="form-control search" placeholder="Search Binders" style="margin-bottom:15px" />
+                            <div id="shared-binder-panel" class="panel panel-default">
+                                <div class="panel-heading">
+                                    
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse1" style="color:#333"><h4 class="panel-title">
+                                        Shared Binders<i class="indicator glyphicon glyphicon-chevron-down" style="float:right"></i></h4></a>
+                                    
+                                </div>
+                                <div id="collapse1" class="panel-collapse collapse in">
+                                    <div class="col-sm-12" id="binderList" style="padding:0">
+                                        <ul class="list-group" style="width: 100%; overflow:auto; margin-left:0px;" id="binderListul"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="all-binder-panel" class="panel panel-default">
+                                <div class="panel-heading">
+                                    
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse2" style="color:#333"><h4 class="panel-title">
+                                            All Binders<i class="indicator glyphicon glyphicon-chevron-down" style="float:right"></i></h4></a>
+                                        
+                                </div>
+                                <div id="collapse2" class="panel-collapse collapse">
+                                    <div class="col-sm-12" id="allbinderList" style="padding:0">
+                                        <ul class="list list-group" style="width: 100%; overflow:auto; margin-left:0px;" id="allbinderListul"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+
                     </div>
                     <!-- Nav tabs -->
                     <div id="tabs" style="display: none;">
@@ -83,7 +114,7 @@
                                 </li>
                                 <li role="presentation" class="link-icon">
                                     <a href="#profile" aria-controls="other" role="link" data-toggle="link" id="addEmailTextToBinder" data-email="">
-                                        <img src="images/copytobinder.png" class="space" title="Add Email Content" id="spinner" />
+                                        <img src="images/copytobinder.svg" class="space blbtn" title="Add Email Content" id="spinner" />
                                     </a>
                                 </li>
                                 <li role="presentation" class="pull-right"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Meet</a></li>
@@ -106,54 +137,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-dialog" style="z-index: 5000; width: 400px; max-height: 450px; margin-top: -5px;visibility: hidden;" id="scheduleMeet" role="dialog">
-        <div class="modal-content">
-            <div class="modal-sub-content modal-sub-content-">
-                <div class="modal-header" style="background-color: #EEEEEE;">
-                    <button type="button" class="close" data-action="close" aria-hidden="true" onclick="hide_schedule_meet()">×</button>
-                    <h4 class="modal-title ellipsis">Schedule Meet</h4>
-                </div>
-                <div class="modal-body" style="max-height: 225px; overflow-y: scroll; overflow-x:hidden;">
-                    <div class="mx-meet-schedule">
-                        <form id="scheduleMeetForm" style="max-height: 400px;">
-                            <div class="form-group">
-                                <div>
-                                    <input id="scheduleTopic" name="scheduleTopic" type="text" class="form-control" placeholder="Meet title" value="" required="required">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon date-addon">Starts</span>
-                                    <input id="scheduleStartDate" name="scheduleStartDate" type="text" class="form-control dtpicker" placeholder="Start Date" required="required">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon date-addon">Ends</span>
-                                    <input id="scheduleEndDate" name="scheduleEndDate" type="text" class="form-control dtpicker" placeholder="End Date" required="required">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <textarea id="scheduleAgenda" name="scheduleAgenda" placeholder="Agenda" class="meet-agenda" cols="54" rows="2" required="required"></textarea>
-                                <a class="mouse-hand" data-action="zoomAgendaText"><i class="micon-full-screen icon-zoom-meet-agenda"></i></a>
-                            </div>
-                            <div class="form-group">
-                                <p>Add Participants</p>
-                                <div>
-                                    <input id="participantEmails" name="participantEmails" type="text" class="form-control" placeholder="Participant Emails (comma seprated)" required="required">
-                                </div>
-                                <span class="pull-left" style="margin: 2px;">Use comma to separate email addresses.</span>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="btnSchedule" class="btn btn-default btn-primary pull-right" data-loading-text="Schedule" data-action="onClickSchedule" data-param="" onclick="ScheduleMeet()">Schedule</button>
-                    <button type="button" id="onClickCancel" class="btn btn-default pull-right" style="margin-right: 10px;" data-action="onClickCancel" data-param="" onclick="hide_schedule_meet()">Cancel</button>
                 </div>
             </div>
         </div>

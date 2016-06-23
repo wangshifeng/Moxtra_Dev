@@ -1,0 +1,389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <!-- utf-8 works for most cases -->
+    <meta name="viewport" content="width=device-width">
+    <!-- Forcing initial-scale shouldn't be necessary -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Use the latest (edge) version of IE rendering engine -->
+    <meta property="og:title" content="Introducing Moxtra Version 3.0 now available on iOS and browser" />
+    <meta property="og:description" content="We'd like to thank you for your continued support of Moxtra and introduce our latest release: Version 3.0! 
+It's a significant milestone and we're very excited to share it with you all. 
+Here are some of the powerful new features we're launching.
+" />
+    <meta property="og:url" content="http://info.moxtra.com/eb/moxtrav3.html" />
+    <meta property="og:image" content="http://moxtra.com/wp-content/uploads/2015/12/gradient-verticle-logo-blue.png" />
+    <title>Partner Release Update - 06/20/2016</title>
+    <!-- The title tag shows in email notifications, like Android 4.4. -->
+
+    <!-- Web Font / @font-face : BEGIN -->
+    <!-- NOTE: If web fonts are not required, lines 9 - 26 can be safely removed. -->
+
+    <!-- Desktop Outlook chokes on web font references and defaults to Times New Roman, so we force a safe fallback font. -->
+    <!--[if mso]>
+		<style>
+			* {
+				font-family: Helvetica Neue !important;
+			}
+		</style>
+	<![endif]-->
+
+    <!-- All other clients get the webfont reference; some will render the font and others will silently fail to the fallbacks. More on that here: http://stylecampaign.com/blog/2015/02/webfont-support-in-email/ -->
+    <!--[if !mso]><!-->
+    <!-- insert web font reference, eg: <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'> -->
+    <!--<![endif]-->
+
+    <!-- Web Font / @font-face : END -->
+
+    <!-- CSS Reset -->
+    <style type="text/css">
+        /* What it does: Remove spaces around the email design added by some email clients. */
+        /* Beware: It can remove the padding / margin and add a background color to the compose a reply window. */
+        
+        html,
+        body {
+            margin: 0 auto !important;
+            padding: 0 !important;
+            height: 100% !important;
+            width: 100% !important;
+            color: #999999 !important;
+            font-family: Helvetica Neue !important;
+        }
+        /* What it does: Stops email clients resizing small text. */
+        
+        * {
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+        /* What is does: Centers email on Android 4.4 */
+        
+        div[style*="margin: 16px 0"] {
+            margin: 0 !important;
+        }
+        /* What it does: Stops Outlook from adding extra spacing to tables. */
+        
+        table,
+        td {
+            mso-table-lspace: 0pt !important;
+            mso-table-rspace: 0pt !important;
+        }
+        /* What it does: Fixes webkit padding issue. Fix for Yahoo mail table alignment bug. Applies table-layout to the first 2 tables then removes for anything nested deeper. */
+        
+        table {
+            border-spacing: 0 !important;
+            border-collapse: collapse !important;
+            table-layout: fixed !important;
+            Margin: 0 auto !important;
+        }
+        
+        table table table {
+            table-layout: auto;
+        }
+        /* What it does: Uses a better rendering method when resizing images in IE. */
+        
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+        /* What it does: Overrides styles added when Yahoo's auto-senses a link. */
+        
+        .yshortcuts a {
+            border-bottom: none !important;
+        }
+        /* What it does: A work-around for iOS meddling in triggered links. */
+        
+        .mobile-link--footer a,
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: underline !important;
+        }
+        
+        .update_description {
+            margin: 10px 0;
+            line-height: 35px;
+        }
+        
+        li {
+            padding-left: 20px;
+        }
+        
+        a {
+            color: #2d9cf5;
+        }
+        
+        .platform_row {
+            font-size: 16px;
+            mso-height-rule: exactly;
+            line-height: 25px;
+            color: #555555;
+            padding: 20px 20px;
+            text-align: left;
+        }
+    </style>
+
+    <!-- Progressive Enhancements -->
+    <style>
+        /* What it does: Hover styles for buttons */
+        
+        .button-td,
+        .button-a {
+            transition: all 100ms ease-in;
+        }
+        
+        .button-td:hover,
+        .button-a:hover {
+            background: #247dc4 !important;
+            border-color: #247dc4 !important;
+        }
+        /* Media Queries */
+        
+        @media screen and (max-width: 600px) {
+            .email-container {
+                width: 90% !important;
+                margin: 0 10px 20px 10px !important;
+            }
+            /* What it does: Forces elements to resize to the full width of their container. Useful for resizing images beyond their max-width. */
+            .fluid,
+            .fluid-centered {
+                max-width: 100% !important;
+                height: auto !important;
+                Margin-left: auto !important;
+                Margin-right: auto !important;
+            }
+            /* And center justify these ones. */
+            .fluid-centered {
+                Margin-left: auto !important;
+                Margin-right: auto !important;
+            }
+            /* What it does: Forces table cells into full-width rows. */
+            .stack-column,
+            .stack-column-center {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                direction: ltr !important;
+            }
+            /* And center justify these ones. */
+            .stack-column-center {
+                text-align: left !important;
+            }
+            /* What it does: Generic utility class for centering. Useful for images, buttons, and nested tables. */
+            .center-on-narrow {
+                text-align: left !important;
+                display: block !important;
+                Margin-left: auto !important;
+                Margin-right: auto !important;
+                float: none !important;
+            }
+            table.center-on-narrow {
+                display: inline-block !important;
+            }
+            .intro {
+                font-size: 18px !important;
+                letter-spacing: 1px !important;
+            }
+            .footernote {
+                padding: 10px 0 10px 0 !important;
+            }
+            .intronote {
+                padding: 10px 20px 10px 20px;
+            }
+            .subintro {
+                font-size: 16px !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body bgcolor="#f6f6f6" width="100%" style="Margin: 0;">
+    <table bgcolor="#f6f6f6" cellpadding="0" cellspacing="0" border="0" height="100%" width="100%" style="border-collapse:collapse;">
+        <tr>
+            <td valign="top">
+                <center style="width: 100%;">
+
+                    <!-- Email Header : BEGIN -->
+                    <table cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;" class="email-container">
+                        <tr>
+                            <td style="padding: 20px 0; text-align: center;color:#999;float:left">
+                                <img src="http://moxtra.wpengine.com/wp-content/uploads/2015/11/moxtra-logo.png" height="25" alt="alt_text" border="0" style="padding-top:6px;float:left">
+                                <div style="position:relative;font-weight:400px;float:left;height:25px;border-left:solid 2px #e2e2e2;padding-left:10px;padding-top:10px;font-size:14px;letter-spacing:2px"> PARTNER UPDATES</div>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- Email Header : END -->
+
+                    <!-- Email Body : BEGIN -->
+                    <table cellspacing="0" cellpadding="15" border="0" align="center" bgcolor="#ffffff" width="600" style="margin-bottom:40px !important;" class="email-container">
+                        <tr style="background-color:#ffffff">
+                            <td>
+                                <div class="intro" style="letter-spacing:2px;font-size:22px;text-align:left;color:#2D9CF5;padding:20px 0 0 0 ">Release Notes</div>
+                            </td>
+
+                        </tr>
+                        <!-- 1 Column Text : BEGIN -->
+                        <tr>
+                            <td class="intronote" style="padding: auto; text-align: left;  font-size: 16px; mso-height-rule: exactly; line-height: 25px; color: #555555;">
+                                <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                                    <thead style="background-color: #2D9CF5;color:white">
+                                        <tr class="table-success">
+                                            <th style='padding:5px 10px 5px 15px;text-align:left;'>Environment</th>
+                                            <th style="text-align:left">Deployment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="background-color:#f1f1f1;color:#555555">
+                                        <tr>
+                                            <td scope="row" style='padding:5px 10px 5px 15px'>Sandbox</td>
+                                            <td>06/30/2016</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row" style='padding:5px 10px 5px 15px'>Production</td>
+                                            <td>07/10/2016</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- 1 Column Text : BEGIN -->
+
+
+                        <!-- Text : BEGIN -->
+                        <tr>
+                            <td dir="ltr" align="center" valign="top" width="100%" style="padding: 0px;">
+                                <table align="center" border="0" cellpadding="10" cellspacing="0" width="100%">
+                                    <tr>
+                                        <!-- Column : BEGIN -->
+
+                                        <!-- Column : END -->
+                                        <!-- Column : BEGIN -->
+                                        <td width="100%" class="stack-column-center" style="padding:0">
+                                            <div style="display:inline-block; Margin: 0 -2px; max-width:100%; min-width:320px; vertical-align:top;" class="stack-column">
+                                                <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                    <tr>
+                                                        <td dir="ltr" class="center-on-narrow platform_row">
+                                                            <strong style="color:#555555;">iOS Chat SDK 3.2.0</strong>
+                                                            <hr>
+                                                            <div class="update_description">
+                                                                <li>Support additional branding based on org configuration</li>
+                                                                <li>Redesign Chat bubble UI design</il>
+                                                                    <li>Meet tab in Chat and Meet UI/UX Tuning. Remove the dropdown menu at the top, and move them to the bottom toolbar.</li>
+                                                                    <li>Remove avatar for self user</li>
+                                                                    <li>Change binder tab design from lavel to icon to address localization issues</li>
+                                                                    <li>Performance &amp; UI Tuning. </li>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td dir="ltr" class="center-on-narrow platform_row">
+                                                            <strong style="color:#555555;">Android Chat SDK 3.2.0</strong>
+                                                            <hr>
+                                                            <div class="update_description">
+                                                                <li>Performance &amp; UI Tuning.</li>
+                                                                <li>Redesign Chat bubble UI design</li>
+                                                                <li>Remove avatar for self user</li>
+                                                                <li>Fix to block viewer from starting a Meet (Ticket #1132)</li>
+                                                                <li>Fragment UI support</li>
+                                                                <li>New annotation user experience</li>
+                                                                <li>New maven based release strategy</li>
+                                                                <li>Org branding support</li>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td dir="ltr" class="center-on-narrow platform_row">
+                                                            <strong style="color:#555555;">Web / JS SDK 2.11 SP9</strong>
+                                                            <hr>
+                                                            <div class="update_description">
+                                                                <li>Support auto join meet if user is kicked out of meet by server</li>
+                                                                <li>New language support - Dutch, Italian</li>
+                                                                <li>Support delete/edit todo comments</li>
+                                                                <li>Support different telephony domains in Meet</li>
+                                                                <li>Support tab (chat/pages/todo/meet) parameter in api.startChat URLAPI</li>
+                                                                <li>Fix threshold to delete the board/page/todo message(s) to 30 minutes</li>
+                                                                <li>Not allow Create Clip (REC) on video/audio/note files due to technical limitation on all platforms</li>
+                                                                <li>For voice comment remove the " and ' from duration info display</li>
+                                                                <li>Fixed: renamed file does not change filename</li>
+                                                                <li>Chat add file - note (deletion)</li>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td dir="ltr" class="center-on-narrow platform_row">
+                                                            <strong style="color:#555555;">Web / JS SDK 3.2</strong>
+                                                            <hr>
+                                                            <div class="update_description">
+                                                                <li>New version of SDK with UI tuning and fixes. (Specify sdk_version parameter to "3" to use the newer version)</li>
+                                                                <li>Performance tuning of user selectors</li>
+                                                                <li>File/page actions cleanup</li>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td dir="ltr" class="center-on-narrow platform_row">
+                                                            <strong style="color:#555555;">REST API 3.0.1</strong>
+                                                            <hr>
+                                                            <div class="update_description">
+                                                                <li>Fixed Stripe incoming webhook handling and updated template</li>
+                                                                <li>Fixed incorrect binder email address on sandbox</li>
+                                                                <li>Fixed binder thumbnail_url value in get binder details related APIs when there are only 1 or 2 members in the binder</li>
+                                                                <li>Fixed binder name issue when only one member in the binder</li>
+                                                                <li>Fixed OAuth revoke token (/oauth/revoke) bug to also invalidate current API session</li>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td dir="ltr" class="center-on-narrow platform_row">
+                                                            <strong style="color:#555555;">Windows/Mac Plugin 2.9.7 SP4</strong>
+                                                            <hr>
+                                                            <div class="update_description">
+                                                                <li>Removed audio icon from sharing floating bar when third party disable audio model</li>
+                                                                <li>Replaced Meet ID on sharing floating bar with "Screen Share in Progress" when third-party disabled Meet meta data</li>
+                                                                <li>Fixed minor issue of screen sharing when Microsoft Office 2016 playing slides</li>
+                                                                <li>Improve the desktop sharing pointer behavior (Both on Windows and Mac)</li>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td dir="ltr" class="center-on-narrow platform_row">
+                                                            <strong style="color:#555555;">Super Admin 2.0</strong>
+                                                            <hr>
+                                                            <div class="update_description">
+                                                                <li>Prepare for localization support</li>
+                                                                <li>Performance improvements - code refactoring</li>
+                                                                <li>Fixed minor bugs</li>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </td>
+                                        <!-- Column : END -->
+                                    </tr>
+
+
+                                </table>
+                            </td>
+                        </tr>
+                        <!-- Text : END -->
+
+                        <tr>
+                            <td class="intronote" style="padding: auto; text-align: left;  font-size: 16px; mso-height-rule: exactly; line-height: 25px; color: #555555;">
+                                Thank you,
+                                <br>The Moxtra Solutions Team
+                                <br><span style="font-style:italic">June 22, 2016</span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </center>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

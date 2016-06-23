@@ -7,20 +7,15 @@ InboxSDK.load('1', 'sdk_moxtraforgmail_754811953b').then(function (sdk) {
         var el = document.createElement("div");
         var moxtraurl = chrome.extension.getURL('gmail/login.html')
             //        console.log(moxtraurl)
-        el.innerHTML = '<iframe id="moxtraframe" src="' + moxtraurl + '" style="width:460px;border:1px solid #d7d7d7;border-top-color:transparent;height:550px"></iframe>';
+        el.innerHTML = '<iframe scrolling="yes" id="moxtraframe" src="' + moxtraurl + '" style="width:460px;border:1px solid #d7d7d7;border-top-color:transparent;height:550px" ></iframe>';
 
         ThreadView.addSidebarContentPanel({
             title: 'Moxtra for Gmail',
             el: el,
-            iconUrl: 'https://moxtra1.com/tony/gmail/images/icon16.png'
+            iconUrl: chrome.extension.getURL('gmail/images/MoxtraLogo.PNG')
         })
         var subject = ThreadView.getSubject();
-        console.log('subject:' + subject)
-        localStorage.setItem('moxtragmailsubject', subject);
-        chrome.extension.sendRequest({
-            storage: 'subject',
-            value: subject
-        });
+        chrome.extension.sendRequest({localstorage: 'subject', value: subject});
     });
 
     sdk.Conversations.registerMessageViewHandler(function (messageView) {

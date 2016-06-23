@@ -22,6 +22,37 @@
     padding: 20px 30px;
 }*/
 
+.blbtn {
+    margin-bottom: 2px;
+    height: 16px;
+}
+
+.notActive {
+    pointer-events: none;
+    cursor: default;
+}
+
+.tab-pane.active {
+    display:block;
+}
+
+.list-group-item {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
+}
+
+.list-group-item:last-child {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
 .nav.nav-pills {
     border-bottom: 1px solid #666666;
     margin-left: 0;
