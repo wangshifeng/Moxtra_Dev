@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <style>
+        body {
+            padding: 60px
+        }
+    </style>
+    <script type="text/javascript">
+        var mode = "sandbox"
+        var timestamp = new Date().getTime();
+        var client_id = "sEuROAqakZg";
+        var client_secret = "r7yPoh5pSck";
+        var unique_id = 'desktop@test.com';
+        var timestamp = new Date().getTime();
+        $.ajax({
+            type: "POST",
+            url: "https://apisandbox.moxtra.com/oauth/token",
+            data: "client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=http://www.moxtra.com/auth_uniqueid" + "&uniqueid=" + unique_id + "&timestamp=" + timestamp + "&firstname=Desktop" + "&language=en",
+            success: function (data) {
+                var access_token = data.access_token;
+                console.log(data.access_token);
+                localStorage.setItem("desktoptoken", access_token)
+                var options = {
+                    mode: mode,
+                    client_id: client_id,
+                    access_token: access_token,
+                    invalid_token: function (event) {
+                        //Triggered when the access token is expired or invalid
+                        alert("Access Token expired for session id: " + event.session_id);
+                    }
+                };
+                Moxtra.init(options);
+                // prepare
+
+                ajaxCall();
+            }
+        })
+    </script>
+</head>
+
+<body>
+    <h1>Monitor</h1>
+    <p id="message">Listening for request...</p>
+</body>
+<script type="text/javascript">
+    function ajaxCall() {
+        var token = localStorage.getItem("desktoptoken");
+        var starts = new Date();
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var localISOTime = (new Date(Date.now() - tzoffset - 6000000)).toISOString().slice(0, 19) + 'Z';
+        var meeturl = "https://apisandbox.moxtra.com/me/meets?access_token=" + token + "&starts=" + localISOTime;
+
+        $.ajax({
+            type: "GET",
+            url: meeturl,
+            success: function (data) {
+                console.log(data.data.meets[0].session_key);
+                var sessionkey = data.data.meets[0].session_key
+
+
+                if (!token || !sessionkey) {
+                    alert("You have to enter an access_token or session_key!");
+                    return;
+                }
+                var p_options = {
+                    module: "ds",
+                    env_ready: function (result) {
+                        console.log("ready - session_id: " + result.session_id);
+                    },
+                    browser_unsupported: function (result) {
+                        alert("browser_unsupported - session_id: " + result.session_id);
+                    },
+                    os_unsupported: function (result) {
+                        alert("os_unsupported - session_id: " + result.session_id);
+                    },
+                    need_extension: function (result) {
+                        alert("need_extension - download_url: " + result.download_url);
+                    },
+                    need_plugin: function (result) {
+                        alert("need_plugin - download_url: " + result.download_url);
+                    }
+                };
+
+                Moxtra.meet.prepare(p_options);
+                // start
+                var options = {
+                    action: "start",
+                    session_key: sessionkey,
+                    //      tagid4iframe: "container",
+                    start_screen_share: function (event) {
+                        console.log("start screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+                    },
+                    stop_screen_share: function (event) {
+                        console.log("stop screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+                    },
+                    fail: function (event) {
+                        alert("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
+                    }
+                };
+
+                Moxtra.meet.screenshare(options);
+
+            }
+        })
+    }
+</script>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+
+    <!-- Include Moxtra JavaScript Library -->
+    <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <!-- Before making any calls with Moxtra SDK, authenticate the user and get the access token -->
+    <!-- Refer to the doc at https://developer.moxtra.com/docs/docs-js-sdk/ to authenticate user based on UniqueID Method -->
+    <!-- For other authentication methods and overview refer to the doc at https://developer.moxtra.com/docs/docs-authentication/ -->
+    <!-- For actual usage, please implement user authentication in the server side-->
+    <script type="text/javascript">
+        var mode = 'production';
+        var client_id = 'spiDUIjwKNQ'; //insert your client_id here
+        var client_secret = 'i8GQwNBIM2o'; //insert your client_secret here
+        var unique_id = 'yihan.xu@gmail.com'; //insert unique user identifier
+        var timestamp = new Date().getTime();
+        $.ajax({
+            type: "POST",
+            url: "https://api.moxtra.com/oauth/token",
+            data: "client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=http://www.moxtra.com/auth_uniqueid" + "&uniqueid=" + unique_id + "&timestamp=" + timestamp + "&firstname=Alice" + "&language=en",
+            success: function (data) {
+                var access_token = data.access_token;
+                console.log(data.access_token);
+                var options = {
+                    mode: "production",
+                    client_id: client_id,
+                    access_token: access_token,
+                    plugin_version: "latest",
+                    invalid_token: function (event) {
+                        //Triggered when the access token is expired or invalid
+                        alert("Access Token expired for session id: " + event.session_id);
+                    }
+                };
+                Moxtra.init(options);
+            }
+        })
+    </script>
+
+    <script type="text/javascript">
+        // start chat function
+        function start_chat() {
+            var chat_options = {
+                unique_id: "tony.xu@moxtra.com", //unique id of the users who will be part of the chat. These users should already exist in Moxtra.
+                iframe: true, //Default is false. Specify to launch the chatView in iframe or in a new window.
+                tagid4iframe: "meet-container", //Specify the ID of iframe container - applicable only if iframe in option is set to "true".
+                iframewidth: "850px", // Width of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 850px. If container controls the width, please set to 100%.
+                iframeheight: "500px", // Height of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 500px. If container controls the height, please set to 100%.
+                autostart_meet: true, //Default is false. Specify if Meet should be launched or throw a callback to the SDK.
+                autostart_note: true, //Default is false. Specify if Clip (Note) should be launched or throw a callback to the SDK.
+                extension: {
+                    "show_dialogs": {
+                        "member_invite": true
+                    }
+                },
+                start_chat: function (event) {
+                    console.log("Chat started binder ID: " + event.binder_id);
+                    //Your application server can upload files to draw using the binder_id and access_token
+                },
+                start_meet: function (event) {
+                    console.log("Meet started session key: " + event.session_key + " session id: " + event.session_id);
+                },
+                end_meet: function (event) {
+                    console.log("Meet end event");
+                },
+                invite_member: function (event) {
+                    console.log("Invite member into binder Id: " + event.binder_id);
+                },
+                request_note: function (event) {
+                    console.log("Note start request");
+                },
+                error: function (event) {
+                    console.log("Chat error code: " + event.error_code + " error message: " + event.error_message);
+                }
+            };
+            Moxtra.chat(chat_options);
+        }
+    </script>
+
+</head>
+
+<body>
+    <h3><a id="start" href="javascript:start_chat();">Start Chat (Full)</a></h3>
+    <div id="meet-container"></div>
+</body>
+
+</html>
