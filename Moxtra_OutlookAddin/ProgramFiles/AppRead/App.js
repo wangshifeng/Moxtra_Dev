@@ -1,4 +1,4 @@
-/* Common app functionality */
+﻿/* Common app functionality */
 /* Common app functionality */
 
 var app = (function () {
@@ -8,9 +8,9 @@ var app = (function () {
 
     // Production
     app.baseUrl = "https://api.moxtra.com/v1/";
-    var redirectUrl = "https://www.moxtra1.com/outlook/AppRead/Home/logincallback.php";
+    var redirectUrl = "https://www.moxtra1.com/tony/outlook/AppRead/Home/logincallback.php";
     app.mode = "production";
-    app.clientId = "YTIzMjczOTM";
+    app.clientId = "tZOSN9fcNEo";
     app.binderEmailSuffix = "@moxtra.me";
     app.oAuthBaseUrl = "https://api.moxtra.com/oauth/authorize?client_id=";
     app.moxtraEmail = "";
@@ -68,6 +68,7 @@ var app = (function () {
         // Authenticate
         app.VerifyToken();
         var accessToken = localStorage.getItem("tokenci");
+        $(".logoutbtn").show();
         app.accessToken = accessToken;
         var options = {
             mode: app.mode, //for production environment change to "production"
@@ -248,6 +249,50 @@ var app = (function () {
             });
         }
     }
+    
+    app.GetAllBinders = function (emails, callback) {
+                //console.log("[app] GetCommonBinders");
+                //console.log("[app] for emails");
+                if (app.accessToken == null) {
+                    try {
+                        app.accessToken = localStorage.getItem("tokenci");
+                        app.getSelfEmail();
+                    } catch (e) {
+    
+                    }
+    
+                }
+    
+                if (app.accessToken == null) {
+                    console.log('access token null')
+                    window.location.reload(false);
+                }
+                //		if (emails == null){
+                //			setInterval(function(){
+                //				window.location.reload(false);
+                //			},3000)
+                //		}
+    
+                var url = app.baseUrl + "me/binders?access_token=" + app.accessToken + "&filter=all&sort=feeds";
+                console.log(url);
+                var request = $.get(url, function (data) {
+                    //console.log(data);
+                    request.success(function () {
+                        // it worked fine!
+                    });
+    
+                    request.error(function (httpObj, textStatus) {
+                        //console.log("Not logged in");
+                        if (httpObj.status == 401) {
+                            //localStorage.removeItem("tokenci");
+                            //app.loginAndInitMoxtra();
+                        }
+                    });
+    
+                    callback(data);
+                });
+    
+            }
 
     /// Create new binder, invite users and add text
     app.newConversation = function (callback) {
@@ -316,7 +361,10 @@ var app = (function () {
         //        $.postJSON(url, { text: data }, function (data) { });
         //    }
         //});
-
+		if (app.currenBinderId == undefined)
+		    return;
+		showSpinner();
+		
         getBinderDetails(app.currenBinderId, function (binderDetails) {
             //console.log(binderDetails);
             // forward email
@@ -723,7 +771,7 @@ var app = (function () {
     app.loginAndInitMoxtra = function (callback) {
         console.log("[app] loginAndInitMoxtra");
 
-        var clientId = 'YTIzMjczOTM';
+        var clientId = app.clientId;
 
         var oauthUrl = app.oAuthBaseUrl + clientId + "&redirect_uri=" + redirectUrl + "&response_type=token";
 
@@ -862,6 +910,7 @@ var app = (function () {
 
     app.ShowChatView = function (binderId) {
         console.log("Starting chat with : " + binderId);
+        app.currenBinderId = binderId;
         $("#chatview").empty();
         var options = {
             binder_id: binderId,

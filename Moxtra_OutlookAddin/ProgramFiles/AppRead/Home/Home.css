@@ -244,6 +244,13 @@
     margin-bottom: 3px;
 }
 
+space2 {
+	margin-right: 0;
+	height: 16px;
+	margin-bottom: 3px;
+	margin-left: 10px;
+}
+
 .greytext {
     color: grey;
 }
@@ -301,5 +308,13 @@
 /* Styles */
 .nav-pills > li > a {
 	padding: 0 8px;
+}
+}
+
+@media screen and (max-width: 360px) {
+/* Styles */
+.btn.special {
+	padding: 6px 6px 0 0px;
+	font-size: 12px;
 }
 }

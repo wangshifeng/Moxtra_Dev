@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta name="author" content="Tony Xu">
     <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -38,7 +39,7 @@
                 Moxtra.init(options);
                 // prepare
 
-                ajaxCall();
+
             }
         })
     </script>
@@ -46,7 +47,12 @@
 
 <body>
     <h1>Monitor</h1>
-    <p id="message">Listening for request...</p>
+    <p id="message">idle</p>
+
+    <button id="openbtn" type="button" class="btn btn-default">Enable Connection</button>
+
+    <button id="closebtn" type="button" class="btn btn-default" style="display:none">Disable Connection</button>
+
 </body>
 <script type="text/javascript">
     function ajaxCall() {
@@ -56,59 +62,105 @@
         var localISOTime = (new Date(Date.now() - tzoffset - 6000000)).toISOString().slice(0, 19) + 'Z';
         var meeturl = "https://apisandbox.moxtra.com/me/meets?access_token=" + token + "&starts=" + localISOTime;
 
-        $.ajax({
-            type: "GET",
-            url: meeturl,
-            success: function (data) {
-                console.log(data.data.meets[0].session_key);
-                var sessionkey = data.data.meets[0].session_key
+        function dsfunc() {
+            console.log('pinged')
+            $.ajax({
+                type: "GET",
+                url: meeturl,
+                success: function (data) {
+
+                    try {
+
+                        if (data.data.meets[0].session_key !== undefined) {
+                            console.log(data.data.meets[0].session_key);
+                            var sessionkey = data.data.meets[0].session_key;
+                            pauseinterval();
+                            $("#message").text("Monitor in Demo");
+
+                        } else {
+
+                            return
+                        }
 
 
-                if (!token || !sessionkey) {
-                    alert("You have to enter an access_token or session_key!");
-                    return;
+
+                        if (!token || !sessionkey) {
+                            alert("You have to enter an access_token or session_key!");
+                            return;
+                        }
+                        var p_options = {
+                            module: "ds",
+                            env_ready: function (result) {
+                                console.log("ready - session_id: " + result.session_id);
+                            },
+                            browser_unsupported: function (result) {
+                                alert("browser_unsupported - session_id: " + result.session_id);
+                            },
+                            os_unsupported: function (result) {
+                                alert("os_unsupported - session_id: " + result.session_id);
+                            },
+                            need_extension: function (result) {
+                                alert("need_extension - download_url: " + result.download_url);
+                            },
+                            need_plugin: function (result) {
+                                alert("need_plugin - download_url: " + result.download_url);
+                            }
+                        };
+
+                        Moxtra.meet.prepare(p_options);
+                        // start
+                        var options = {
+                            action: "start",
+                            session_key: sessionkey,
+                            //      tagid4iframe: "container",
+                            start_screen_share: function (event) {
+                                console.log("start screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+                            },
+                            stop_screen_share: function (event) {
+                                console.log("stop screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+                                resumeinterval();
+                            },
+                            fail: function (event) {
+                                alert("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
+                            }
+                        };
+
+                        Moxtra.meet.screenshare(options);
+
+                    } catch (e) {
+                        //                        console.log(e.message)
+                    }
                 }
-                var p_options = {
-                    module: "ds",
-                    env_ready: function (result) {
-                        console.log("ready - session_id: " + result.session_id);
-                    },
-                    browser_unsupported: function (result) {
-                        alert("browser_unsupported - session_id: " + result.session_id);
-                    },
-                    os_unsupported: function (result) {
-                        alert("os_unsupported - session_id: " + result.session_id);
-                    },
-                    need_extension: function (result) {
-                        alert("need_extension - download_url: " + result.download_url);
-                    },
-                    need_plugin: function (result) {
-                        alert("need_plugin - download_url: " + result.download_url);
-                    }
-                };
+            })
+        }
 
-                Moxtra.meet.prepare(p_options);
-                // start
-                var options = {
-                    action: "start",
-                    session_key: sessionkey,
-                    //      tagid4iframe: "container",
-                    start_screen_share: function (event) {
-                        console.log("start screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
-                    },
-                    stop_screen_share: function (event) {
-                        console.log("stop screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
-                    },
-                    fail: function (event) {
-                        alert("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
-                    }
-                };
+        var dsinterval = setInterval(dsfunc, 1000);
 
-                Moxtra.meet.screenshare(options);
 
-            }
+        pauseinterval = function () {
+            clearInterval(dsinterval);
+
+        }
+
+        resumeinterval = function () {
+            $("#message").text("Listening for request...");
+            dsinterval = setInterval(dsfunc, 1000)
+        }
+
+        $("#closebtn").click(function () {
+            $("#openbtn").show();
+            $("#closebtn").hide();
+            clearInterval(dsinterval);
+            $("#message").text("idle");
         })
     }
+
+    $("#openbtn").click(function () {
+        $("#closebtn").show();
+        $("#openbtn").hide();
+        $("#message").text("Listening for request...");
+        ajaxCall();
+    })
 </script>
 
 </html>

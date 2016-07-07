@@ -46,48 +46,72 @@ var app = (function () {
     //        }, false)
     //    }
 
-    app.VerifyToken = function () {
+   app.VerifyToken = function () {
+        console.log("verify here")
         var accessToken = localStorage.getItem("tokenci");
-        //        console.log("https://api.moxtra.com/me?access_token=" + accessToken);
         var request = $.ajax({
             'type': 'GET',
             'url': "https://api.moxtra.com/me?access_token=" + accessToken,
             'contentType': 'application/json',
             'dataType': 'json',
             'success': function (data) {
-                try {
-                    //                    console.log('verifydata' + data);
-                    if (data.contains("incorrect token")) {
-                        //                        console.log('incorrect token');
-                        $("#firstPage").hide();
-                        $("#binderList").hide();
-                        $("#tabs").hide();
-                        $("#loginPage").hide();
-                        localStorage.removeItem("tokenci");
-                    }
-
-                } catch (e) {
-
-                }
+                console.log("log success");
+                return "success"
             },
             'async': false
         });
 
         request.error(function (httpObj, textStatus) {
             console.log("Ajax Error : " + httpObj.status);
-            if (httpObj.status === 401) {
+            //refresh_token
+            var refreshrequest = 'refresh_token=' + localStorage.getItem("refresh_token") + '&access_token=' + localStorage.getItem("tokenci")
+            var refresh = $.ajax({
+                'type': 'POST',
+                'url': "https://moxtra1.com/tony/gmail/refresh.php",
+                'contentType': 'application/json',
+                'dataType': 'json',
+                'data': refreshrequest,
+                'success': function (data) {
+                    console.log(data)
+                    try {
+                        //                    console.log('verifydata' + data);
+                        if (data.access_token && data.refresh_token) {
+                            console.log('access_token refreshed');
+                            localStorage.setItem("tokenci", data.access_token);
+                            localStorage.setItem("refresh_token", data.refresh_token);
+                            return "success";
+                        }
+
+                    } catch (e) {
+                        console.log("verify fail");
+                        $("#firstPage").hide();
+                        $("#binderList").hide();
+                        $("#tabs").hide();
+                        $("#loginPage").show();
+                        localStorage.removeItem("tokenci");
+                        //app.loginAndInitMoxtra();
+                    }
+                },
+                'async': false
+            });
+            refresh.error(function (httpObj, textStatus) {
+                console.log("verify fail");
                 $("#firstPage").hide();
                 $("#binderList").hide();
                 $("#tabs").hide();
-                $("#loginPage").hide();
+                $("#loginPage").show();
                 localStorage.removeItem("tokenci");
-                //app.loginAndInitMoxtra();
-            }
+                return "fail";
+
+            });
+
         });
     }
+   
     app.initMoxtra = function () {
+        var verifyreturn = app.VerifyToken();
         // Authenticate
-        app.VerifyToken();
+        console.log('verify data:'+ verifyreturn)
         var accessToken = localStorage.getItem("tokenci");
         app.accessToken = accessToken;
         var options = {
@@ -100,7 +124,6 @@ var app = (function () {
                 //app.loginAndInitMoxtra();
             }
         };
-
         if (!String.prototype.startsWith) {
             String.prototype.startsWith = function (searchString, position) {
                 position = position || 0;
@@ -246,32 +269,29 @@ var app = (function () {
         if (app.accessToken == null) {
             console.log('access token null')
             window.location.reload(false);
-        }
-        //		if (emails == null){
-        //			setInterval(function(){
-        //				window.location.reload(false);
-        //			},3000)
-        //		}
-        if (emails.length > 0) {
-            var url = app.baseUrl + "me/binders?access_token=" + app.accessToken + "&filter=all&sort=feeds&emails=" + emails;
-            //            console.log(url);
-            var request = $.get(url, function (data) {
-                //console.log(data);
-                request.success(function () {
-                    // it worked fine!
-                });
+        } else {
+            if (emails.length > 0) {
+                var url = app.baseUrl + "me/binders?access_token=" + app.accessToken + "&filter=all&sort=feeds&emails=" + emails;
+                //            console.log(url);
+                var request = $.get(url, function (data) {
+                    //console.log(data);
+                    request.success(function () {
+                        // it worked fine!
+                    });
 
-                request.error(function (httpObj, textStatus) {
-                    console.log("Not logged in");
-                    if (httpObj.status == 401) {
-                        //localStorage.removeItem("tokenci");
-                        //app.loginAndInitMoxtra();
-                    }
-                });
+                    request.error(function (httpObj, textStatus) {
+                        console.log("Not logged in");
+                        if (httpObj.status == 401) {
+                            //localStorage.removeItem("tokenci");
+                            //app.loginAndInitMoxtra();
+                        }
+                    });
 
-                callback(data);
-            });
+                    callback(data);
+                });
+            }
         }
+
     }
 
 
@@ -292,31 +312,27 @@ var app = (function () {
             if (app.accessToken == null) {
                 console.log('access token null')
                 window.location.reload(false);
+            } else {
+                var url = app.baseUrl + "me/binders?access_token=" + app.accessToken + "&filter=all&sort=feeds";
+                console.log(url);
+                var request = $.get(url, function (data) {
+                    //console.log(data);
+                    request.success(function () {
+                        // it worked fine!
+                    });
+
+                    request.error(function (httpObj, textStatus) {
+                        //console.log("Not logged in");
+                        if (httpObj.status == 401) {
+                            //localStorage.removeItem("tokenci");
+                            //app.loginAndInitMoxtra();
+                        }
+                    });
+
+                    callback(data);
+                });
             }
-            //		if (emails == null){
-            //			setInterval(function(){
-            //				window.location.reload(false);
-            //			},3000)
-            //		}
 
-            var url = app.baseUrl + "me/binders?access_token=" + app.accessToken + "&filter=all&sort=feeds";
-            console.log(url);
-            var request = $.get(url, function (data) {
-                //console.log(data);
-                request.success(function () {
-                    // it worked fine!
-                });
-
-                request.error(function (httpObj, textStatus) {
-                    //console.log("Not logged in");
-                    if (httpObj.status == 401) {
-                        //localStorage.removeItem("tokenci");
-                        //app.loginAndInitMoxtra();
-                    }
-                });
-
-                callback(data);
-            });
 
         }
         /// Create new binder, invite users and add text
@@ -689,7 +705,7 @@ var app = (function () {
 
         var clientId = app.clientId;
 
-        var oauthUrl = app.oAuthBaseUrl + clientId + "&redirect_uri=" + redirectUrl + "&response_type=token";
+        var oauthUrl = app.oAuthBaseUrl + clientId + "&redirect_uri=" + redirectUrl + "&response_type=code";
 
         //var popup = window.showModalDialog(oauthUrl, "window2", 'width=500,height=500,centerscreen=1,menubar=0,toolbar=0,location=0,personalbar=0,status=0,titlebar=0,dialog=1');
         //app.initMoxtra();
@@ -702,7 +718,6 @@ var app = (function () {
                 if (win.closed !== false) { // !== is required for compatibility with Opera
                     window.clearInterval(pollTimer);
                     if (localStorage.getItem("tokenci") != undefined || localStorage.getItem("tokenci") != null) {
-                        console.log('113');
                         app.initMoxtra();
                         if (callback)
                             callback();
@@ -718,7 +733,7 @@ var app = (function () {
             }
 
 
-        }, 2000);
+        }, 1000);
 
 
         //var winoauth = window.open(oauthUrl, "window2", 'width=500,height=500,centerscreen=1,menubar=0,toolbar=0,location=0,personalbar=0,status=0,titlebar=0,dialog=1');

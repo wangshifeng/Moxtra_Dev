@@ -73,16 +73,21 @@
                         $('#binderListul').append('<li class="list-group-item" style="padding:5px 15px">Shared Binders</li>');
 
                         data.data.binders.forEach(function (binder) {
+                        	
+                        	var bindername = binder.binder.name;
+                        	if (bindername.length > 18) {
+                        	    bindername = bindername.slice(0, 15) + '...'
+                        	}
 
                              $('#binderListul').append('<li class="list-group-item share-binder-item" onclick="openBinder(\'' + binder.binder.id + '\',false)">' +
                                 '<div class="media">' + 
                                   '<div class="media-left">' +
-                                        '<img class="binder-thumbnail" src="' + binder.binder.thumbnail_uri + '" alt="' + binder.binder.name + '"/>' +
+                                        '<img class="binder-thumbnail" src="' + binder.binder.thumbnail_uri + '" alt="' + bindername + '"/>' +
                                    '</div>' + 
-                                   '<div class="media-body"><div class="binder-name" style="font-size:12px;max-width: 120px;">' + binder.binder.name + '</div></div>' +
+                                   '<div class="media-body"><div class="binder-name" style="font-size:12px;max-width: 120px;">' + bindername + '</div></div>' +
                                    '<div class="media-right" >' +
                                         '<button onclick="openBinder(\'' + binder.binder.id + '\',true)" style="padding: 0;border: none;background: none;">' +
-                                        '<img src="../../Images/copytobinder.png"  title="Add Email Content"/>' +
+                                        '<img src="../../Images/copytobinder.svg" class="space2" title="Add Email Content"/>' +
                                         '</button>' +
                                     '</div>' +  
                                 '</div>' +

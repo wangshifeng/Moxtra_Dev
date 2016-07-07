@@ -1,4 +1,4 @@
-/* Common app functionality */
+﻿/* Common app functionality */
 
 var app = (function () {
     "use strict";
@@ -7,9 +7,9 @@ var app = (function () {
 
     // Production
     app.baseUrl = "https://api.moxtra.com/v1/";
-    var redirectUrl = "https://www.moxtra1.com/outlook/AppRead/Home/logincallback.php";
+    var redirectUrl = "https://www.moxtra1.com/tony/outlook/AppRead/Home/logincallback.php";
     app.mode = "production";
-    app.clientId = "YTIzMjczOTM";
+    app.clientId = "tZOSN9fcNEo";
     app.oAuthBaseUrl = "https://api.moxtra.com/oauth/authorize?client_id=";
 
     //// Development/Sandbox
@@ -200,7 +200,7 @@ var app = (function () {
     app.loginAndInitMoxtra = function (callback) {
         //console.log("[app] loginAndInitMoxtra");
 
-        var clientId = 'YTIzMjczOTM';
+        var clientId = 'tZOSN9fcNEo';
         var oauthUrl = app.oAuthBaseUrl + clientId + "&redirect_uri=" + redirectUrl + "&response_type=token";
         var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
         var is_explorer = navigator.userAgent.indexOf('MSIE') > -1 || navigator.userAgent.indexOf('Trident') > -1;
@@ -569,42 +569,12 @@ var app = (function () {
         Moxtra.pageView(options);
     }
 
-    app.ShowMeetView = function (binderId) {
-        $("#meetview").empty();
-        var options = {
-            binder_id: binderId,
-            invite_members: true,
-            autostart_meet: true,
-            iframe: true,
-            tagid4iframe: "meetview",
-            border: false,
-            iframewidth: "100%",
-            iframeheight: "730px",
-            scroll: true,
-            video: true,
-            //start_meetview: function (event) {
-            //    alert("MeetView started session Id: " + event.session_id);
-            //},
-            //start_meet: function (event) {
-            //    alert("Meet started session key: " + event.session_key +
-            //                   " session id: " + event.session_id + " binder id: " + event.binder_id);
-            //},
-            //end_meet: function (event) {
-            //    alert("Meet end event");
-            //},
-            error: function (event) {
-                alert("MeetView error code: " + event.error_code + " error message: " + event.error_message);
-            }
-        };
-        Moxtra.meetView(options);
-    }
-
     app.ShowTodoView = function (binderId) {
-        $("#todos").empty();
+        $("#todoview").empty();
         var options = {
             binder_id: binderId,
             iframe: true,
-            tagid4iframe: "todos",
+            tagid4iframe: "todoview",
             border: false,
             iframewidth: "100%",
             iframeheight: "730px",

@@ -2,13 +2,13 @@
 <html>
 
 <head>
+    <meta name="author" content="Tony Xu">
     <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script type="text/javascript">
         var mode = "sandbox"
-        var timestamp = new Date().getTime();
         var client_id = "sEuROAqakZg";
         var client_secret = "r7yPoh5pSck";
         var unique_id = 'laptop@test.com';
@@ -49,13 +49,14 @@
 
     <button id="closebtn" type="button" class="btn btn-default">Disconnect Monitor</button>
 
-    <div id="container" style="position:relative; width: 1024px; height: 768px;margin-top:20px;background-color:#2d2d2d">
+    <div id="container" style="position:relative; width: 860px; height: 600px;margin-top:20px;background-color:#2d2d2d">
 
 
 </body>
 <script type="text/javascript">
     $("#closebtn").hide();
     $("#openbtn").click(function () {
+        var timestamp = new Date().getTime();
         var token = localStorage.getItem("token");
         $('#openbtn').prop('disabled', true);
         //Schedule a Meet
@@ -97,71 +98,62 @@
                             console.log(data);
                         }
                     })
-                    //Listen to timeline binder update
-                var data_options = {
-                    added_binders: function (event) {
-                        console.log("Added binders:" + JSON.stringify(event.data));
-                        if (event.data[0].title == 'ds01') {
-                            localStorage.setItem("binderid", event.data[0].id);
-                            //Join Screenshare
-                            var p_options = {
-                                module: "ds",
-                                role: "attendee",
-                                env_ready: function (result) {
-                                    console.log("ready - session_id: " + result.session_id);
-                                },
-                                browser_unsupported: function (result) {
-                                    console.log("browser_unsupported - session_id: " + result.session_id);
-                                },
-                                os_unsupported: function (result) {
-                                    console.log("os_unsupported - session_id: " + result.session_id);
-                                },
-                                need_extension: function (result) {
-                                    console.log("need_extension - download_url: " + result.download_url);
-                                },
-                                need_plugin: function (result) {
-                                    console.log("need_plugin - download_url: " + result.download_url);
-                                }
-                            };
-
-                            Moxtra.meet.prepare(p_options);
-
-                            // join
-                            var options = {
-                                action: "join",
-                                session_key: event.data[0].meet.session_key,
-                                tagid4iframe: "container",
-                                join_screen_share: function (event) {
-                                    console.log("join screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
-                                },
-                                leave_screen_share: function (event) {
-                                    console.log("leave screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
-                                },
-                                fail: function (event) {
-                                    console.log("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
-                                }
-                            };
-
-                            Moxtra.meet.screenshare(options);
-                            $('#openbtn').prop('disabled', false);
-                            $('#openbtn').hide();
-                            $("#closebtn").show();
-                            $("#closebtn").click(function () {
-                                $.ajax({
-                                    type: "DELETE",
-                                    url: "https://apisandbox.moxtra.com/v1/meets/" + event.data[0].meet.session.key + "?access_token=" + access_token,
-                                    success: function (data) {
-                                        console.log("deleted");
-                                    }
-
-                                })
-                                $("#openbtn").show();
-                            })
-
-                        }
+                    //Join Screenshare
+                var p_options = {
+                    module: "ds",
+                    role: "attendee",
+                    env_ready: function (result) {
+                        console.log("ready - session_id: " + result.session_id);
+                    },
+                    browser_unsupported: function (result) {
+                        console.log("browser_unsupported - session_id: " + result.session_id);
+                    },
+                    os_unsupported: function (result) {
+                        console.log("os_unsupported - session_id: " + result.session_id);
+                    },
+                    need_extension: function (result) {
+                        console.log("need_extension - download_url: " + result.download_url);
+                    },
+                    need_plugin: function (result) {
+                        console.log("need_plugin - download_url: " + result.download_url);
                     }
-                }
-                Moxtra.timelineData(data_options);
+                };
+
+                Moxtra.meet.prepare(p_options);
+
+                // join
+                var options = {
+                    action: "join",
+                    session_key: data.data.session_key,
+                    tagid4iframe: "container",
+                    join_screen_share: function (event) {
+                        console.log("join screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+                    },
+                    leave_screen_share: function (event) {
+                        console.log("leave screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+                    },
+                    fail: function (event) {
+                        console.log("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
+                    }
+                };
+
+                Moxtra.meet.screenshare(options);
+                $('#openbtn').prop('disabled', false);
+                $('#openbtn').hide();
+                $("#closebtn").show();
+                $("#closebtn").click(function () {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "https://apisandbox.moxtra.com/v1/meets/" + data.data.session_key + "?access_token=" + token,
+                        success: function (data) {
+                            console.log("deleted");
+                        }
+
+                    })
+                    $("#openbtn").show();
+                })
+
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown)

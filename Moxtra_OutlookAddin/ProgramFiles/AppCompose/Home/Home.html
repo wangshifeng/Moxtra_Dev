@@ -116,12 +116,11 @@
                         </li>
                         <li role="presentation" class="link-icon">
                             <a href="#profile" aria-controls="other" role="link" data-toggle="link" onclick="addEmailTextToBinder()">
-                                <img src="../../Images/copytobinder.png" title="Add Email Content" id="spinner" />
+                                <img src="../../Images/copytobinder.svg" class="space" title="Add Email Content" id="spinner" style="margin-left: 10px;"/>
                             </a>
                         </li>
 
-                        <li role="presentation" class="pull-right"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Meet</a></li>
-                        <!--<li role="presentation" class="pull-right"><a href="#todos" aria-controls="todos" role="tab" data-toggle="tab">To Do</a></li>-->
+                        <li role="presentation" class="pull-right"><a href="#todos" aria-controls="todos" role="tab" data-toggle="tab">To Do</a></li>
                         <li role="presentation" class="pull-right"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Pages</a></li>
                         <li role="presentation" class="active pull-right"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Chat</a></li>
                     </ul>
@@ -140,13 +139,12 @@
                             </div>
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane fade" id="messages">
-                        <div id="meetview">
-
-                        </div>
-                    </div>
                     <div role="tabpanel" class="tab-pane fade" id="todos">
-
+						<div style="width: 100%; height: 700px; margin: 10px 0px; border: 1px solid rgb(172, 172, 172); box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px;">
+						                            <div id="todoview">
+						
+						                            </div>
+						                        </div>
                     </div>
                 </div>
             </div>
@@ -347,7 +345,6 @@
         $("#tabs").show();
         app.ShowChatView(binderId);
         app.ShowPageView(binderId);
-        app.ShowMeetView(binderId);
         app.ShowTodoView(binderId);
 
         if (addText) {
@@ -366,7 +363,7 @@
     };
 
     var hide = function () {
-        $("#spinner").attr("src", "../../Images/copytobinder.png");
+        $("#spinner").attr("src", "../../Images/copytobinder.svg");
 
     }
 
