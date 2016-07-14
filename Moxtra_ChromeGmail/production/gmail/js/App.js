@@ -6,27 +6,45 @@ var app = (function() {
 
     var app = {};
 
-    // Development
+    // Production
     app.baseUrl = "https://api.moxtra.com/v1/";
-    app.redirectUrl = "https://moxtra1.com/tony/gmail/logincallback2.php";
-    app.refreshurl = "https://moxtra1.com/tony/gmail/refresh.php";
+    var redirectUrl = "https://moxtra1.com/gmail/logincallback.php";
     app.mode = "production";
-    app.emailurl = "https://moxtra1.com/tony/gmail/sendemail.php";
-    app.clientId = "spiDUIjwKNQ";
+    app.clientId = "rLXS20bbNSg";
     app.binderEmailSuffix = "@moxtra.me";
     app.oAuthBaseUrl = "https://api.moxtra.com/oauth/authorize?client_id=";
     app.moxtraEmail = "";
 
-    // Production
-    // app.baseUrl = "https://api.moxtra.com/v1/";
-    // app.redirectUrl = "https://moxtra1.com/gmail/logincallback.php";
-    // app.refreshurl = "https://moxtra1.com/gmail/refresh.php";
-    // app.mode = "production";
-    // app.emailurl = "https://moxtra1.com/gmail/sendemail.php";
-    // app.clientId = "rLXS20bbNSg";
-    // app.binderEmailSuffix = "@moxtra.me";
-    // app.oAuthBaseUrl = "https://api.moxtra.com/oauth/authorize?client_id=";
-    // app.moxtraEmail = "";
+    //// Development / Sandbox
+    //app.baseUrl = "https://apisandbox.moxtra.com/v1/";
+    //app.mode = "sandbox";
+    //app.clientId = "kCAEwyu0OrE";
+    //app.binderEmailSuffix = "@sandbox.moxtra.me";
+    //app.oAuthBaseUrl = "https://apisandbox.moxtra.com/oauth/authorize?client_id=";
+    //var redirectUrl = "https://localhost:44300/AppCompose/Home/logincallback.html";
+
+    //    app.listenmessage = function () {
+    //        window.addEventListener('message', function (event) {
+    //            var message_category = event.data.substr(0, 2);
+    //            console.log('message received:' + message_category);
+    //            switch (message_category) {
+    //            case 'el':
+    //                localStorage.setItem('emailslist', event.data.substr(2));
+    //                app.loadBinders();
+    //                break;
+    //            case 'mb':
+    //                localStorage.setItem('mailbody', event.data.substr(2));
+    //                break;
+    //            case 'sj':
+    //                localStorage.setItem('subject', event.data.substr(2));
+    //                break;
+    //            case 'sd':
+    //                localStorage.setItem('sender', event.data.substr(2))
+    //            case 'logout':
+    //
+    //            };
+    //        }, false)
+    //    }
 
     app.VerifyToken = function() {
         var accessToken = localStorage.getItem("tokenci");
@@ -47,7 +65,7 @@ var app = (function() {
             var refreshrequest = 'refresh_token=' + localStorage.getItem("refresh_token") + '&access_token=' + localStorage.getItem("tokenci")
             var refresh = $.ajax({
                 'type': 'POST',
-                'url': app.refreshurl,
+                'url': "https://moxtra1.com/gmail/refresh.php",
                 'data': refreshrequest,
                 'success': function(data) {
                     data = JSON.parse(data)
@@ -93,9 +111,8 @@ var app = (function() {
         var accessToken = localStorage.getItem("tokenci");
         app.accessToken = accessToken;
         var options = {
-            mode: app.mode, //for production environment change to "production",
+            mode: app.mode, //for production environment change to "production"
             client_id: app.clientId,
-            sdk_version:3,
             access_token: accessToken, //valid access token from user authentication
             invalid_token: function(event) {
                 //alert("Access Token expired for session id: " + event.session_id);
@@ -128,9 +145,7 @@ var app = (function() {
 
 
         //console.log("initializing moxtra!");
-        // Moxtra.version = '/service3';
         Moxtra.init(options);
-        // Moxtra.version = '/service3';
 
         $.getSync = function(url, callback) {
             var request = $.ajax({
@@ -398,7 +413,7 @@ var app = (function() {
             //        console.log(dataString);
         $.ajax({
             type: "POST",
-            url: app.emailurl,
+            url: "https://moxtra1.com/gmail/sendemail.php",
             data: dataString,
             success: function() {
                 console.log('email sent')
@@ -480,6 +495,194 @@ var app = (function() {
 
 
 
+    // Variables that we'll use to communicate with EWS
+    var item_id;
+    var mailbox;
+
+    // This function handles the click event of the sendNow button.
+    // It retrieves the current mail item, so that we can get its itemId property.
+    // It also retrieves the mailbox, so that we can make an EWS request
+    // to get more properties of the item. In our case, we are interested in the ChangeKey
+    // property, becuase we need that to forward a mail item.
+    function forwardEmail(binderEmailAddress, callback) {
+
+        app.currentBinderEmailAddress = binderEmailAddress;
+        console.log("Current Binder Email: " + app.currentBinderEmailAddress);
+
+        if (!binderEmailAddress.endsWith("moxtra.me")) {
+            app.currentBinderEmailAddress = binderEmailAddress + app.binderEmailSuffix;
+            console.log("Updated Binder Email: " + app.currentBinderEmailAddress);
+        }
+
+        app.currentBinderCallback = callback;
+
+        var item = Office.context.mailbox.item;
+        item_id = item.itemId;
+        mailbox = Office.context.mailbox;
+
+        // The following string is a valid SOAP envelope and request for getting the properties
+        // of a mail item. Note that we use the item_id value (which we obtained above) to specify the item
+        // we are interested in.
+        var soapToGetItemData = '<?xml version="1.0" encoding="utf-8"?>' +
+            '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
+            '               xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"' +
+            '               xmlns:xsd="http://www.w3.org/2001/XMLSchema"' +
+            '               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"' +
+            '               xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">' +
+            '  <soap:Header>' +
+            '    <RequestServerVersion Version="Exchange2013" xmlns="http://schemas.microsoft.com/exchange/services/2006/types" soap:mustUnderstand="0" />' +
+            '  </soap:Header>' +
+            '  <soap:Body>' +
+            '    <GetItem' +
+            '                xmlns="http://schemas.microsoft.com/exchange/services/2006/messages"' +
+            '                xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">' +
+            '      <ItemShape>' +
+            '        <t:BaseShape>IdOnly</t:BaseShape>' +
+            '      </ItemShape>' +
+            '      <ItemIds>' +
+            '        <t:ItemId Id="' + item_id + '"/>' +
+            '      </ItemIds>' +
+            '    </GetItem>' +
+            '  </soap:Body>' +
+            '</soap:Envelope>';
+
+        // The makeEwsRequestAsync method accepts a string of SOAP and a callback function
+        mailbox.makeEwsRequestAsync(soapToGetItemData, soapToGetItemDataCallback);
+    }
+
+    // This function is the callback for the makeEwsRequestAsync method
+    // In brief, it first checks for an error repsonse, but if all is OK
+    // it then parses the XML repsonse to extract the ChangeKey attribute of the
+    // t:ItemId element.
+    function soapToGetItemDataCallback(asyncResult) {
+        var parser;
+        var xmlDoc;
+
+        if (asyncResult.error != null) {
+            app.showNotification("EWS Status", asyncResult.error.message);
+        } else {
+            var response = asyncResult.value;
+            if (window.DOMParser) {
+                console.log("DOMParser available");
+                var parser = new DOMParser();
+                //parser.namespaceManager.addNamespace("m", "http://schemas.microsoft.com/exchange/services/2006/messages");
+                //parser.namespaceManager.addNamespace("t", "http://schemas.microsoft.com/exchange/services/2006/types");
+                xmlDoc = parser.parseFromString(response, "text/xml");
+            } else // Older Versions of Internet Explorer
+            {
+                console.log("DOMParser NOT available / Older Versions of Internet Explorer");
+
+                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc.async = false;
+                xmlDoc.loadXML(response);
+            }
+            console.log(response);
+            console.log(xmlDoc.getElementsByTagNameNS("http://schemas.microsoft.com/exchange/services/2006/types", "ItemId").length);
+            var changeKey = xmlDoc.getElementsByTagNameNS("http://schemas.microsoft.com/exchange/services/2006/types", "ItemId")[0].getAttribute("ChangeKey");
+
+            // Now that we have a ChangeKey value, we can use EWS to forward the mail item.
+            // The first thing we'll do is get an array of email addresses that the user
+            // has typed into the To: text box.
+            // We'll also get the comment that the user may have provided in the Comment: text box.
+            var toAddresses = app.currentBinderEmailAddress;
+            var addresses = toAddresses.split(";");
+            var addressesSoap = "";
+
+            // The following loop build an XML fragment that we will insert into the SOAP message
+            for (var address = 0; address < addresses.length; address++) {
+                addressesSoap += "<t:Mailbox><t:EmailAddress>" + addresses[address] + "</t:EmailAddress></t:Mailbox>";
+            }
+            var comment = getSubject();
+
+            var attachments = [];
+
+            // Check and get attachments
+            if (Office.context.mailbox.item.attachments == undefined) {
+                console.log("Not supported - Attachments are not supported by your Exchange server.");
+            } else if (Office.context.mailbox.item.attachments.length == 0) {
+                console.log("No attachments - There are no attachments on this item.");
+            } else {
+
+                // Initalize a context object for the app.
+                //   Set the fields that are used on the request
+                //   object to default values.
+                attachments = new Array();
+            }
+
+            // The following string is a valid SOAP envelope and request for forwarding
+            // a mail item. Note that we use the item_id value (which we obtained in the click event handler)
+            // to specify the item we are interested in,
+            // along with its ChangeKey value that we have just determined near the top of this function.
+            // We also provide the XML fragment that we built in the loop above to specify the recipient addresses,
+            // and the comment that the user may have provided in the Comment: text box
+            var soapToForwardItem = '<?xml version="1.0" encoding="utf-8"?>' +
+                '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
+                '               xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"' +
+                '               xmlns:xsd="http://www.w3.org/2001/XMLSchema"' +
+                '               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"' +
+                '               xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">' +
+                '  <soap:Header>' +
+                '    <RequestServerVersion Version="Exchange2013" xmlns="http://schemas.microsoft.com/exchange/services/2006/types" soap:mustUnderstand="0" />' +
+                '  </soap:Header>' +
+                '  <soap:Body>' +
+                '    <m:CreateItem MessageDisposition="SendOnly">' +
+                '      <m:Items>' +
+                '        <t:ForwardItem>' +
+                '          <t:ToRecipients>' + addressesSoap + '</t:ToRecipients>' +
+                '          <t:ReferenceItemId Id="' + item_id + '" ChangeKey="' + changeKey + '" />' +
+                '          <t:NewBodyContent BodyType="Text">' + comment + '</t:NewBodyContent>' +
+                '        </t:ForwardItem>' +
+                '      </m:Items>' +
+                '    </m:CreateItem>' +
+                '  </soap:Body>' +
+                '</soap:Envelope>';
+
+            // As before, the makeEwsRequestAsync method accepts a string of SOAP and a callback function.
+            // The only difference this time is that the body of the SOAP message requests that the item
+            // be forwarded (rather than retrieved as in the previous method call)
+            mailbox.makeEwsRequestAsync(soapToForwardItem, soapToForwardItemCallback);
+        }
+    }
+
+    // This function is the callback for the above makeEwsRequestAsync method
+    // In brief, it first checks for an error repsonse, but if all is OK
+    // it then parses the XML repsonse to extract the m:ResponseCode value.
+    function soapToForwardItemCallback(asyncResult) {
+        var parser;
+        var xmlDoc;
+
+        if (asyncResult.error != null) {
+            app.showNotification("EWS Status", asyncResult.error.message);
+        } else {
+            var response = asyncResult.value;
+            if (window.DOMParser) {
+                parser = new DOMParser();
+                xmlDoc = parser.parseFromString(response, "text/xml");
+            } else // Older Versions of Internet Explorer
+            {
+                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc.async = false;
+                xmlDoc.loadXML(response);
+            }
+
+            // Get the required response, and if it's NoError then all has succeeded, so tell the user.
+            // Otherwise, tell them what the problem was. (E.G. Recipient email addresses might have been
+            // entered incorrectly --- try it and see for yourself what happens!!)
+            var result = xmlDoc.getElementsByTagNameNS("http://schemas.microsoft.com/exchange/services/2006/messages", "ResponseCode")[0].textContent;
+            if (result == "NoError") {
+                //app.showNotification("EWS Status", "Success!");
+                console.log("Email forwarded to Moxtra Binder");
+                app.currentBinderCallback(result);
+            } else {
+                console.log("Email could NOT be forwarded to Moxtra Binder");
+                app.currentBinderCallback(result);
+                //app.showNotification("EWS Status", "The following error code was recieved: " + result);
+            }
+        }
+    }
+
+
+
 
     app.getSubject = getSubject;
 
@@ -497,7 +700,7 @@ var app = (function() {
 
         var clientId = app.clientId;
 
-        var oauthUrl = app.oAuthBaseUrl + clientId + "&redirect_uri=" + app.redirectUrl + "&response_type=code";
+        var oauthUrl = app.oAuthBaseUrl + clientId + "&redirect_uri=" + redirectUrl + "&response_type=code";
 
         //var popup = window.showModalDialog(oauthUrl, "window2", 'width=500,height=500,centerscreen=1,menubar=0,toolbar=0,location=0,personalbar=0,status=0,titlebar=0,dialog=1');
         //app.initMoxtra();
@@ -527,19 +730,55 @@ var app = (function() {
 
         }, 1000);
 
+
+        //var winoauth = window.open(oauthUrl, "window2", 'width=500,height=500,centerscreen=1,menubar=0,toolbar=0,location=0,personalbar=0,status=0,titlebar=0,dialog=1');
+        //var isFirefox = typeof InstallTrigger !== 'undefined';
+        //if (isFirefox) {
+        //    var retry = true;
+
+        //    do {
+        //        try {
+        //            if (winoauth.document.URL.length > 0) {
+        //                retry = false;
+        //            }
+        //        } catch (e) {
+        //            winoauth.close();
+        //            winoauth = window.open(oauthUrl, "window2", 'width=500,height=500,centerscreen=1,menubar=0,toolbar=0,location=0,personalbar=0,status=0,titlebar=0,dialog=1');
+        //        }
+        //    } while (retry === true)
+        //}
+
+
+        //var pollTimer = window.setInterval(function () {
+        //    try {
+        //        // We open a popup window and let the user authenticate
+        //        // we poll if the window url has changed and has a access token
+
+        //        console.log(winoauth.location.href);
+
+        //        if (winoauth.closed) {
+        //            window.clearInterval(pollTimer);
+        //            app.initMoxtra();
+        //            callback();
+        //        }
+        //    } catch (e) {
+        //        console.log(e);
+        //        //localStorage.removeItem("tokenci");
+        //    }
+        //}, 1000);
     }
-    app.ShowChatFull = function(binderId) {
+
+    app.ShowChatView = function(binderId) {
         console.log("Starting chat with : " + binderId);
-        $("#chattab").click();
-        $("#chatfull").empty();
+        $("#chatview").empty();
         var options = {
             binder_id: binderId,
             iframe: true,
-            border: false,
-            tagid4iframe: "chatfull",
+            border: true,
+            tagid4iframe: "chatview",
             autostart_note: false,
             iframewidth: "100%",
-            iframeheight: "100%",
+            iframeheight: "500px",
             //scroll: false,
             //start_chat: function (event) {
             //    alert("ChatView started session Id: " + event.session_id);
@@ -559,10 +798,108 @@ var app = (function() {
                 }
             }
         };
-        Moxtra.chat(options);
-
+        Moxtra.chatView(options);
     }
 
+    app.ShowPageView = function(binderId) {
+        $("#profile").empty();
+
+        var options = {
+            binder_id: binderId,
+            iframe: true,
+            border: true,
+            tagid4iframe: "profile",
+            iframewidth: "100%",
+            iframeheight: "500px",
+            //scroll: true,
+            //start_page: function (event) {
+            //    alert("PageView started session Id: " + event.session_id);
+            //},
+            //share: function (event) {
+            //    alert("Share session Id: " + event.session_id + " binder Id: " + event.binder_id + " page Ids: " + event.page_id);
+            //},
+            error: function(event) {
+                console.log("PageView error code: " + event.error_code + " error message: " + event.error_message);
+                if (event.error_code == 401) {
+                    logout();
+                } else {
+                    $('#goToBinderList').click(function() {
+                        logout();
+                    })
+                }
+            }
+        };
+        Moxtra.pageView(options);
+    }
+
+    app.ShowMeetView = function(binderId) {
+        $("#messages").empty();
+        var options = {
+            binder_id: binderId,
+            invite_members: true,
+            autostart_meet: true,
+            schedule_meet: true,
+            iframe: true,
+            tagid4iframe: "messages",
+            border: true,
+            iframewidth: "100%",
+            iframeheight: "500px",
+            extension: {
+                "show_dialogs": {
+                    "meet_invite": true
+                }
+            },
+            video: true,
+            //scroll: true,
+            //start_meetview: function (event) {
+            //    alert("MeetView started session Id: " + event.session_id);
+            //},
+            //start_meet: function (event) {
+            //    alert("Meet started session key: " + event.session_key +
+            //                   " session id: " + event.session_id + " binder id: " + event.binder_id);
+            //},
+            //end_meet: function (event) {
+            //    alert("Meet end event");
+            //},
+            error: function(event) {
+                console.log("MeetView error code: " + event.error_code + " error message: " + event.error_message);
+                if (event.error_code == 401) {
+                    logout();
+                } else {
+                    $('#goToBinderList').click(function() {
+                        logout();
+                    })
+                }
+            }
+        };
+        Moxtra.meetView(options);
+    }
+    app.ShowTodoView = function(binderId) {
+        $("#todos").empty();
+        var options = {
+            binder_id: binderId,
+            iframe: true,
+            tagid4iframe: "todos",
+            border: true,
+            iframewidth: "100%",
+            iframeheight: "500px",
+            //scroll: true,
+            //start_todo: function (event) {
+            //    alert("TodoView started session Id: " + event.session_id);
+            //},
+            error: function(event) {
+                console.log("Todo error code: " + event.error_code + " error message: " + event.error_message);
+                if (event.error_code == 401) {
+                    logout();
+                } else {
+                    $('#goToBinderList').click(function() {
+                        logout();
+                    })
+                }
+            }
+        };
+        Moxtra.todoView(options);
+    }
 
     /// This function gets all the binders for the user and the emails specified in the list of email addresses (emails)
     app.GetMyBinders = function(callback) {
@@ -571,6 +908,31 @@ var app = (function() {
             callback(data);
         });
     }
+
+
+    // Common initialization function (to be called from each page)
+    app.initialize = function() {
+        $('body').append(
+            '<div id="notification-message">' +
+            '<div class="padding">' +
+            '<div id="notification-message-close"></div>' +
+            '<div id="notification-message-header"></div>' +
+            '<div id="notification-message-body"></div>' +
+            '</div>' +
+            '</div>');
+
+        $('#notification-message-close').click(function() {
+            $('#notification-message').hide();
+        });
+
+
+        // After initialization, expose a common notification function
+        app.showNotification = function(header, text) {
+            $('#notification-message-header').text(header);
+            $('#notification-message-body').text(text);
+            $('#notification-message').slideDown('fast');
+        };
+    };
 
     return app;
 })();

@@ -1,17 +1,10 @@
 .top-nav {
-        position: fixed;
-    top: 0px;
-    right: 0px;
-    left: 0px;
-    margin-left: 0px;
-    padding-left: 18px;
-    margin-right: 12px;
-    padding-right: 0px;
-    width: 440px;
-    height: 52px;
-    padding-top: 23px;
-    background: white;
-    margin-top:-25px;
+    position: fixed;
+    background: #ffffff;
+    padding-right: 16px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width: 96.5%;
 }
 
 
@@ -61,10 +54,9 @@
 }
 
 .nav.nav-pills {
-    border-bottom: 1px solid #D8D8D8;
+    border-bottom: 1px solid #666666;
     margin-left: 0;
     width: 100%;
-    height: 30px
 }
 
 .nav-pills > li.active > a,
@@ -79,8 +71,7 @@
 
 .nav-pills > li > a {
     color: #666666;
-    padding: 5px 15px;
-    height:30px;
+    padding: 0 15px;
 }
 
 .nav-pills > li.link-icon {
@@ -89,7 +80,6 @@
 
 .tab-content {
     padding-top: 20px;
-    height:100%;
 }
 
 .new-conversation > h3 {
@@ -105,7 +95,7 @@
     margin: 10px 0 0px 0;
     color: #888888;
     background-color: white;
-    padding-top: 15px;
+    padding-top: 10px;
 }
 
 .actions > button {

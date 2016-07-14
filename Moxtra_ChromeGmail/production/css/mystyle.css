@@ -6,11 +6,3 @@
 .inboxsdk__sidebar .inboxsdk__contentPanelContainer {
     max-width: none !important;
 }
-
-.aKw {
-	height:24px !important;
-}
-
-table.aKk .inboxsdk__contentTabContainer .inboxsdk__tab .aAy[role=tab] {
-    height: 28px !important;
-}

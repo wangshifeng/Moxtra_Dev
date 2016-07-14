@@ -13,17 +13,12 @@
     <!-- For other authentication methods and overview refer to the doc at https://developer.moxtra.com/docs/docs-authentication/ -->
     <script type="text/javascript">
         var mode = 'sandbox';
-        var client_id = 'INSERT-CLIENT-ID'; //insert your client_id here
+        var client_id = 'uFvStzxf74E'; //insert your client_id here
         var client_secret = 'INSERT-CLIENT-SECRET'; //insert your client_secret here
-        var unique_id = 'INSERT-UNIQUE-ID'; //insert unique user identifier
+        var unique_id = '4028802b55b52b460155b54e5c6f0004'; //insert unique user identifier
         var timestamp = new Date().getTime();
-        $.ajax({
-            type: "POST",
-            url: "https://apisandbox.moxtra.com/oauth/token",
-            data: "client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=http://www.moxtra.com/auth_uniqueid" + "&uniqueid=" + unique_id + "&timestamp=" + timestamp + "&firstname=Alice" + "&language=en",
-            success: function (data) {
-                var access_token = data.access_token;
-                console.log(data.access_token);
+
+                var access_token = "2fYzMgAAAVXiR8b6AACowFUxdnhpWDNDMXpOQ1RqU1VHUERvU1RIIAAAAANUWkZmUHRySFRYcjV0eXFnZ3hobklGQ3VGdlN0enhmNzRF";
                 var options = {
                     mode: "sandbox",
                     client_id: client_id,
@@ -34,15 +29,15 @@
                     }
                 };
                 Moxtra.init(options);
-            }
-        })
+
+
     </script>
 
     <script type="text/javascript">
         // join meet function
         function join_meet() {
             join_sessionkey = document.getElementById('meetid').value
-            
+
                 var join_options = {
                     iframe: true,
                     session_key: join_sessionkey,
@@ -70,7 +65,7 @@
                 };
 
                 Moxtra.joinMeet(join_options);
-            
+
         }
     </script>
 

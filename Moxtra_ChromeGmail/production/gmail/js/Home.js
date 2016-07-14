@@ -3,61 +3,33 @@
 
 // The initialize function must be run each time a new page is loaded
 var formValidator = null;
-$(document).ready(function() {
-
-    document.getElementById('loginbtn').addEventListener('click', function() {
-        app.loginAndInitMoxtra(function() {
+$(document).ready(function () {
+    document.getElementById('loginbtn').addEventListener('click', function () {
+        app.loginAndInitMoxtra(function () {
             onStart();
         });
     })
 
-    document.getElementById('new_conversation').addEventListener('click', function() {
+    document.getElementById('new_conversation').addEventListener('click', function () {
         new_conversation();
     });
 
-    document.getElementById('start_meet').addEventListener('click', function() {
+    document.getElementById('start_meet').addEventListener('click', function () {
         start_meet();
     })
 
-    document.getElementById('logout').addEventListener('click', function() {
+    document.getElementById('logout').addEventListener('click', function () {
         logout();
     })
 
-    $('#addEmailTextToBinder').click(function() {
+    $('#addEmailTextToBinder').click(function () {
 
         addEmailTextToBinder($(this).data('email'));
     })
 
-    document.getElementById('goToBinderList').addEventListener('click', function() {
+    document.getElementById('goToBinderList').addEventListener('click', function () {
         goToBinderList();
     })
-
-    function updateTab(url, tab) {
-        if (url.indexOf("tab=tab_") > -1) {
-            url = url.split("tab=tab_")[0] + "tab=tab_" + tab;
-            return url;
-        } else {
-            url = url + "&tab=tab_" + tab;
-            return url;
-        }
-    }
-
-    document.getElementById('meettab').addEventListener('click', function() {
-        $("#chatfull").find("iframe")[0].src = updateTab($("#chatfull").find("iframe")[0].src, "meet")
-    })
-    document.getElementById('chattab').addEventListener('click', function() {
-        $("#chatfull").find("iframe")[0].src = updateTab($("#chatfull").find("iframe")[0].src, "chat")
-    })
-    document.getElementById('todotab').addEventListener('click', function() {
-        $("#chatfull").find("iframe")[0].src = updateTab($("#chatfull").find("iframe")[0].src, "todo")
-    })
-    document.getElementById('pagestab').addEventListener('click', function() {
-        $("#chatfull").find("iframe")[0].src = updateTab($("#chatfull").find("iframe")[0].src, "pages")
-    })
-
-
-
-
 
 
     $("#scheduleMeet").hide();
@@ -78,16 +50,16 @@ $(document).ready(function() {
 
         $("#tabs").hide();
 
-        $("#binderList").on("mouseover", "li", function() {
+        $("#binderList").on("mouseover", "li", function () {
             $(this).find("img").last().addClass('hover');
             $(this).find("button").last().addClass('hover');
         });
 
-        $("#binderList").on("mouseout", "li", function() {
+        $("#binderList").on("mouseout", "li", function () {
             $(this).find("img").last().removeClass('hover');
             $(this).find("button").last().removeClass('hover');
         });
-        $("#bindersearch").keyup(function() {
+        $("#bindersearch").keyup(function () {
             if ($(this).val()) {
                 $("#shared-binder-panel").hide();
                 $("#collapse2").addClass('in');
@@ -101,11 +73,103 @@ $(document).ready(function() {
 
             }
         })
+        $("#scheduleStartDate").datetimepicker({
+            minDate: 0,
+            step: 15,
+            onChangeDateTime: function (dp, $input) {
+                var d = $("#scheduleStartDate").val();
+                var start = parseDate(d);
+                var startDateTime = start.getTime();
+                $('#scheduleEndDate').datetimepicker('setOptions', {
+                    minDate: start,
+                    step: 15
+                });
+                $('#scheduleEndDate').removeAttr("disabled");
+
+            }
+        });
+        $('#scheduleEndDate').datetimepicker({});
+        $('#scheduleEndDate').attr("disabled", "disabled");
+
+        $.validator.addMethod("greaterThan",
+            function (value, element, params) {
+
+                if (!/Invalid|NaN/.test(new Date(value))) {
+                    return new Date(value) > new Date($(params).val());
+                }
+
+                return isNaN(value) && isNaN($(params).val()) || (Number(value) > Number($(params).val()));
+            }, 'Must be greater than {0}.');
+
+        $.validator.addMethod(
+            "multiemails",
+            function (value, element) {
+                if (this.optional(element)) // return true on optional element
+                    return true;
+                var emails = value.split(/[;,]+/); // split element by , and ;
+                var valid = true;
+                for (var i in emails) {
+                    if (emails.hasOwnProperty(i)) {
+                        value = emails[i];
+                        valid = valid &&
+                            jQuery.validator.methods.email.call(this, $.trim(value), element);
+                    }
+                }
+                return valid;
+            },
+
+            'Emails must be valid and separated by comma.'
+        );
+
+        //form validation rules
+        formValidator = $("#scheduleMeetForm").validate({
+            rules: {
+                scheduleTopic: "required",
+                scheduleStartDate: {
+                    required: "required",
+                    date: true,
+                },
+                scheduleEndDate: {
+                    required: "required",
+                    date: true,
+                    greaterThan: "#scheduleStartDate"
+                },
+                scheduleAgenda: "required",
+                participantEmails: {
+                    required: "required",
+                    multiemails: true
+                }
+            },
+            messages: {
+                scheduleTopic: "Please enter a meeting title",
+                scheduleStartDate: {
+                    required: "Please select start date time",
+                    date: "Start date is not vaild"
+                },
+                scheduleEndDate: {
+                    required: "Please select end date time",
+                    date: "End date is not vaild",
+                    greaterThan: "End date time must be after start date time."
+                },
+                scheduleAgenda: "Agenda is a required field",
+                participantEmails: {
+                    reuired: "Participant emails are required",
+                    multiemails: "You must enter valid emails"
+                }
+            },
+            highlight: function (element) {
+                //$(element).closest('.form-group').addClass('has-error');
+                //$("#scheduleMeetForm").valid();
+                ////$(element).addClass('select-class');
+            }
+        });
     } catch (e) {
         console.log(e);
     }
 
     try {
+        // initialize office JS
+        //                app.initialize();
 
         // Do we have an access token from before
         if (localStorage.getItem('userchanged') == '1') {
@@ -162,14 +226,14 @@ function openBinder(binderId, email) {
     $("#firstPage").hide();
     $("#binderList").hide();
     $("#tabs").show();
-    app.ShowChatFull(binderId);
+    app.ShowChatView(binderId);
+    app.ShowPageView(binderId);
+    app.ShowMeetView(binderId);
+    app.ShowTodoView(binderId);
 
     if (email) {
         addEmailTextToBinder(email);
     }
-
-
-
 };
 
 
@@ -181,13 +245,13 @@ function goToBinderList() {
     app.loadBinders();
 }
 
-var showSpinner = function() {
+var showSpinner = function () {
     $("#spinner").attr("src", "images/sending.gif");
     $('#addEmailTextToBinder').addClass('notActive');
     setTimeout(hide, 5000); // 5 seconds
 };
 
-var hide = function() {
+var hide = function () {
     $("#spinner").attr("src", "images/copytobinder.svg");
     $('#addEmailTextToBinder').removeClass('notActive');
 
@@ -206,7 +270,7 @@ function logout() {
 }
 
 function start_meet() {
-    app.getRecipients(function(emails) {
+    app.getRecipients(function (emails) {
         var meet_options = {
             //iframe: true, //To open the meet in the same window within an iFrame.
             tab: true, //To open the meet in a new browser tab, N/A if iframe option is set to true.
@@ -218,15 +282,15 @@ function start_meet() {
                     "meet_invite": true
                 }
             },
-            start_meet: function(event) {
+            start_meet: function (event) {
                 console.log("Meet Started - session_id: " + event.session_id + "session_key: " + event.session_key);
                 //Your application server can upload files to meet using the session_id and session_key
             },
             email: emails,
-            error: function(event) {
+            error: function (event) {
                 console.log("error code: " + event.error_code + " message: " + event.error_message);
             },
-            end_meet: function(event) {
+            end_meet: function (event) {
                 console.log("Meet Ended");
             },
             video: true
@@ -237,7 +301,7 @@ function start_meet() {
 
 function new_conversation() {
     //console.log("new conversation");
-    app.newConversation(function(binderid) {
+    app.newConversation(function (binderid) {
         openBinder(binderid, false);
     });
 }
@@ -247,6 +311,33 @@ function parseDate(dateAsString) {
     return new Date(dateAsString.replace(/-/g, '/'));
 }
 
+//function getRecipients(callback) {
+
+//    var emails = [];
+
+//    // Get sender emails
+//    console.log("Sender: " + Office.context.mailbox.item.sender.emailAddress);
+//    emails.push(Office.context.mailbox.item.sender.emailAddress);
+
+//    // Get TO emails
+//    Office.context.mailbox.item.to.forEach(function (ccitem) {
+//        emails.push(ccitem.emailAddress);
+
+//    });
+//    console.log("TO: " + emails.join());
+
+
+//    // Get CC emails
+//    Office.context.mailbox.item.cc.forEach(function (ccitem) {
+//        emails.push(ccitem.emailAddress);
+
+//    });
+
+//    console.log("CC: " + emails.join());
+
+//    var cleanedUp = app.moxtraEmailFix(emails);
+//    callback(cleanedUp);
+//}
 
 app.loadBinders = loadBinders;
 
@@ -257,9 +348,9 @@ function loadBinders() {
         $('#newConvMsg').css('display', 'none');
 
         // get the recepients and fetch common binders
-        app.getRecipients(function(emails) {
+        app.getRecipients(function (emails) {
             // Get Common Binders
-            app.GetCommonBinders(emails, function(data) {
+            app.GetCommonBinders(emails, function (data) {
                 $('#binderListul').empty();
                 $('#binderList').hide();
 
@@ -278,7 +369,7 @@ function loadBinders() {
 
                     // $('#binderListul').append('<li class="list-group-item" style="padding:5px 15px">Shared Binders</li>');
                     $('#binderList').show();
-                    data.data.binders.forEach(function(binder) {
+                    data.data.binders.forEach(function (binder) {
 
                         var bindername = binder.binder.name;
                         if (bindername.length > 38) {
@@ -303,14 +394,17 @@ function loadBinders() {
                     });
                 }
 
-                $('#binderListul>li').click(function() {
+                $('#binderListul>li').click(function () {
                     app.currentBinderID = $(this).data("id");
 
                     $("#firstPage").hide();
                     $("#binderList").hide();
                     $("#tabs").show();
 
-                    app.ShowChatFull(app.currentBinderID);
+                    app.ShowChatView(app.currentBinderID);
+                    app.ShowPageView(app.currentBinderID);
+                    app.ShowMeetView(app.currentBinderID);
+                    app.ShowTodoView(app.currentBinderID);
                     $('#addEmailTextToBinder').data('email', $(this).data('email'));
                 })
 
@@ -325,11 +419,11 @@ function loadBinders() {
 
 
             // Get All Binders
-            app.GetAllBinders(emails, function(data) {
+            app.GetAllBinders(emails, function (data) {
                 $('#allbinderListul').empty();
                 $('#allbinderList').hide();
 
-                // console.log('binders:' + JSON.stringify(data.data));
+                                               // console.log('binders:' + JSON.stringify(data.data));
 
                 if (data.data.binders == undefined || data.data.binders == null || data.data.binders.length == 0) {
 
@@ -338,7 +432,7 @@ function loadBinders() {
 
 
                     $('#allbinderList').show();
-                    data.data.binders.forEach(function(binder) {
+                    data.data.binders.forEach(function (binder) {
 
                         var bindername = binder.binder.name;
                         if (bindername.length > 40) {
@@ -363,15 +457,17 @@ function loadBinders() {
                     });
                 }
 
-                $('#allbinderListul>li').click(function() {
+                $('#allbinderListul>li').click(function () {
                     app.currentBinderID = $(this).data("id");
 
                     $("#firstPage").hide();
                     $("#binderList").hide();
                     $("#tabs").show();
 
-                    app.ShowChatFull(app.currentBinderID);
-
+                    app.ShowChatView(app.currentBinderID);
+                    app.ShowPageView(app.currentBinderID);
+                    app.ShowMeetView(app.currentBinderID);
+                    app.ShowTodoView(app.currentBinderID);
                     $('#addEmailTextToBinder').data('email', $(this).data('email'));
                 })
 
