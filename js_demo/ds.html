@@ -1,0 +1,210 @@
+
+<html>
+<head>
+<style type="text/css">
+body{overflow:hidden;}
+</style>
+
+<script src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
+<script language="JavaScript" type="text/javascript">
+onchange_handler = function (rad) {
+
+	var rads = document.getElementsByName(rad.name);
+	document.getElementById('presenter').style.display = (rads[0].checked) ? 'block' : 'none' ;
+	document.getElementById('attendee').style.display = (rads[1].checked) ? 'block' : 'none' ;
+};
+
+var choose0 = "production";
+
+change0 = function (element) {
+	choose0 = element.value;
+};
+
+function start() {
+
+	var access_token = document.getElementById("access_token");
+
+	var session_key = document.getElementById("session_key0");
+
+	if (!access_token.value && !session_key.value) {
+		alert("You have to enter an access_token or session_key!");
+		return;
+	}
+
+	var in_options = {
+	    client_id: "rIaPBPh4GpU",
+	    mode: choose0,
+		access_token: access_token.value,
+		invalid_token: function(result) {
+			alert("Invalid token for session_id: " + result.session_id);
+		}
+	};
+
+	Moxtra.init(in_options);
+
+	// prepare
+	var p_options = {
+		module: "ds",
+		env_ready: function(result) {
+			alert("ready - session_id: " + result.session_id);
+		},
+		browser_unsupported: function(result) {
+			alert("browser_unsupported - session_id: " + result.session_id);
+		},
+		os_unsupported: function(result) {
+			alert("os_unsupported - session_id: " + result.session_id);
+		},
+		need_extension: function(result) {
+			alert("need_extension - download_url: " + result.download_url);
+		},
+		need_plugin: function(result) {
+			alert("need_plugin - download_url: " + result.download_url);
+		}
+	};
+
+	Moxtra.meet.prepare(p_options);
+
+
+	// start
+	var options = {
+	    action: "start",
+	    session_key: session_key.value ? session_key.value : null,
+//		tagid4iframe: "container",
+		start_screen_share: function(event) {
+			alert("start screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+		},
+		stop_screen_share: function(event) {
+			alert("stop screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+		},
+		fail: function(event) {
+			alert("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
+		}
+	};
+
+	Moxtra.meet.screenshare(options);
+}
+
+
+function join() {
+
+	var session_key = document.getElementById("session_key");
+
+	if (!session_key.value) {
+		alert("You have to enter a session_key!");
+		return;
+	}
+
+	var in_options = {
+	    client_id: "rIaPBPh4GpU",
+	    mode: choose0
+	};
+
+	Moxtra.init(in_options);
+
+	// prepare
+	var p_options = {
+		module: "ds",
+	    role: "attendee",
+		env_ready: function(result) {
+			alert("ready - session_id: " + result.session_id);
+		},
+		browser_unsupported: function(result) {
+			alert("browser_unsupported - session_id: " + result.session_id);
+		},
+		os_unsupported: function(result) {
+			alert("os_unsupported - session_id: " + result.session_id);
+		},
+		need_extension: function(result) {
+			alert("need_extension - download_url: " + result.download_url);
+		},
+		need_plugin: function(result) {
+			alert("need_plugin - download_url: " + result.download_url);
+		}
+	};
+
+	Moxtra.meet.prepare(p_options);
+
+	// join
+	var options = {
+	    action: "join",
+	    session_key: session_key.value,
+		tagid4iframe: "container",
+		join_screen_share: function(event) {
+			alert("join screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+		},
+		leave_screen_share: function(event) {
+			alert("leave screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+		},
+		fail: function(event) {
+			alert("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
+		}
+	};
+
+	Moxtra.meet.screenshare(options);
+
+}
+
+stopScreenShare = function() {
+
+	Moxtra.meet.stopScreenshare();
+};
+
+endScreenShare = function() {
+
+	Moxtra.meet.endScreenshare();
+};
+
+leaveScreenShare = function() {
+
+	Moxtra.meet.leaveScreenshare();
+};
+
+</script>
+
+</head>
+<body>
+<p>
+<div id="container" style="position:absolute; top:220px; left:150px; width: 1024px; height: 768px;">
+</div>
+<table>
+<tr>
+<td colspan="2"><h3>Mode:
+	<select id="select0" onchange="change0(this)">
+		<option value="production" selected>Production</option>
+		<option value="debug">Debug</option>
+		<option value="sandbox">Sandbox</option>
+		<option value="beta">Beta</option>
+		<option value="local">Local</option>
+	</select></h3>
+</td>
+</tr>
+<tr>
+<td>
+	<input type="radio" name="role" onclick="onchange_handler(this);" value="presenter" checked="checked">Presenter
+<div id="presenter">
+	<h3>Access Token: <input type="text" id="access_token" value="" size="150" /></h3>
+	<h3>Session Key: <input type="text" id="session_key0" value="" size="10" /></h3>
+	<h3><a id="startds" href="javascript:start();">Start Screen Share</a></h3>
+	<h3><input type="button" onclick="stopScreenShare();" value="Stop Screen Share" /></h3>
+	<h3><input type="button" onclick="endScreenShare();" value="End Screen Share" /></h3>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+	<input type="radio" name="role" onclick="onchange_handler(this);" value="attendee" >Attendee
+<div id="attendee" style="display:none;">
+	<h3>Session Key: <input type="text" id="session_key" value="" size="10" /></h3>
+	<h3><a id="joinds" href="javascript:join();">Join Screen Share</a></h3>
+	<h3><input type="button" onclick="stopScreenShare();" value="Stop Screen Share" /></h3>
+	<h3><input type="button" onclick="leaveScreenShare();" value="Leave Screen Share" /></h3>
+</div>
+</td>
+</tr>
+<tr colspan="2">
+
+</tr>
+</table>
+
+</body>
+</html>

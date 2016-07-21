@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-
-    <!-- Include Moxtra JavaScript Library -->
-    <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
-    <!-- Before making any calls with Moxtra SDK, authenticate the user and get the access token -->
-    <!-- Refer to the doc at https://developer.moxtra.com/docs/docs-js-sdk/ to authenticate user based on UniqueID Method -->
-    <!-- For other authentication methods and overview refer to the doc at https://developer.moxtra.com/docs/docs-authentication/ -->
-    <!-- For actual usage, please implement user authentication in the server side-->
-    <script type="text/javascript">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Travel.com</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs" ></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+    function showModal() {
+        $('#myModal').modal('show');
+    }
         var mode = 'sandbox';
         var client_id = 'qLovk8jynyw'; //insert your client_id here
         var client_secret = 'iwIeVAb7oYc'; //insert your client_secret here
@@ -37,16 +47,11 @@
                 Moxtra.init(options);
             }
         })
-    </script>
-
-    <script type="text/javascript">
-        // start chat function
-        function start_chat() {
+    function startChat(){
             var chat_options = {
                 binder_id: "B0cb7StcZECKdxbaTMDHSa6", //unique id of the users who will be part of the chat. These users should already exist in Moxtra.
                 // unique_id: "jenn@agent1.com,user@agent1.com",
                 iframe: false, //Default is false. Specify to launch the chatView in iframe or in a new window.
-                tagid4iframe: "meet-container", //Specify the ID of iframe container - applicable only if iframe in option is set to "true".
                 iframewidth: "850px", // Width of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 850px. If container controls the width, please set to 100%.
                 iframeheight: "500px", // Height of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 500px. If container controls the height, please set to 100%.
                 autostart_meet: true, //Default is false. Specify if Meet should be launched or throw a callback to the SDK.
@@ -76,15 +81,20 @@
                     console.log("Chat error code: " + event.error_code + " error message: " + event.error_message);
                 }
             };
-            Moxtra.chat(chat_options);
-        }
+            Moxtra.timeline(chat_options);
+    }
     </script>
-
 </head>
 
 <body>
-    <h3><a id="start" href="javascript:start_chat();">Start Chat (Full)</a></h3>
-    <div id="meet-container"></div>
+    <img src="images/bg2.png" border="0" width="1346" height="963" orgWidth="1346" orgHeight="963" usemap="#imgmap" alt="" />
+    <map name="imgmap">
+        <area alt="" title="" href="javascript:startChat();" shape="rect" coords="1233,33,1346,93" style="outline:none;" target="_self" />
+        <area shape="rect" coords="1344,961,1346,963" alt="Image Map" style="outline:none;" title="Image Map" href="javascript:startChat();" />
+    </map>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script>
+    </script>
 </body>
 
 </html>
