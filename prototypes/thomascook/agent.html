@@ -79,9 +79,6 @@
                 },
                 error: function (event) {
                     console.log("Chat error code: " + event.error_code + " error message: " + event.error_message);
-                },
-                create_binder :function (event) {
-                    console.log("Binder Id:" + event.binder_id + ", Session Id:" + event.session_id);
                 }
             };
             Moxtra.timeline(chat_options);
@@ -90,10 +87,10 @@
 </head>
 
 <body>
-    <img src="images/bg2.png" border="0" width="1100" height="787" orgWidth="1100" orgHeight="787" usemap="#imgmap" alt="" />
-    <map name="imgmap">
-        <area alt="" title="" href="javascript:startChat();" shape="rect" coords="1006,27,1098,75" style="outline:none;" target="_self" />
-    </map>
+    <img src="images/bg.png" border="0" width="1200" height="3328" orgWidth="1200" orgHeight="3328" usemap="#imgmap" alt="" />
+    <div style="position:absolute;top:44px;left:1080px;">
+        <a href="javascript:startChat()"><img src="images/livechat2.svg" alt=""></a>
+    </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script>
     </script>
