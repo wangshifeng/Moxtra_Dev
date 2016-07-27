@@ -12,12 +12,34 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+    var client_id = mxenv.clientId; //insert your client_id here
+    var client_secret = mxenv.clientSecret; //insert your client_secret here
+    var unique_id = '1@test.com'; //insert unique user identifier
+    var timestamp = new Date().getTime();
+    var binderId = getParameterByName("binderId");
+    console.log(binderId);
+    $.ajax({
+        type: "POST",
+        url: "https://apisandbox.moxtra.com/oauth/token",
+        data: "client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=http://www.moxtra.com/auth_uniqueid" + "&uniqueid=" + unique_id + "&timestamp=" + timestamp + "&firstname=Alice" + "&language=en",
+        success: function(data) {
+            var access_token = data.access_token;
+            console.log(data.access_token);
+            localStorage.setItem("token",access_token)
+        }
+    })
+    </script>
 </head>
 
 <body>
@@ -141,9 +163,7 @@
     </div>
     <!-- /#wrapper -->
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+
     <!-- Menu Toggle Script -->
     <script>
     $("#menu-toggle").click(function(e) {

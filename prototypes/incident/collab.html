@@ -14,6 +14,7 @@
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
     <script src="js/jquery.js"></script>
+    <script src="js/app.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -23,10 +24,12 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript">
-    var client_id = 'gMaE3XkcwTQ'; //insert your client_id here
-    var client_secret = 'mosG41jUJSs'; //insert your client_secret here
+    var client_id = mxenv.clientId; //insert your client_id here
+    var client_secret = mxenv.clientSecret; //insert your client_secret here
     var unique_id = '1@test.com'; //insert unique user identifier
     var timestamp = new Date().getTime();
+    var binderId = getParameterByName("binderId");
+    console.log(binderId);
     $.ajax({
         type: "POST",
         url: "https://apisandbox.moxtra.com/oauth/token",
@@ -57,6 +60,7 @@
             iframewidth: "100%", // Width of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 850px. If container controls the width, please set to 100%.
             iframeheight: "500px", // Height of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 500px. If container controls the height, please set to 100%.
             border:true,
+            binder_id: binderId,
             autostart_meet: true,
             autostart_note: true,
             extension: {

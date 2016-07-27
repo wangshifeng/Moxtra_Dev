@@ -11,6 +11,11 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/simple-sidebar.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -29,10 +34,10 @@
                     </a>
                 </li>
                 <li class="active">
-                    <a href="#">Create Incident</a>
+                    <a href="./index.html">Create Incident</a>
                 </li>
                 <li>
-                    <a href="#">Collaboration</a>
+                    <a href="./collab.html">Collaboration</a>
                 </li>
             </ul>
         </div>
@@ -107,25 +112,42 @@
                         </div>
                     </div>
                 <hr>
-                <a href="./collab.html"><button type="button" class="btn btn-primary">Start Collaboration</button></a>
+                <button type="button" class="btn btn-primary" id="startCollabBtn">Start Collaboration</button>
 
             </div>
         </div>
         <!-- /#page-content-wrapper -->
     </div>
     <!-- /#wrapper -->
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+
     <!-- Menu Toggle Script -->
     <script>
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
-    var x = document.getElementById("incidentId")
-    x.value = (new Date().getTime())
+    $("#startCollabBtn").click(function(){
+    	//create binder
+    	var dataString = {
+                name: <?php echo json_encode($_POST["classCategory"].":".$_POST["incidentName"]); ?>
+            };
+            console.log(dataString)
+        var createBinder = $.ajax({
+            'type': 'POST',
+            'data': JSON.stringify(dataString),
+            'dataType': 'json',
+            'contentType': 'application/json',
+            'url': mxenv.baseUrl+"me/binders?access_token="+localStorage.getItem("token"),
+            'success': function(data) {
+            	console.log(data);
+            	window.location.href = './collab.html?binderId='+data.data.id;
+            },
+            'error': function(data) {
+                console.log(data);
+            },
+            'async': false
+        });
+    })
     </script>
 </body>
 
