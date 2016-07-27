@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,7 +18,6 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-
 <body>
     <div id="wrapper">
         <!-- Sidebar -->
@@ -31,10 +29,10 @@
                     </a>
                 </li>
                 <li class="active">
-                    <a href="./index.html" style="font-weight:800">Create Incident</a>
+                    <a href="#">Create Incident</a>
                 </li>
                 <li>
-                    <a href="./collab.html">Collaboration</a>
+                    <a href="#">Collaboration</a>
                 </li>
             </ul>
         </div>
@@ -42,38 +40,36 @@
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
-                <h1>Create Incident</h1>
+                <h1>Confirm Incident</h1>
                 <hr>
-                <form role="form" action="./form_submit.php" method="post">
                     <div class="row">
                         <div class="col-lg-3">
                             <h4>Incident Information</h4>
-                            <p>Please provide incident information here</p>
                         </div>
                         <div class="col-lg-9">
                             <fieldset class="form-group">
                                 <label for="formGroupExampleInput">Incident ID</label>
-                                <input type="text" class="form-control" id="incidentId" name="incidentId" placeholder="Example input" readonly="readonly">
+                                <p class="" id="incidentId"><?php echo $_POST["incidentId"]; ?></p>
                             </fieldset>
                             <fieldset class="form-group">
                                 <label for="formGroupExampleInput">Incident Name</label>
-                                <input type="text" class="form-control" name="incidentName" placeholder="Example input">
+                                <p class="" id="incidentName"><?php echo $_POST["incidentName"]; ?></p>
                             </fieldset>
                             <fieldset class="form-group">
                                 <label for="formGroupExampleInput2">Description</label>
-                                <textarea class="form-control" rows="5" name="incidentDescription"></textarea>
+                                <p class="" id="incidentDescription"><?php echo $_POST["incidentDescription"]; ?></p>
                             </fieldset>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <fieldset class="form-group">
                                         <label for="formGroupExampleInput2">Date</label>
-                                        <input type="date" class="form-control" name="incidentDate" placeholder="Another input">
+                                        <p class="" id="incidentDate"><?php echo $_POST["incidentDate"]; ?></p>
                                     </fieldset>
                                 </div>
                                 <div class="col-lg-6">
                                     <fieldset class="form-group">
                                         <label for="formGroupExampleInput2">Time</label>
-                                        <input type="time" class="form-control" name="incidentTime" placeholder="Another input">
+                                        <p class="" id="incidentTime"><?php echo $_POST["incidentTime"]; ?></p>
                                     </fieldset>
                                 </div>
                             </div>
@@ -83,24 +79,15 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <h4>Classification</h4>
-                            <p>Please provide classification information here</p>
                         </div>
                         <div class="col-lg-9">
                             <fieldset class="form-group">
                                 <label for="formGroupExampleInput">Urgency</label>
-                                <select class="form-control" name="classUrgency">
-                                    <option>High</option>
-                                    <option>Medium</option>
-                                    <option>Low</option>
-                                </select>
+                                <p class="" id="classUrgency"><?php echo $_POST["classUrgency"]; ?></p>
                             </fieldset>
                             <fieldset class="form-group">
                                 <label for="formGroupExampleInput2">Category</label>
-                                <select class="form-control" name="classCategory">
-                                    <option>Boom</option>
-                                    <option>Fire</option>
-                                    <option>Shot</option>
-                                </select>
+                                <p class="" id="classCategory"><?php echo $_POST["classCategory"]; ?></p>
                             </fieldset>
                         </div>
                     </div>
@@ -108,33 +95,20 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <h4>Collaboration</h4>
-                            <p>Please provide particitants information here</p>
                         </div>
                         <div class="col-lg-9">
                             <fieldset class="form-group">
                                 <label for="formGroupExampleInput">Invite Participants</label>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="check911" value="911">911</label>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="checkFire" value="Fire">Fire</label>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name = "checkPolice" value="Police" disabled>Police</label>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="checkSWAT" value="SWAT" disabled>SWAT</label>
-                                </div>
+                                <p class="" id="check911"><?php echo $_POST["check911"]; ?></p>
+                                <p class="" id="checkFire"><?php echo $_POST["checkFire"]; ?></p>
+                                <p class="" id="checkPolice"><?php echo $_POST["checkPolice"]; ?></p>
+                                <p class="" id="checkSWAT"><?php echo $_POST["checkSWAT"]; ?></p>
                             </fieldset>
                         </div>
                     </div>
                 <hr>
-                <button type="submit" class="btn btn-primary">Create Incidents</button>
-                </form>
+                <a href="./collab.html"><button type="button" class="btn btn-primary">Start Collaboration</button></a>
+
             </div>
         </div>
         <!-- /#page-content-wrapper -->
@@ -150,7 +124,8 @@
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
-    $("#incidentId").val(new Date().getTime())
+    var x = document.getElementById("incidentId")
+    x.value = (new Date().getTime())
     </script>
 </body>
 
