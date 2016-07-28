@@ -126,27 +126,88 @@
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
+    var newBinderId
     $("#startCollabBtn").click(function(){
     	//create binder
-    	var dataString = {
+    	var createBinderData = {
                 name: <?php echo json_encode($_POST["classCategory"].":".$_POST["incidentName"]); ?>
             };
-            console.log(dataString)
         var createBinder = $.ajax({
             'type': 'POST',
-            'data': JSON.stringify(dataString),
+            'data': JSON.stringify(createBinderData),
             'dataType': 'json',
             'contentType': 'application/json',
             'url': mxenv.baseUrl+"me/binders?access_token="+localStorage.getItem("token"),
             'success': function(data) {
             	console.log(data);
-            	window.location.href = './collab.html?binderId='+data.data.id;
+                newBinderId = data.data.id;
+                //add binder content
+                var addContentData = {
+                source_id: "B71chTzSV7NK1D1F7sRdLaF"
+                };
+                var addContent = $.ajax({
+                    'type': 'POST',
+                    'data': JSON.stringify(addContentData),
+                    'dataType': 'json',
+                    'contentType': 'application/json',
+                    'url': mxenv.baseUrl+newBinderId+"/copypages?access_token="+localStorage.getItem("token"),
+                    'success': function(data) {
+                        console.log(data);
+
+                    },
+                    'error': function(data) {
+                        console.log(data);
+                    },
+                    'async': false
+                });
+                //add team user
+                var inviteData = {
+                            users: [{
+                                user: {
+                                    unique_id: "6@firstrespond.com"
+                                }
+                            },
+                            {
+                                user: {
+                                    unique_id: "3@firstrespond.com"
+                                }
+                            },
+                            {
+                                user: {
+                                    unique_id: "4@firstrespond.com"
+                                }
+                            },
+                            {
+                                user: {
+                                    unique_id: "5@firstrespond.com"
+                                }
+                            }
+                            ]
+                        }
+                var addUser = $.ajax({
+                    'type': 'POST',
+                    'data': JSON.stringify(inviteData),
+                    'dataType': 'json',
+                    'contentType': 'application/json',
+                    'url': mxenv.baseUrl+newBinderId+"/addteamuser?access_token="+localStorage.getItem("token"),
+                    'success': function(data) {
+                        console.log(data);
+                        window.location.href = './collab.html?binderId='+newBinderId;
+                    },
+                    'error': function(data) {
+                        console.log(data);
+                    },
+                    'async': false
+                });
+
             },
             'error': function(data) {
                 console.log(data);
             },
             'async': false
         });
+        //add binder content
+
     })
     </script>
 </body>

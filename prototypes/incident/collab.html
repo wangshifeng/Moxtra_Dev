@@ -24,23 +24,14 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript">
-    var client_id = mxenv.clientId; //insert your client_id here
-    var client_secret = mxenv.clientSecret; //insert your client_secret here
-    var unique_id = '1@test.com'; //insert unique user identifier
-    var timestamp = new Date().getTime();
-    var binderId = getParameterByName("binderId");
-    console.log(binderId);
-    $.ajax({
-        type: "POST",
-        url: "https://apisandbox.moxtra.com/oauth/token",
-        data: "client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=http://www.moxtra.com/auth_uniqueid" + "&uniqueid=" + unique_id + "&timestamp=" + timestamp + "&firstname=Alice" + "&language=en",
-        success: function(data) {
-            var access_token = data.access_token;
-            console.log(data.access_token);
+    var myVar = setInterval(startTimeline, 1000);
+    function startTimeline() {
+        if (localStorage.getItem("token")) {
+            clearInterval(myVar);
             var options = {
                 mode: "sandbox",
-                client_id: client_id,
-                access_token: access_token,
+                client_id: mxenv.clientId,
+                access_token: localStorage.getItem("token"),
                 invalid_token: function(event) {
                     //Triggered when the access token is expired or invalid
                     alert("Access Token expired for session id: " + event.session_id);
@@ -49,7 +40,7 @@
             Moxtra.init(options);
             start_timeline();
         }
-    })
+    }
     </script>
     <script type="text/javascript">
     // start timeline function
@@ -59,7 +50,7 @@
             tagid4iframe: "container", //Specify the ID of iframe container - applicable only if iframe in option is set to "true".
             iframewidth: "100%", // Width of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 850px. If container controls the width, please set to 100%.
             iframeheight: "500px", // Height of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 500px. If container controls the height, please set to 100%.
-            border:true,
+            border: true,
             binder_id: binderId,
             autostart_meet: true,
             autostart_note: true,
@@ -144,6 +135,5 @@
     $("#incidentId").val(new Date().getTime());
     </script>
 </body>
-
 
 </html>
