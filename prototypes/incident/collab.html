@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%">
 
 <head>
     <meta charset="utf-8">
@@ -43,13 +43,14 @@
     }
     </script>
     <script type="text/javascript">
+    var binderId = getParameterByName("binderId");
     // start timeline function
     function start_timeline() {
         var timeline_options = {
             iframe: true, //Default is false. Specify to launch the chatView in iframe or in a new window.
             tagid4iframe: "container", //Specify the ID of iframe container - applicable only if iframe in option is set to "true".
             iframewidth: "100%", // Width of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 850px. If container controls the width, please set to 100%.
-            iframeheight: "500px", // Height of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 500px. If container controls the height, please set to 100%.
+            iframeheight: "100%", // Height of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 500px. If container controls the height, please set to 100%.
             border: true,
             binder_id: binderId,
             autostart_meet: true,
@@ -95,8 +96,8 @@
     </script>
 </head>
 
-<body>
-    <div id="wrapper">
+<body style="height:100%">
+    <div id="wrapper" style="height:100%">
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -111,15 +112,18 @@
                 <li>
                     <a href="./collab.html" style="font-weight:800">Collaboration</a>
                 </li>
+                <li>
+                    <a href="./list.html">Incident List</a>
+                </li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
         <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
+        <div id="page-content-wrapper" style="height:100%">
+            <div class="container-fluid" style="height:100%">
                 <h1>Collaboration</h1>
                 <hr>
-                <div id="container"></div>
+                <div id="container" style="height:90%"></div>
             </div>
         </div>
         <!-- /#page-content-wrapper -->
