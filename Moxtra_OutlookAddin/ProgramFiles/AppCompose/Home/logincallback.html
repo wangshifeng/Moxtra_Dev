@@ -1,17 +1,53 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    
+
     <title></title>
     <meta charset="utf-8"/>
+    <script src="../../Scripts/jquery-2.2.3.min.js" type="text/javascript"></script>
 </head>
 <body>
     <h1>Redirecting ....</h1>
+    <p class="" id="error"></p>
 </body>
 
 
 </html>
 <script type="text/javascript">
-        //alert("login callback");
-        window.close();
+$(document).ready(function() {
+    var is_edge = document.documentMode || /Edge/.test(navigator.userAgent);
+    var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+    var is_explorer = navigator.userAgent.indexOf('MSIE') > -1;
+    var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
+    var is_safari = navigator.userAgent.indexOf("Safari") > -1;
+    var is_opera = navigator.userAgent.toLowerCase().indexOf("op") > -1;
+    var access_token = window.location.href.split("?")[1].split("&")[0].split("=")[1];
+    var refresh_token = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+    if ((is_chrome) && (is_safari)) {
+        is_safari = false;
+    }
+    if ((is_chrome) && (is_opera)) {
+        is_chrome = false;
+    }
+    if (is_edge) {
+        localStorage.setItem("tokenci", access_token);
+        localStorage.setItem("refresh_token", refresh_token);
+        open(location, '_self').close();
+    } else if (is_safari) {
+        setInterval(function() {
+            open(location, '_self').close();
+        }, 3000);
+    } else if (window !== null && window.location !== null && window.location.href !== null && window.location.href.indexOf("access_token") !== -1 && window.location.href.indexOf("refresh_token") !== -1) {
+        $("#error").html(window.location.href)
+        localStorage.setItem("tokenci", access_token);
+        localStorage.setItem("refresh_token", refresh_token);
+        if (localStorage.getItem("tokenci") && localStorage.getItem("refresh_token")) {
+            // window.close();
+            console.log("asdf")
+        }
+
+    } else {
+        console.log('no access token or refresh token')
+    }
+});
 </script>

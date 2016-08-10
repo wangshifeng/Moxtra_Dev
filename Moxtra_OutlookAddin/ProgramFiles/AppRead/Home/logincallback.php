@@ -1,80 +1,42 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title>Callback PHP Script</title>
-    <meta charset="utf-8"/>
-	<script type="text/javascript">
-		function quitBox(cmd)
-		{   
-			if (cmd=='quit')
-			{
-				open(location, '_self').close();
-			}   
-			return false;   
-		}
-	</script>
-</head>
-<body>
-    <h1>You have successfully signed in.</h1>
-	<div id="closediv">
-    <p>You may close this window now.</p>
-	
-	<input type="button" name="Quit" id="Quit" value="Close Window" onclick="return quitBox('quit');" />
-	</div>
-	<div id="waitdiv" style="visibility:hidden;">
-		<p>Please wait for this window to close.</p>
-	</div>
-</body>
+﻿<?php
 
+function preserve_qs() {
+    if (empty($_SERVER['QUERY_STRING']) && strpos($_SERVER['REQUEST_URI'], "?") === false) {
+        return "";
+    }
+    return "?" . $_SERVER['QUERY_STRING'];
+}
 
-</html>
+function debug_to_console($data) {
+    if(is_array($data) || is_object($data))
+	{
+		echo("<script>console.log('PHP: ".json_encode($data)."');</script>");
+	} else {
+		echo("<script>console.log('PHP: ".$data."');</script>");
+	}
+}
+
+$url = 'https://api.moxtra.com/oauth/token';
+$data = array('code' => $_GET["code"], 'client_id' => 'YTIzMjczOTM', 'client_secret' => 'v6JOPsybIPw','grant_type' => 'authorization_code','redirect_uri' => 'https://www.moxtra1.com/outlook/AppRead/Home/logincallback.php',);
+
+// use key 'http' even if you send the request to https://...
+$options = array(
+    'http' => array(
+        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+        'method'  => 'POST',
+        'content' => http_build_query($data)
+    )
+);
+$context  = stream_context_create($options);
+$result = file_get_contents($url, false, $context);
+if ($result === FALSE) { /* Handle error */ }
+$returndata = json_decode($result, true);
+// var_dump($returndata["access_token"]);
+// var_dump($data);
+
+header("Status: 301 Moved Permanently");
+header("Location: logincallback.html?access_token=" . $returndata["access_token"] . "&refresh_token=" . $returndata["refresh_token"]);
+?>
 <script type="text/javascript">
-
-		var is_edge = document.documentMode || /Edge/.test(navigator.userAgent);
-		var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
-		var is_explorer = navigator.userAgent.indexOf('MSIE') > -1;
-		var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
-		var is_safari = navigator.userAgent.indexOf("Safari") > -1;
-		var is_opera = navigator.userAgent.toLowerCase().indexOf("op") > -1;
-		if ((is_chrome)&&(is_safari)) {is_safari=false;}
-		if ((is_chrome)&&(is_opera)) {is_chrome=false;}
-
-		if(is_edge){
-			var url = window.location.href;
-            var parts = url.split("#")[1].split("&");
-
-            console.log(parts[0]);
-            console.log(parts[0].split("=")[1]);
-            localStorage.setItem("tokenci", parts[0].split("=")[1]);
-            open(location, '_self').close();
-		}
-		else if(is_safari)
-		{
-			document.getElementById("closediv").style.visibility = "hidden";
-			document.getElementById("waitdiv").style.visibility = "visible";
-
-			setInterval(function(){open(location, '_self').close();},5000); // wait 5 seconds so we can get token
-		}
-		else if (window !== null && window.location !== null && window.location.href !== null && window.location.href.indexOf("#access_token") !== -1)
-		{
-			var url = window.location.href;
-            var parts = url.split("#")[1].split("&");
-
-            console.log(parts[0]);
-            console.log(parts[0].split("=")[1]);
-            localStorage.setItem("tokenci", parts[0].split("=")[1]);
-			console.log('callbacktokenci'+ localStorage.getItem('tokenci'));
-            window.close();
-		}
-		else if (window !== null && window.document !== null && window.document.URL !== null && window.document.URL.indexOf("#access_token") !== -1) 
-		{
-            var url = window.document.URL;
-            var parts = url.split("#")[1].split("&");
-
-            console.log(parts[0]);
-            console.log(parts[0].split("=")[1]);
-            localStorage.setItem("tokenci", parts[0].split("=")[1]);
-			console.log('callbacktokenci'+ localStorage.getItem('tokenci'));
-            window.close();
-        }
+    window.location.href = "logincallback.html?access_token="+"<?php echo $returndata["access_token"];?>"+"&refresh_token="+"<?php echo $returndata["refresh_token"];?>";
 </script>

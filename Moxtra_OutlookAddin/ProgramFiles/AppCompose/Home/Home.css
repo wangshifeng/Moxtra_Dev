@@ -225,6 +225,13 @@
     margin-left: 22px;
 }
 
+.space-sm {
+    margin-right: 15px;
+    height: 16px;
+    margin-bottom: 3px;
+    margin-left: 0px;
+}
+
 .space2 {
 	margin-right: 0;
 	height: 16px;

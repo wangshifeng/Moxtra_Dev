@@ -7,6 +7,7 @@
     width: 96.5%;
 }
 
+
 /*.send-message {
     position: fixed;
     background: #ffffff;
@@ -16,17 +17,20 @@
     width: 264px;
 }*/
 
+
 /*.login-form {
     padding: 20px 30px;
 }*/
 
 .nav.nav-pills {
-    border-bottom: 1px solid #666666;
+    border-bottom: 1px solid #D8D8D8;
     margin-left: 0;
     width: 100%;
 }
 
-.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus,
+.nav-pills > li.active > a:hover {
     background-color: #ffffff;
     color: #2D9CF5;
     border-bottom: 3px solid #2D9CF5;
@@ -45,7 +49,7 @@
 }
 
 .tab-content {
-    padding-top: 20px;
+    padding-top: 30px;
 }
 
 .new-conversation > h3 {
@@ -64,18 +68,18 @@
     padding-top: 10px;
 }
 
-    .actions > button {
-        width: 100%;
-        margin-bottom: 10px;
-        text-align: left;
-        padding: 10px;
-        background-color: #ededed;
-        border-color: #cccccc;
-    }
+.actions > button {
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: left;
+    padding: 10px;
+    background-color: #ededed;
+    border-color: #cccccc;
+}
 
-        .actions > button > i {
-            margin: 0 20px;
-        }
+.actions > button > i {
+    margin: 0 20px;
+}
 
 .conversation-item {
     cursor: pointer;
@@ -86,134 +90,135 @@
     margin-top: 0px;
 }
 
-    .conversation-list > ul {
-        list-style: none;
-        margin-left: 0;
-        padding-top: 15px;
-        min-width: 400px;
-    }
+.conversation-list > ul {
+    list-style: none;
+    margin-left: 0;
+    padding-top: 15px;
+    min-width: 400px;
+}
 
-    .conversation-list > .conversation-group {
-        height: 350px;
-        overflow-y: auto;
-    }
+.conversation-list > .conversation-group {
+    height: 350px;
+    overflow-y: auto;
+}
 
-    .conversation-list > ul > li {
-        margin-bottom: 4px;
-        padding-top: 8px;
-        padding-bottom: 8px;
-        padding-left: 8px;
-        border-bottom: 1px solid #cccccc;
-        clear: both;
-        height: 48px;
-        background: white;
-    }
+.conversation-list > ul > li {
+    margin-bottom: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+    border-bottom: 1px solid #cccccc;
+    clear: both;
+    height: 48px;
+    background: white;
+}
 
-        .conversation-list > ul > li:hover {
-            background-color: #E5F1FC;
-        }
+.conversation-list > ul > li:hover {
+    background-color: #E5F1FC;
+}
 
-        .conversation-list > ul > li > img {
-            border: 1px solid #cccccc;
-            border-radius: 8px;
-            float: left;
-        }
+.conversation-list > ul > li > img {
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    float: left;
+}
 
-        .conversation-list > ul > li > span {
-            margin: 10px 20px;
-            -moz-text-overflow: ellipsis;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 180px;
-            display: block;
-            overflow: hidden;
-            float: left;
-            font-size: medium;
-        }
+.conversation-list > ul > li > span {
+    margin: 10px 20px;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 180px;
+    display: block;
+    overflow: hidden;
+    float: left;
+    font-size: medium;
+}
 
-        .conversation-list > ul > li > button {
-            float: right;
-            height: 100%;
-            border: none;
-            color: #337ab7;
-            font-size: 24px;
-        }
+.conversation-list > ul > li > button {
+    float: right;
+    height: 100%;
+    border: none;
+    color: #337ab7;
+    font-size: 24px;
+}
 
-            .conversation-list > ul > li > button.hover, button:hover {
-                background-color: #E5F1FC;
-            }
+.conversation-list > ul > li > button.hover,
+button:hover {
+    background-color: #E5F1FC;
+}
 
 .conversation {
     margin-top: 10px;
     padding-bottom: 312px;
 }
 
-    .conversation > ul {
-        list-style: none;
-        margin-left: 0;
-    }
+.conversation > ul {
+    list-style: none;
+    margin-left: 0;
+}
 
-        .conversation > ul > li {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            clear: both;
-        }
+.conversation > ul > li {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    clear: both;
+}
 
-            .conversation > ul > li > .other {
-                color: #888888;
-            }
+.conversation > ul > li > .other {
+    color: #888888;
+}
 
-            .conversation > ul > li > .event {
-                color: #666666;
-            }
+.conversation > ul > li > .event {
+    color: #666666;
+}
 
-                .conversation > ul > li > .event > span {
-                    padding: 10px 20px;
-                    text-align: center;
-                    clear: both;
-                }
+.conversation > ul > li > .event > span {
+    padding: 10px 20px;
+    text-align: center;
+    clear: both;
+}
 
-            .conversation > ul > li > .other > span.from {
-                width: 100%;
-                padding-left: 42px;
-                display: block;
-                color: #b0b0b0;
-            }
+.conversation > ul > li > .other > span.from {
+    width: 100%;
+    padding-left: 42px;
+    display: block;
+    color: #b0b0b0;
+}
 
-            .conversation > ul > li > div > img.avatar {
-                border-radius: 16px;
-            }
+.conversation > ul > li > div > img.avatar {
+    border-radius: 16px;
+}
 
-            .conversation > ul > li > div > .content > p {
-                width: 220px;
-                font-size: small;
-                padding: 10px 30px;
-            }
+.conversation > ul > li > div > .content > p {
+    width: 220px;
+    font-size: small;
+    padding: 10px 30px;
+}
 
-            .conversation > ul > li > .other > img.avatar {
-                float: left;
-                margin-right: 10px;
-            }
+.conversation > ul > li > .other > img.avatar {
+    float: left;
+    margin-right: 10px;
+}
 
-            .conversation > ul > li > .other > .content > p {
-                float: right;
-                border: 1px solid #c0c0c0;
-                border-radius: 0 16px 16px 16px;
-                background-color: #ededed;
-            }
+.conversation > ul > li > .other > .content > p {
+    float: right;
+    border: 1px solid #c0c0c0;
+    border-radius: 0 16px 16px 16px;
+    background-color: #ededed;
+}
 
-            .conversation > ul > li > .me > img.avatar {
-                float: right;
-                margin-left: 10px;
-            }
+.conversation > ul > li > .me > img.avatar {
+    float: right;
+    margin-left: 10px;
+}
 
-            .conversation > ul > li > .me > .content > p {
-                float: left;
-                border: 1px solid #337ab7;
-                color: rgb(172, 143, 127);
-                border-radius: 16px 0 16px 16px;
-                background-color: #d5ebfd;
-            }
+.conversation > ul > li > .me > .content > p {
+    float: left;
+    border: 1px solid #337ab7;
+    color: rgb(172, 143, 127);
+    border-radius: 16px 0 16px 16px;
+    background-color: #d5ebfd;
+}
 
 .header-logo {
     background: url(/images/MoxtraLogo128x128.png) no-repeat 0 0;
@@ -245,10 +250,10 @@
 }
 
 space2 {
-	margin-right: 0;
-	height: 16px;
-	margin-bottom: 3px;
-	margin-left: 10px;
+    margin-right: 0;
+    height: 16px;
+    margin-bottom: 3px;
+    margin-left: 10px;
 }
 
 .greytext {
@@ -259,7 +264,9 @@ space2 {
     color: red;
 }
 
+
 /*Button overrides*/
+
 .btn.special {
     background-color: white;
     text-decoration: none;
@@ -268,14 +275,13 @@ space2 {
     color: rgba(45, 156, 245, 0.8);
 }
 
-    .btn.special:hover {
-        background-color: white;
-        text-decoration: none;
-        border: none;
-        color: rgb(45, 156, 245);
-        color: rgba(45, 156, 245, 1.0);
-    }
-
+.btn.special:hover {
+    background-color: white;
+    text-decoration: none;
+    border: none;
+    color: rgb(45, 156, 245);
+    color: rgba(45, 156, 245, 1.0);
+}
 
 .btn.loginbtn {
     border: 2px solid rgb(45, 156, 245);
@@ -285,13 +291,13 @@ space2 {
     color: rgba(45, 156, 245, 0.8);
 }
 
-    .btn.loginbtn:hover {
-        border: 2px solid rgb(45, 156, 245);
-        background-color: white;
-        text-decoration: none;
-        color: rgb(45, 156, 245);
-        color: rgba(45, 156, 245, 1.0);
-    }
+.btn.loginbtn:hover {
+    border: 2px solid rgb(45, 156, 245);
+    background-color: white;
+    text-decoration: none;
+    color: rgb(45, 156, 245);
+    color: rgba(45, 156, 245, 1.0);
+}
 
 ::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -300,21 +306,21 @@ space2 {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background-color: rgba(0,0,0,.5);
-    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    background-color: rgba(0, 0, 0, .5);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
 
 @media screen and (max-width: 400px) {
-/* Styles */
-.nav-pills > li > a {
-	padding: 0 8px;
-}
+    /* Styles */
+    .nav-pills > li > a {
+        padding: 0 8px;
+    }
 }
 
-@media screen and (max-width: 360px) {
-/* Styles */
-.btn.special {
-	padding: 6px 6px 0 0px;
-	font-size: 12px;
-}
+@media screen and (max-width: 460px) {
+    /* Styles */
+    .btn.special {
+        padding: 6px 6px 0 0px;
+        font-size: 12px;
+    }
 }
