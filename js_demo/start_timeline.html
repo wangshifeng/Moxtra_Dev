@@ -26,6 +26,7 @@
                 mode: "sandbox",
                 client_id: client_id,
                 access_token: access_token,
+                sdk_version:3,
                 invalid_token: function (event) {
                     //Triggered when the access token is expired or invalid
                     alert("Access Token expired for session id: " + event.session_id);
@@ -35,16 +36,16 @@
         }
     })
     // var access_token = 'OuEzMgAAAVYo9ChiAACowFVMVXpTZTNTalVISEdYNThleG8wcUdBIAAAAANUWWZKMG0zZ0xWUUoyM0hDekV5aVFlNnRSY19uazVjMlpV';
-    var options = {
-        mode: "sandbox",
-        client_id: client_id,
-        access_token: access_token,
-        invalid_token: function(event) {
-            //Triggered when the access token is expired or invalid
-            alert("Access Token expired for session id: " + event.session_id);
-        }
-    };
-    Moxtra.init(options);
+    // var options = {
+    //     mode: "sandbox",
+    //     client_id: client_id,
+    //     access_token: access_token,
+    //     invalid_token: function(event) {
+    //         //Triggered when the access token is expired or invalid
+    //         alert("Access Token expired for session id: " + event.session_id);
+    //     }
+    // };
+    // Moxtra.init(options);
     </script>
     <script type="text/javascript">
     // start timeline function
@@ -52,8 +53,8 @@
         var timeline_options = {
             iframe: true, //Default is false. Specify to launch the chatView in iframe or in a new window.
             tagid4iframe: "meet-container", //Specify the ID of iframe container - applicable only if iframe in option is set to "true".
-            iframewidth: "1000px", // Width of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 850px. If container controls the width, please set to 100%.
-            iframeheight: "800px", // Height of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 500px. If container controls the height, please set to 100%.
+            iframewidth: "1024px", // Width of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 850px. If container controls the width, please set to 100%.
+            iframeheight: "600px", // Height of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 500px. If container controls the height, please set to 100%.
             autostart_meet: true,
             autostart_note: true,
             extension: {
