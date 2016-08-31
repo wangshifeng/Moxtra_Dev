@@ -50,13 +50,13 @@
                 iframeheight: "500px", // Height of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 500px. If container controls the height, please set to 100%.
                 autostart_note: false,
                 start_chat: function (event) {
-                    console.log("ChatView started session Id: " + event.session_id);
+                    // console.log("ChatView started session Id: " + event.session_id);
                 },
                 request_note: function (event) {
-                    console.log("Note start request");
+                    // console.log("Note start request");
                 },
                 publish_feed: function(event) {
-                    console.log(event.message);  
+                    console.log(event.message);
                 },
                 error: function (event) {
                     console.log("ChatView error code: " + event.error_code + " error message: " + event.error_message);

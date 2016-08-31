@@ -264,9 +264,9 @@
                     <!-- Email Header : END -->
                     <!-- Email Body : BEGIN -->
                     <table cellspacing="0" cellpadding="15" border="0" align="center" bgcolor="#ffffff" width="600" style="margin-bottom:40px !important;" class="email-container">
-                        <tr style="background-color:#ffffff">
+                        <tr style="background-color:#2d9cf5">
                             <td>
-                                <div class="intro" style="letter-spacing:2px;font-size:22px;text-align:left;color:#333;padding:20px 0 0 0 ">Release Notes</div>
+                                <div class="intro" style="letter-spacing:2px;font-size:22px;text-align:left;color:#fff;padding:20px 0 0 0 ">Moxtra SDK and API Release Notes</div>
                             </td>
                         </tr>
                         <!-- 1 Column Text : BEGIN -->
@@ -312,17 +312,96 @@
                                                             <hr>
                                                             <div class="update_description">
                                                                 <li>Fixed issue of camera button overlapping with annotation icon in whiteboard</li>
-                                                                <li>Fixed issue of big noise generated when user joins audio from bluetooth</li>
                                                                 <li>Adding org information for meet members</li>
-                                                                <li>Support configuration to remove file options (share, move to, copy to, create To-Do) for a file from Chat or Pages tab</li>
+                                                                <li>Support configuration to remove share, create To-Do options or disable move to other binders, copy to other binders options from file option menu in Chat or Pages tab</li>
                                                                 <li>Suppressed feed option for binder creation from SDK</li>
                                                                 <li>Support hiding chat and participant panel from meeting screen</li>
                                                                 <li>Support configuration in admin org configuration and Partner API to remove "iCloud Drive" from add file option </li>
-                                                                <li>Support Flemish and Lithuanian language</li>
-                                                                <li>iOS 10 certified</li>
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <td dir="ltr" class="center-on-narrow platform_row">
+                                                            <div class="update_platform">Android SDK 3.3</div>
+                                                            <table class="date">
+                                                                <tr>
+                                                                    <td class="date-left"><b>Sandbox:</b> 08/26/2016</td>
+                                                                    <td class="date-right"><b>Production:</b> 09/11/2016</td>
+                                                                </tr>
+                                                            </table>
+                                                            <hr>
+                                                            <div class="update_description">
+                                                                <li>Fixed issue of camera button overlapping with annotation icon in whiteboard</li>
+                                                                <li>Fixed Swedish localization missing issue</li>
+                                                                <li>Adding org information for meet members</li>
+                                                                <li>Support configuration to remove share, create To-Do options or disable move to other binders, copy to other binders options from file option menu in Chat or Pages tab</li>
+                                                                <li>Suppressed feed option for binder creation from SDK</li>
+                                                                <li>Support hiding chat and participant panel from meeting screen</li>
+                                                                <li>Support callback for message posted in Chat</li>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td dir="ltr" class="center-on-narrow platform_row">
+                                                            <div class="update_platform">Web SDK 3.3</div>
+                                                            <table class="date">
+                                                                <tr>
+                                                                    <td class="date-left"><b>Sandbox:</b> 08/26/2016</td>
+                                                                    <td class="date-right"><b>Production:</b> 09/11/2016</td>
+                                                                </tr>
+                                                            </table>
+                                                            <hr>
+                                                            <div class="update_description">
+                                                                <li>Support configuration to remove share, create To-Do options or disable move to other binders, copy to other binders options from file option menu in Chat or Pages tab</li>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td dir="ltr" class="center-on-narrow platform_row">
+                                                            <div class="update_platform">REST API 3.2</div>
+                                                            <table class="date">
+                                                                <tr>
+                                                                    <td class="date-left"><b>Sandbox:</b> 08/26/2016</td>
+                                                                    <td class="date-right"><b>Production:</b> 09/11/2016</td>
+                                                                </tr>
+                                                            </table>
+                                                            <hr>
+                                                            <div class="update_description">
+                                                                <li>Support listing user's incomplete To-Dos</li>
+                                                                <ul class="nomargin grey"><code>
+                                                                    GET /{user_id}/todo <br>
+                                                                </code></ul>
+                                                                <li>Support to get created time and updated time for a meet</li>
+                                                                <ul class="nomargin grey"><code>
+                                                                    GET /{user_id}/meets <br>
+                                                                </code></ul>
+                                                                <ul class="nomargin grey"><code>
+                                                                    GET /meets/{session_key} <br>
+                                                                </code></ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <table cellspacing="0" cellpadding="15" border="0" align="center" bgcolor="#ffffff" width="600" style="margin-bottom:40px !important;" class="email-container">
+                        <tr style="background-color:#2d9cf5">
+                            <td>
+                                <div class="intro" style="letter-spacing:2px;font-size:22px;text-align:left;color:#fff;padding:20px 0 0 0 ">Moxtra App Release Notes</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td dir="ltr" align="center" valign="top" width="100%" style="padding: 0px;">
+                                <table align="center" border="0" cellpadding="10" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td width="100%" class="stack-column-center" style="padding:0">
+                                            <div style="display:inline-block; Margin: 0 -2px; max-width:100%; vertical-align:top;" class="stack-column">
+                                                <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                                     <tr>
                                                         <td dir="ltr" class="center-on-narrow platform_row">
                                                             <div class="update_platform">Android App 3.3</div>
@@ -341,27 +420,6 @@
                                                     </tr>
                                                     <tr>
                                                         <td dir="ltr" class="center-on-narrow platform_row">
-                                                            <div class="update_platform">Android SDK 3.3</div>
-                                                            <table class="date">
-                                                                <tr>
-                                                                    <td class="date-left"><b>Sandbox:</b> 08/26/2016</td>
-                                                                    <td class="date-right"><b>Production:</b> 09/11/2016</td>
-                                                                </tr>
-                                                            </table>
-                                                            <hr>
-                                                            <div class="update_description">
-                                                                <li>Fixed issue of camera button overlapping with annotation icon in whiteboard</li>
-                                                                <li>Fixed Swedish localization missing issue</li>
-                                                                <li>Adding org information for meet members</li>
-                                                                <li>Support configuration to remove file options (share, move to, copy to, create To-Do) for a file from Chat or Pages tab</li>
-                                                                <li>Suppressed feed option for binder creation from SDK</li>
-                                                                <li>Support hiding chat and participant panel from meeting screen</li>
-                                                                <li>Support callback for message posted in chat</li>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td dir="ltr" class="center-on-narrow platform_row">
                                                             <div class="update_platform">Web App 3.3</div>
                                                             <table class="date">
                                                                 <tr>
@@ -372,50 +430,31 @@
                                                             <hr>
                                                             <div class="update_description">
                                                                 <li>Allow org admin users to change org name</li>
-                                                                <li>Support configuration to remove file options (share, move to, copy to, create To-Do) for a file from Chat or Pages tab</li>
+                                                                <li>Support configuration to remove share, create To-Do options or disable move to other binders, copy to other binders options from file option menu in Chat or Pages tab</li>
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td dir="ltr" class="center-on-narrow platform_row">
-                                                            <div class="update_platform">Web SDK 3.3</div>
-                                                            <table class="date">
-                                                                <tr>
-                                                                    <td class="date-left"><b>Sandbox:</b> 08/26/2016</td>
-                                                                    <td class="date-right"><b>Production:</b> 09/11/2016</td>
-                                                                </tr>
-                                                            </table>
-                                                            <hr>
-                                                            <div class="update_description">
-                                                                <li>Support configuration to remove file options (share, move to, copy to, create To-Do) for a file from Chat or Pages tab</li>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td dir="ltr" class="center-on-narrow platform_row">
-                                                            <div class="update_platform">REST API 3.2</div>
-                                                            <table class="date">
-                                                                <tr>
-                                                                    <td class="date-left"><b>Sandbox:</b> 08/26/2016</td>
-                                                                    <td class="date-right"><b>Production:</b> 09/11/2016</td>
-                                                                </tr>
-                                                            </table>
-                                                            <hr>
-                                                            <div class="update_description">
-                                                                <li>Support listing user's incomplete To-Dos</li>
-                                                                <ul class="nomargin grey"><code>
-                                                                    POST /{user_id}/todo <br>
-                                                                </code></ul>
-                                                                <li>Support to get created time and updated time for a meet</li>
-                                                                <ul class="nomargin grey"><code>
-                                                                    POST /{user_id}/meets <br>
-                                                                </code></ul>
-                                                                <ul class="nomargin grey"><code>
-                                                                    POST /meets/{session_key} <br>
-                                                                </code></ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <table cellspacing="0" cellpadding="15" border="0" align="center" bgcolor="#ffffff" width="600" style="margin-bottom:40px !important;" class="email-container">
+                        <tr style="background-color:#2d9cf5">
+                            <td>
+                                <div class="intro" style="letter-spacing:2px;font-size:22px;text-align:left;color:#fff;padding:20px 0 0 0 ">Moxtra Partner Admin & Backend Release Notes</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td dir="ltr" align="center" valign="top" width="100%" style="padding: 0px;">
+                                <table align="center" border="0" cellpadding="10" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td width="100%" class="stack-column-center" style="padding:0">
+                                            <div style="display:inline-block; Margin: 0 -2px; max-width:100%; vertical-align:top;" class="stack-column">
+                                                <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                                     <tr>
                                                         <td dir="ltr" class="center-on-narrow platform_row">
                                                             <div class="update_platform">Partner Admin 2.0</div>
@@ -427,8 +466,8 @@
                                                             </table>
                                                             <hr>
                                                             <div class="update_description">
-                                                                <li>Introduced new UI design for better user experience</li>
-                                                                <li>Achieved better performance after code refactoring</li>
+                                                                <li>Introducing new UI design for better user experience</li>
+                                                                <li>Code refactoring for better performance</li>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -443,12 +482,12 @@
                                                             </table>
                                                             <hr>
                                                             <div class="update_description">
-                                                                <li>Fixed crash issue for meet in macOS when presenter changed during stop screen sharing prompt on screen</li>
+                                                                <li>Fixed crash issue for meet in Mac OS when presenter changed during stop screen sharing prompt on screen</li>
                                                                 <li>Fixed issue of audio re-connection when USB device plug-in/out on Windows</li>
-                                                                <li>Fixed wrong audio status during meeting or screen sharing when WebRTC used before</li>
+                                                                <li>Fixed wrong audio status during meeting or screen sharing for WebRTC cases</li>
                                                                 <li>Fixed issue for not able to share screen during Microsoft Office 2016 presenting slides in full screen</li>
                                                                 <li>Support re-configure meet option during meet in progress</li>
-                                                                <li>Support Flemish and Lithuanian language</li>
+                                                                <li>Support additional languages</li>
                                                                 <li>Improved desktop sharing performance under poor network condition</li>
                                                             </div>
                                                         </td>
@@ -461,10 +500,12 @@
                             </td>
                         </tr>
                         <!-- Text : END -->
+                    </table>
+                    <table cellspacing="0" cellpadding="15" border="0" align="center" width="600" style="margin-bottom:40px !important;" class="email-container">
                         <tr>
                             <td class="intronote" style="padding: auto; text-align: left;  font-size: 16px; mso-height-rule: exactly; line-height: 25px; color: #555555;">
                                 Thank you,
-                                <br>The Moxtra Solutions Team
+                                <br>The Moxtra Team
                                 <br><span style="font-style:italic">August 26, 2016</span>
                                 <p><span style="font-size:12px">For any questions on this upcoming release please contact your solutions lead @ Moxtra or email to <a href="mailto:partner-updates@moxtra.com">partner-updates@moxtra.com</a></span></p>
                             </td>

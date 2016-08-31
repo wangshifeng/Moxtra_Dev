@@ -13,7 +13,7 @@
     // var mode = 'sandbox';
     var client_id = 'qLovk8jynyw'; //insert your client_id here
     var client_secret = 'iwIeVAb7oYc'; //insert your client_secret here
-    var unique_id = 'tony.xu@moxtra.com'; //insert unique user identifier
+    var unique_id = 'mitel_cc2'; //insert unique user identifier
     var timestamp = new Date().getTime();
     $.ajax({
         type: "POST",
@@ -33,6 +33,7 @@
                 }
             };
             Moxtra.init(options);
+            start_timeline();
         }
     })
     // var access_token = 'OuEzMgAAAVYo9ChiAACowFVMVXpTZTNTalVISEdYNThleG8wcUdBIAAAAANUWWZKMG0zZ0xWUUoyM0hDekV5aVFlNnRSY19uazVjMlpV';
