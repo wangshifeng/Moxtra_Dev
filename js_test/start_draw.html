@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+
+    <!-- Include Moxtra JavaScript Library -->
+    <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <!-- Before making any calls with Moxtra SDK, authenticate the user and get the access token -->
+    <!-- Refer to the doc at https://developer.moxtra.com/docs/docs-js-sdk/ to authenticate user based on UniqueID Method -->
+    <!-- For other authentication methods and overview refer to the doc at https://developer.moxtra.com/docs/docs-authentication/ -->
+    <script type="text/javascript">
+        var mode = 'production';
+        var client_id = 'spiDUIjwKNQ'; //insert your client_id here
+        var client_secret = 'i8GQwNBIM2o'; //insert your client_secret here
+        var unique_id = 'tony.xu@moxtra.com'; //insert unique user identifier
+        var timestamp = new Date().getTime();
+        var options = {
+                    mode: "production",
+                    client_id: client_id,
+                    access_token: "dMYzMgAAAVZ6rcLVAACowFVrbDZMblBHckxuN1NLTnhacWFic0YwIAAAAANUUzQwS0xnWngwcTdING5BcWNyYkR0M3NwaURVSWp3S05R",
+                    invalid_token: function (event) {
+                        //Triggered when the access token is expired or invalid
+                        alert("Access Token expired for session id: " + event.session_id);
+                    }
+                };
+                Moxtra.init(options);
+    </script>
+
+    <script type="text/javascript">
+        // start draw function
+        function start_draw() {
+            var draw_options = {
+                unique_id: "tony.xu@moxtra.com", //unique id of the users who will be part of the chat. These users should already exist in Moxtra.
+                iframe: true, //Default is false. Specify to launch the chatView in iframe or in a new window.
+                tagid4iframe: "meet-container", //Specify the ID of iframe container - applicable only if iframe in option is set to "true".
+                binder_id: "BBMD9mroQGt6hDkoJ4K3wd2",
+                iframewidth: "850px", // Width of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 850px. If container controls the width, please set to 100%.
+                iframeheight: "500px", // Height of the chat iFrame - applicable only if iframe in option is set to "true". Default is set to 500px. If container controls the height, please set to 100%.
+                autostart_meet: true,
+                autostart_note: true,
+                start_annotate: function (event) {
+                    console.log("Draw Started - session_id: " + event.session_id + "binder_id: " + event.binder_id);
+                    //Your application server can upload files to draw using the binder_id and access_token
+                },
+                error: function (event) {
+                    console.log("error code: " + event.error_code + " message: " + event.error_message);
+                },
+                stop_annotate: function (event) {
+                    console.log("Share URL: " + event.share_url + " Binder ID: " + event.binder_id + " Download URL: " + event.download_url);
+                }
+            };
+            Moxtra.annotate(draw_options);
+        }
+    </script>
+
+</head>
+
+<body>
+    <h3><a id="start" href="javascript:start_draw();">Start Draw</a></h3>
+    <div id="meet-container"></div>
+</body>
+
+</html>

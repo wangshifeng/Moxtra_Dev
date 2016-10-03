@@ -13,8 +13,8 @@
     <!-- For other authentication methods and overview refer to the doc at https://developer.moxtra.com/docs/docs-authentication/ -->
     <script type="text/javascript">
         var mode = 'sandbox';
-        var client_id = 'i-iX-exWQQY'; //insert your client_id here
-        var client_secret = 'qyHAGniHBbM'; //insert your client_secret here
+        var client_id = 'qLovk8jynyw'; //insert your client_id here
+        var client_secret = 'iwIeVAb7oYc'; //insert your client_secret here
         var unique_id = 'tony.xu@moxtra.com'; //insert unique user identifier
         var timestamp = new Date().getTime();
         $.ajax({
@@ -42,30 +42,32 @@
         // start meet function
         function start_meet() {
             var meet_options = {
-            //iframe: true, //To open the meet in the same window within an iFrame.
-            tab: true, //To open the meet in a new browser tab, N/A if iframe option is set to true.
-            //tagid4iframe: "meet-container", //ID of the HTML tag within which the Meet window will show up. Refer https://developer.grouphour.com/moxo/docs-js-sdk/#meet
-            //iframewidth: "1000px",
-            //iframeheight: "750px",
-            extension: {
-                "show_dialogs": {
-                    "meet_invite": true
+                iframe: true, //To open the meet in the same window within an iFrame.
+                // tab: true, //To open the meet in a new browser tab, N/A if iframe option is set to true.
+                tagid4iframe: "meet-container", //ID of the HTML tag within which the Meet window will show up. Refer https://developer.grouphour.com/moxo/docs-js-sdk/#meet
+                iframewidth: "850px",
+                iframeheight: "500px",
+                extension: {
+                    "show_dialogs": {
+                        "meet_invite": true
+                    }
+                },
+                options:{
+                    "MEET_WITHOUT_AUDIO":true
+                },
+                video:true,
+                start_meet: function (event) {
+                    console.log("Meet Started - session_id: " + event.session_id + "session_key: " + event.session_key);
+                    //Your application server can upload files to meet using the session_id and session_key;
+                },
+                error: function (event) {
+                    console.log("error code: " + event.error_code + " message: " + event.error_message);
+                },
+                end_meet: function (event) {
+                    console.log("Meet Ended");
                 }
-            },
-            start_meet: function(event) {
-                console.log("Meet Started - session_id: " + event.session_id + "session_key: " + event.session_key);
-                //Your application server can upload files to meet using the session_id and session_key
-            },
-            error: function(event) {
-                console.log("error code: " + event.error_code + " message: " + event.error_message);
-            },
-            end_meet: function(event) {
-                console.log("Meet Ended");
-            },
-            video: true
-        };
-        console.log("moxtra.meet started")
-        Moxtra.meet(meet_options);
+            };
+            Moxtra.meet(meet_options);
         }
 
         // end meet function

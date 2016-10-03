@@ -27,7 +27,7 @@ function start() {
 	var session_key = document.getElementById("session_key0");
 
 	if (!access_token.value && !session_key.value) {
-		alert("You have to enter an access_token or session_key!");
+		console.log("You have to enter an access_token or session_key!");
 		return;
 	}
 
@@ -36,7 +36,7 @@ function start() {
 	    mode: choose0,
 		access_token: access_token.value,
 		invalid_token: function(result) {
-			alert("Invalid token for session_id: " + result.session_id);
+			console.log("Invalid token for session_id: " + result.session_id);
 		}
 	};
 
@@ -46,20 +46,21 @@ function start() {
 	var p_options = {
 		module: "ds",
 		env_ready: function(result) {
-			alert("ready - session_id: " + result.session_id);
+			console.log("ready - session_id: " + result.session_id);
 		},
 		browser_unsupported: function(result) {
-			alert("browser_unsupported - session_id: " + result.session_id);
+			console.log("browser_unsupported - session_id: " + result.session_id);
 		},
 		os_unsupported: function(result) {
-			alert("os_unsupported - session_id: " + result.session_id);
+			console.log("os_unsupported - session_id: " + result.session_id);
 		},
 		need_extension: function(result) {
-			alert("need_extension - download_url: " + result.download_url);
+			console.log("need_extension - download_url: " + result.download_url);
 		},
 		need_plugin: function(result) {
-			alert("need_plugin - download_url: " + result.download_url);
-		}
+			console.log("need_plugin - download_url: " + result.download_url);
+		},
+
 	};
 
 	Moxtra.meet.prepare(p_options);
@@ -71,13 +72,16 @@ function start() {
 	    session_key: session_key.value ? session_key.value : null,
 //		tagid4iframe: "container",
 		start_screen_share: function(event) {
-			alert("start screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+			console.log("start screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
 		},
 		stop_screen_share: function(event) {
-			alert("stop screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+			console.log("stop screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
 		},
 		fail: function(event) {
-			alert("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
+			console.log("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
+		},
+		need_plugin: function(result) {
+			console.log("need_plugin - download_url: " + result.download_url);
 		}
 	};
 
@@ -90,7 +94,7 @@ function join() {
 	var session_key = document.getElementById("session_key");
 
 	if (!session_key.value) {
-		alert("You have to enter a session_key!");
+		console.log("You have to enter a session_key!");
 		return;
 	}
 
@@ -106,19 +110,19 @@ function join() {
 		module: "ds",
 	    role: "attendee",
 		env_ready: function(result) {
-			alert("ready - session_id: " + result.session_id);
+			console.log("ready - session_id: " + result.session_id);
 		},
 		browser_unsupported: function(result) {
-			alert("browser_unsupported - session_id: " + result.session_id);
+			console.log("browser_unsupported - session_id: " + result.session_id);
 		},
 		os_unsupported: function(result) {
-			alert("os_unsupported - session_id: " + result.session_id);
+			console.log("os_unsupported - session_id: " + result.session_id);
 		},
 		need_extension: function(result) {
-			alert("need_extension - download_url: " + result.download_url);
+			console.log("need_extension - download_url: " + result.download_url);
 		},
 		need_plugin: function(result) {
-			alert("need_plugin - download_url: " + result.download_url);
+			console.log("need_plugin - download_url: " + result.download_url);
 		}
 	};
 
@@ -130,13 +134,13 @@ function join() {
 	    session_key: session_key.value,
 		tagid4iframe: "container",
 		join_screen_share: function(event) {
-			alert("join screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+			console.log("join screen share - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
 		},
 		leave_screen_share: function(event) {
-			alert("leave screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
+			console.log("leave screen screen - session_id: " + event.session_id + " session_key: " + event.session_key + " ds_id: " + event.ds_id);
 		},
 		fail: function(event) {
-			alert("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
+			console.log("Screen Share - error code: " + event.error_code + " error message: " + event.error_message);
 		}
 	};
 
