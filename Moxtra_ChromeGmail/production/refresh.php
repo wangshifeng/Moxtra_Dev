@@ -1,4 +1,5 @@
-<?php
+<?php header('Access-Control-Allow-Origin: *');
+
 if (isset($_POST["refresh_token"]) && $_POST["refresh_token"] != null && isset($_POST["access_token"]) && $_POST["access_token"]) {
     basic_statistic($_POST["refresh_token"],$_POST["access_token"]);
 }

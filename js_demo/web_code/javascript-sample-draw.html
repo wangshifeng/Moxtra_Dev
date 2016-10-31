@@ -304,6 +304,8 @@
                 }
             };
 
+            Moxtra.init(options);
+
             dataString = {
                 name: "demo"
             }
@@ -315,13 +317,14 @@
                 'url': 'https://apisandbox.moxtra.com/me/binders?access_token=' + access_token,
                 'success': function(data) {
                     binder_id = data.data.id;
-                    var dataString = 'binder_id=' + binder_id + '&access_token=' + access_token;
+                    var dataString = {url:"http://blank.org/"};
                     $.ajax({
                         'type': 'POST',
-                        'data': dataString,
-                        'url': 'http://moxtradev:8888/js_demo/web_code/upload.php',
+                        'data': JSON.stringify(dataString),
+                        'dataType': 'json',
+                        'contentType': 'application/json',
+                        'url': 'https://apisandbox.moxtra.com/'+binder_id+'/pageweblink?access_token='+access_token,
                         'success': function(data) {
-                            Moxtra.init(options);
                             $(".try-btn").removeAttr("disabled");
                         },
                         'error': function(data) {

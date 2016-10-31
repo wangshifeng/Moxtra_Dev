@@ -10,15 +10,15 @@
     <!-- Refer to the doc at https://developer.moxtra.com/docs/docs-js-sdk/ to authenticate user based on UniqueID Method -->
     <!-- For other authentication methods and overview refer to the doc at https://developer.moxtra.com/docs/docs-authentication/ -->
     <script type="text/javascript">
-    // var mode = 'sandbox';
+    var mode = 'sandbox';
     var client_id = 'qLovk8jynyw'; //insert your client_id here
     var client_secret = 'iwIeVAb7oYc'; //insert your client_secret here
-    var unique_id = '0922a'; //insert unique user identifier
+    var unique_id = '1026it'; //insert unique user identifier
     var timestamp = new Date().getTime();
     $.ajax({
         type: "POST",
         url: "https://apisandbox.moxtra.com/oauth/token",
-        data: "client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=http://www.moxtra.com/auth_uniqueid" + "&uniqueid=" + unique_id + "&timestamp=" + timestamp,
+        data: "client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=http://www.moxtra.com/auth_uniqueid&language=it&uniqueid=" + unique_id + "&timestamp=" + timestamp,
         success: function (data) {
             var access_token = data.access_token;
             console.log(data.access_token);
@@ -35,9 +35,9 @@
             Moxtra.init(options);
         }
     })
-    // var access_token = '5w4zMgAAAVbtIIFwAACowFVsaHVBZ3FRdU9GRExnOUtpa2xHOWhDIAAAAANUMXVxbXluME9KREN0VlFnM2tGTDhFQnNwaURVSWp3S05R';
+    // var access_token = 'KTIzMgAAAVfqBZtOAACowFVYY0hHNG9lU2RKTGRucXIzUHVsQnczIAAAAANUMl9malU3bE04VWVIVXBBbUZhSnhpaXZJOGFSYzIyY05V';
     // var options = {
-    //     mode: "production",
+    //     mode: "sandbox",
     //     client_id: client_id,
     //     access_token: access_token,
     //     sdk_version:3,
