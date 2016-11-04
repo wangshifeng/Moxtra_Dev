@@ -30,6 +30,24 @@
 			}
 		},
 		{
+			"file": "js_test/join_meet.html",
+			"settings":
+			{
+				"buffer_size": 2388,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ReleaseEmail/PartnerRelease_09262016.html",
+			"settings":
+			{
+				"buffer_size": 29793,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "/Users/tonyxu/Moxtra_Host/trello/sendtobinder.html",
 			"settings":
 			{
@@ -126,10 +144,8 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/tonyxu/Moxtra_Dev/ReleaseEmail",
-		"/Users/tonyxu/Moxtra_Host",
-		"/Users/tonyxu/Moxtra_Host/trello",
-		"/Users/tonyxu/Moxtra_Host/trello/js"
+		"/Users/tonyxu/Moxtra_Dev",
+		"/Users/tonyxu/Moxtra_Dev/ReleaseEmail"
 	],
 	"file_history":
 	[
@@ -178,7 +194,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -211,7 +227,7 @@
 						"translation.y": 947.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -244,11 +260,77 @@
 						"translation.y": 1372.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
+					"file": "js_test/join_meet.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2388,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								900,
+								900
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 361.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "ReleaseEmail/PartnerRelease_09262016.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 29793,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14751,
+								14846
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6363.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
 					"file": "/Users/tonyxu/Moxtra_Host/trello/sendtobinder.html",
 					"semi_transient": false,
 					"settings":
@@ -277,11 +359,11 @@
 						"translation.y": 843.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 5,
 					"semi_transient": false,
 					"settings":
 					{
@@ -314,21 +396,23 @@
 							"incomplete_sync": null,
 							"line_numbers": false,
 							"output_tag": 1,
+							"remote_loading": false,
 							"result_base_dir": "",
 							"result_file_regex": "^([^ \t].*):$",
 							"result_line_regex": "^ +([0-9]+):",
 							"scroll_past_end": true,
+							"synced": false,
 							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 6,
 					"file": "/Users/tonyxu/Moxtra_Host/trello/boarddropdown.html",
 					"semi_transient": false,
 					"settings":
@@ -357,11 +441,11 @@
 						"translation.y": 768.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 7,
 					"file": "/Users/tonyxu/Moxtra_Host/trello/sendtocontact.html",
 					"semi_transient": false,
 					"settings":
@@ -390,11 +474,11 @@
 						"translation.y": 2426.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 8,
 					"file": "/Users/tonyxu/Moxtra_Host/trello/sendtodo.html",
 					"semi_transient": false,
 					"settings":
@@ -423,11 +507,11 @@
 						"translation.y": 2661.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 9,
 					"file": "/Users/tonyxu/Moxtra_Host/trello/sentsuccess.html",
 					"semi_transient": false,
 					"settings":
@@ -456,7 +540,7 @@
 						"translation.y": 271.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 9,
 					"type": "text"
 				}
 			]

@@ -3,72 +3,57 @@
 
 <head>
     <meta charset="UTF-8" />
-
     <!-- Include Moxtra JavaScript Library -->
     <script type="text/javascript" src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
     <!-- Before making any calls with Moxtra SDK, authenticate the user and get the access token -->
     <!-- Refer to the doc at https://developer.moxtra.com/docs/docs-js-sdk/ to authenticate user based on UniqueID Method -->
     <!-- For other authentication methods and overview refer to the doc at https://developer.moxtra.com/docs/docs-authentication/ -->
     <script type="text/javascript">
-        var mode = 'sandbox';
-        var client_id = 'uFvStzxf74E'; //insert your client_id here
-        var client_secret = 'INSERT-CLIENT-SECRET'; //insert your client_secret here
-        var unique_id = '4028802b55b52b460155b54e5c6f0004'; //insert unique user identifier
-        var timestamp = new Date().getTime();
-
-                var access_token = "2fYzMgAAAVXiR8b6AACowFUxdnhpWDNDMXpOQ1RqU1VHUERvU1RIIAAAAANUWkZmUHRySFRYcjV0eXFnZ3hobklGQ3VGdlN0enhmNzRF";
-                var options = {
-                    mode: "sandbox",
-                    client_id: client_id,
-                    access_token: access_token,
-                    invalid_token: function (event) {
-                        //Triggered when the access token is expired or invalid
-                        alert("Access Token expired for session id: " + event.session_id);
-                    }
-                };
-                Moxtra.init(options);
-
-
+    var mode = 'sandbox';
+    var client_id = 'CLIENT-ID'; //insert your client_id here
+    var options = {
+        mode: mode,
+        client_id: client_id,
+        plugin_version: "latest"
+    };
+    Moxtra.init(options);
     </script>
-
     <script type="text/javascript">
-        // join meet function
-        function join_meet() {
-            join_sessionkey = document.getElementById('meetid').value
+    // join meet function
+    function join_meet() {
+        join_sessionkey = document.getElementById('meetid').value
 
-                var join_options = {
-                    iframe: true,
-                    session_key: join_sessionkey,
-                    user_name: "Joe Smith",
-                    tagid4iframe: "meet-container", //ID of the HTML tag within which the Meet window will show up. Refer https://developer.grouphour.com/moxo/docs-js-sdk/#meet
-                    iframewidth: "850px",
-                    iframeheight: "500px",
-                    extension: {
-                        "show_dialogs": {
-                            "meet_invite": true
-                        }
-                    },
-                    start_meet: function (event) {
-                        concole.log("session key: " + event.session_key + " session id: " + event.session_id);
-                    },
-                    error: function (event) {
-                        alert("error code: " + event.error_code + " message: " + event.error_message);
-                    },
-                    end_meet: function (event) {
-                        alert("Meet ended by host event");
-                    },
-                    exit_meet: function (event) {
-                        alert("Meet exit event");
-                    }
-                };
+        var join_options = {
+            iframe: true,
+            session_key: join_sessionkey,
+            user_name: "Joe Smith",
+            tagid4iframe: "meet-container", //ID of the HTML tag within which the Meet window will show up. Refer https://developer.grouphour.com/moxo/docs-js-sdk/#meet
+            iframewidth: "850px",
+            iframeheight: "500px",
+            extension: {
+                "show_dialogs": {
+                    "meet_invite": true
+                }
+            },
+            start_meet: function(event) {
+                concole.log("session key: " + event.session_key + " session id: " + event.session_id);
+            },
+            error: function(event) {
+                alert("error code: " + event.error_code + " message: " + event.error_message);
+            },
+            end_meet: function(event) {
+                alert("Meet ended by host event");
+            },
+            exit_meet: function(event) {
+                alert("Meet exit event");
+            }
+        };
 
-                Moxtra.joinMeet(join_options);
+        Moxtra.joinMeet(join_options);
 
-        }
+    }
     </script>
-
 </head>
 
 <body>
